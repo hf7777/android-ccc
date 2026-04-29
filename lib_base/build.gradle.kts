@@ -96,4 +96,10 @@ dependencies {
     
     // Toaster
     api(libs.toaster)
+    
+    // AndroidUtilCode
+    api(libs.utilcode)
+    
+    // Glide
+    api(libs.glide)
 }

@@ -24,6 +24,7 @@ autosize = "1.2.1"
 shapeview = "9.0"
 xxpermissions = "18.63"
 toaster = "12.6"
+utilcode = "1.31.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,6 +57,7 @@ autosize = { group = "com.github.JessYanCoding", name = "AndroidAutoSize", versi
 shapeview = { group = "com.github.getActivity", name = "ShapeView", version.ref = "shapeview" }
 xxpermissions = { group = "com.github.getActivity", name = "XXPermissions", version.ref = "xxpermissions" }
 toaster = { group = "com.github.getActivity", name = "Toaster", version.ref = "toaster" }
+utilcode = { group = "com.blankj", name = "utilcodex", version.ref = "utilcode" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
