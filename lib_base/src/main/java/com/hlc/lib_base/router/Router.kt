@@ -6,7 +6,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 
 /**
  * 路由管理器
@@ -89,10 +89,10 @@ object Router {
                         value.isEmpty() -> bundle.putStringArrayList(key, value as ArrayList<String>)
                         value[0] is String -> bundle.putStringArrayList(key, value as ArrayList<String>)
                         value[0] is Int -> bundle.putIntegerArrayList(key, value as ArrayList<Int>)
-                        else -> Timber.w("Unsupported ArrayList type: ${value[0]?.javaClass}")
+                        else -> LogUtils.w("Unsupported ArrayList type: ${value[0]?.javaClass}")
                     }
                 }
-                else -> Timber.w("Unsupported parameter type: ${value.javaClass}")
+                else -> LogUtils.w("Unsupported parameter type: ${value.javaClass}")
             }
             return this
         }
@@ -155,7 +155,7 @@ object Router {
                 val request = RouterRequest(path, bundle)
                 for (interceptor in interceptors) {
                     if (!interceptor.intercept(context, request)) {
-                        Timber.d("Navigation intercepted by ${interceptor.javaClass.simpleName}")
+                        LogUtils.d("Navigation intercepted by ${interceptor.javaClass.simpleName}")
                         return false
                     }
                 }
@@ -163,7 +163,7 @@ object Router {
                 // 查找目标 Activity
                 val targetClass = routes[path]
                 if (targetClass == null) {
-                    Timber.e("Route not found: $path")
+                    LogUtils.e("Route not found: $path")
                     return false
                 }
                 
@@ -196,7 +196,7 @@ object Router {
                 
                 return true
             } catch (e: Exception) {
-                Timber.e(e, "Navigation failed: $path")
+                LogUtils.e("Navigation failed: $path", e)
                 return false
             }
         }
@@ -219,7 +219,7 @@ object Router {
                 return handler.handle(context, uri, bundle)
             }
             
-            Timber.w("No handler for scheme: $scheme")
+            LogUtils.w("No handler for scheme: $scheme")
             return false
         }
         
@@ -235,7 +235,7 @@ object Router {
                 context.startActivity(intent)
                 true
             } catch (e: Exception) {
-                Timber.e(e, "Failed to open browser: $url")
+                LogUtils.e("Failed to open browser: $url", e)
                 false
             }
         }

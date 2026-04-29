@@ -7,7 +7,7 @@ import com.hlc.lib_base.ApiResult
 import com.hlc.lib_base.safeRequest
 import com.hlc.lib_net.MainService
 import dagger.hilt.android.qualifiers.ApplicationContext
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -15,7 +15,7 @@ class HomeRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
     suspend fun loadDemo(): ApiResult<DemoItem> {
-        Timber.d("Loading demo data...")
+        LogUtils.d("Loading demo data...")
         return safeRequest(context) {
             mainService.fetchMain()
         }.let { result ->

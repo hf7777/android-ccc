@@ -91,9 +91,6 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.compiler)
     
-    // Timber
-    implementation(libs.timber)
-    
     // Moshi (needed for NetworkModule)
     implementation(libs.moshi)
     implementation(libs.moshi.kotlin)

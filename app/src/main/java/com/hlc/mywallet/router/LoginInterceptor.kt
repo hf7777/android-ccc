@@ -4,7 +4,7 @@ import android.content.Context
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.RouterInterceptor
 import com.hlc.lib_base.router.RouterRequest
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 
 /**
  * 登录拦截器
@@ -28,7 +28,7 @@ class LoginInterceptor : RouterInterceptor {
         val isLoggedIn = checkLoginStatus()
         
         if (!isLoggedIn) {
-            Timber.d("User not logged in, redirect to login page")
+            LogUtils.d("User not logged in, redirect to login page")
             // 跳转到登录页
             Router.navigation(Routes.LOGIN)
                 .with("redirect", request.path) // 登录成功后跳转回原页面

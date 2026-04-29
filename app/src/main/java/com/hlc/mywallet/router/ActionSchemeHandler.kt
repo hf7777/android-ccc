@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Bundle
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.SchemeHandler
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 
 /**
  * Action 协议处理器
@@ -20,7 +20,7 @@ class ActionSchemeHandler : SchemeHandler {
     override fun handle(context: Context, uri: Uri, extras: Bundle): Boolean {
         val host = uri.host ?: return false
         
-        Timber.d("Handle action scheme: $uri")
+        LogUtils.d("Handle action scheme: $uri")
         
         // 根据 host 映射到路由路径
         val path = when (host) {
@@ -28,7 +28,7 @@ class ActionSchemeHandler : SchemeHandler {
             "home" -> Routes.HOME
             "login" -> Routes.LOGIN
             else -> {
-                Timber.w("Unknown action host: $host")
+                LogUtils.w("Unknown action host: $host")
                 return false
             }
         }

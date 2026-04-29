@@ -16,7 +16,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -40,7 +40,7 @@ object NetworkModule {
     @Singleton
     fun provideLoggingInterceptor(): HttpLoggingInterceptor {
         return HttpLoggingInterceptor { message ->
-            Timber.tag("OkHttp").d(message)
+            LogUtils.dTag("OkHttp", message)
         }.apply {
             level = if (BuildConfig.DEBUG) {
                 HttpLoggingInterceptor.Level.BODY

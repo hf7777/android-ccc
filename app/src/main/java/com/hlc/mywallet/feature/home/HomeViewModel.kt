@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,11 +27,11 @@ class HomeViewModel @Inject constructor(
             _uiState.value = HomeUiState.Loading
             when (val result = repository.loadDemo()) {
                 is ApiResult.Success -> {
-                    Timber.d("Load demo success: ${result.data}")
+                    LogUtils.d("Load demo success: ${result.data}")
                     _uiState.value = HomeUiState.Success(result.data)
                 }
                 is ApiResult.Error -> {
-                    Timber.e(result.exception, "Load demo failed")
+                    LogUtils.e("Load demo failed", result.exception)
                     _uiState.value = HomeUiState.Error(
                         result.exception.message ?: context.getString(R.string.request_failed)
                     )

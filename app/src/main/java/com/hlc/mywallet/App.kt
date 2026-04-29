@@ -5,7 +5,7 @@ import com.blankj.utilcode.util.Utils
 import com.hjq.toast.Toaster
 import dagger.hilt.android.HiltAndroidApp
 import me.jessyan.autosize.AutoSizeConfig
-import timber.log.Timber
+import com.blankj.utilcode.util.LogUtils
 
 @HiltAndroidApp
 class App : Application() {
@@ -15,7 +15,7 @@ class App : Application() {
         try {
             initRouter()
             initUtils()
-            initTimber()
+            initLogUtils()
             initAutoSize()
             initToaster()
         } catch (e: Exception) {
@@ -31,10 +31,16 @@ class App : Application() {
         Utils.init(this)
     }
     
-    private fun initTimber() {
-        if (BuildConfig.DEBUG) {
-            Timber.plant(Timber.DebugTree())
-        }
+    private fun initLogUtils() {
+        val config = LogUtils.getConfig()
+            .setLogSwitch(BuildConfig.DEBUG)
+            .setConsoleSwitch(BuildConfig.DEBUG)
+            .setGlobalTag("MyWallet")
+            .setLog2FileSwitch(false)
+            .setLogHeadSwitch(true)
+            .setBorderSwitch(true)
+            .setSingleTagSwitch(true)
+            .setConsoleFilter(LogUtils.V)
     }
     
     private fun initAutoSize() {
