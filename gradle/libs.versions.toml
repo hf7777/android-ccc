@@ -25,6 +25,7 @@ shapeview = "9.0"
 xxpermissions = "18.63"
 toaster = "12.6"
 utilcode = "1.31.1"
+glide = "4.16.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -58,6 +59,8 @@ shapeview = { group = "com.github.getActivity", name = "ShapeView", version.ref 
 xxpermissions = { group = "com.github.getActivity", name = "XXPermissions", version.ref = "xxpermissions" }
 toaster = { group = "com.github.getActivity", name = "Toaster", version.ref = "toaster" }
 utilcode = { group = "com.blankj", name = "utilcodex", version.ref = "utilcode" }
+glide = { group = "com.github.bumptech.glide", name = "glide", version.ref = "glide" }
+glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", version.ref = "glide" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
