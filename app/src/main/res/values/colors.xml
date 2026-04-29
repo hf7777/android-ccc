@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="theme">#DE2C2C</color>
+    
+    <!-- Bottom Navigation Colors -->
+    <color name="tab_selected">@color/theme</color>
+    <color name="tab_normal">#FF999999</color>
+</resources>

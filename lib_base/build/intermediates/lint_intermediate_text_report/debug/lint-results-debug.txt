@@ -1,0 +1,62 @@
+C:\Users\DELL\.gradle\caches\transforms-3\bbb2c3224935e86d92af2873038762d8\transformed\lifecycle-livedata-core-2.8.7\jars\lint.jar: Warning: Library lint checks reference invalid APIs; these checks will be skipped!
+
+Lint found an issue registry (androidx.lifecycle.lint.LiveDataCoreIssueRegistry)
+which contains some references to invalid API:
+org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeTokenFactory: void afterLeavingAnalysisContext(org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeToken)
+(Referenced from androidx/lifecycle/lint/NonNullableMutableLiveDataDetector$createUastHandler$1.class)
+
+Therefore, this lint check library is not included
+in analysis. This affects the following lint checks:
+NullSafeMutableLiveData
+
+To use this lint check, upgrade to a more recent version
+of the library. [ObsoleteLintCustomCheck]
+
+   Explanation for issues of type "ObsoleteLintCustomCheck":
+   Lint can be extended with "custom checks": additional checks implemented by
+   developers and libraries to for example enforce specific API usages
+   required by a library or a company coding style guideline.
+
+   The Lint APIs are not yet stable, so these checks may either cause a
+   performance degradation, or stop working, or provide wrong results.
+
+   This warning flags custom lint checks that are found to be using obsolete
+   APIs and will need to be updated to run in the current lint environment.
+
+   It may also flag issues found to be using a newer version of the API,
+   meaning that you need to use a newer version of lint (or Android Studio or
+   Gradle plugin etc) to work with these checks.
+
+E:\Project\BaseDemo\lib_base\src\main\res\values-en\strings.xml:2: Warning: Replace "..." with ellipsis character (…, &#8230;) ? [TypographyEllipsis]
+    <string name="loading">Loading...</string>
+                           ~~~~~~~~~~
+E:\Project\BaseDemo\lib_base\src\main\res\values\strings.xml:2: Warning: Replace "..." with ellipsis character (…, &#8230;) ? [TypographyEllipsis]
+    <string name="loading">加载中...</string>
+                           ~~~~~~
+
+   Explanation for issues of type "TypographyEllipsis":
+   You can replace the string "..." with a dedicated ellipsis character,
+   ellipsis character (u2026, &#8230;). This can help make the text more
+   readable.
+
+   https://en.wikipedia.org/wiki/Ellipsis
+
+E:\Project\BaseDemo\lib_base\src\main\res\layout\dialog_loading.xml:20: Warning: Hardcoded string "加载中...", should use @string resource [HardcodedText]
+        android:text="加载中..."
+        ~~~~~~~~~~~~~~~~~~~~~
+
+   Explanation for issues of type "HardcodedText":
+   Hardcoding text attributes directly in layout files is bad for several
+   reasons:
+
+   * When creating configuration variations (for example for landscape or
+   portrait) you have to repeat the actual text (and keep it up to date when
+   making changes)
+
+   * The application cannot be translated to other languages by just adding
+   new translations for existing string resources.
+
+   There are quickfixes to automatically extract this hardcoded string into a
+   resource lookup.
+
+0 errors, 4 warnings

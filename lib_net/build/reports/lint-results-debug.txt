@@ -1,0 +1,30 @@
+C:\Users\DELL\.gradle\caches\transforms-3\bbb2c3224935e86d92af2873038762d8\transformed\lifecycle-livedata-core-2.8.7\jars\lint.jar: Warning: Library lint checks reference invalid APIs; these checks will be skipped!
+
+Lint found an issue registry (androidx.lifecycle.lint.LiveDataCoreIssueRegistry)
+which contains some references to invalid API:
+org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeTokenFactory: void afterLeavingAnalysisContext(org.jetbrains.kotlin.analysis.api.lifetime.KtLifetimeToken)
+(Referenced from androidx/lifecycle/lint/NonNullableMutableLiveDataDetector$createUastHandler$1.class)
+
+Therefore, this lint check library is not included
+in analysis. This affects the following lint checks:
+NullSafeMutableLiveData
+
+To use this lint check, upgrade to a more recent version
+of the library. [ObsoleteLintCustomCheck]
+
+   Explanation for issues of type "ObsoleteLintCustomCheck":
+   Lint can be extended with "custom checks": additional checks implemented by
+   developers and libraries to for example enforce specific API usages
+   required by a library or a company coding style guideline.
+
+   The Lint APIs are not yet stable, so these checks may either cause a
+   performance degradation, or stop working, or provide wrong results.
+
+   This warning flags custom lint checks that are found to be using obsolete
+   APIs and will need to be updated to run in the current lint environment.
+
+   It may also flag issues found to be using a newer version of the API,
+   meaning that you need to use a newer version of lint (or Android Studio or
+   Gradle plugin etc) to work with these checks.
+
+0 errors, 1 warnings

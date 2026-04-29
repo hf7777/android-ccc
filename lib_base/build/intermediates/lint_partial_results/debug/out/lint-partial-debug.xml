@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<incidents format="6" by="lint 8.0.2" type="partial_results">
+    <map id="UnusedResources">
+        <entry
+            name="model"
+            string="attr[colorPrimary(R)],drawable[bg_loading_dialog(U)],id[tv_loading_message(U)],layout[dialog_loading(U)],string[error_viewbinding_init(U),dialog_confirm(U),loading(U),error_network(U),error_api_not_found(U),dialog_title(U),error_unknown(U),error_parse(U),error_server(U),error_data_empty(U)];3^1^0;;;"/>
+    </map>
+
+</incidents>

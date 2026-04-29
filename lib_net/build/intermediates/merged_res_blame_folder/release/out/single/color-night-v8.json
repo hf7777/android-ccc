@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "com.hlc.lib_net-merged_res-40:/color-night-v8/material_timepicker_modebutton_tint.xml",
+        "source": "com.hlc.lib_net-material-1.10.0-8:/color-night-v8/material_timepicker_modebutton_tint.xml"
+    },
+    {
+        "merged": "com.hlc.lib_net-merged_res-40:/color-night-v8/material_timepicker_clockface.xml",
+        "source": "com.hlc.lib_net-material-1.10.0-8:/color-night-v8/material_timepicker_clockface.xml"
+    },
+    {
+        "merged": "com.hlc.lib_net-merged_res-40:/color-night-v8/material_timepicker_button_stroke.xml",
+        "source": "com.hlc.lib_net-material-1.10.0-8:/color-night-v8/material_timepicker_button_stroke.xml"
+    }
+]

@@ -1,0 +1,14 @@
+com.hlc.lib_base
+drawable bg_loading_dialog
+id tv_loading_message
+layout dialog_loading
+string dialog_confirm
+string dialog_title
+string error_api_not_found
+string error_data_empty
+string error_network
+string error_parse
+string error_server
+string error_unknown
+string error_viewbinding_init
+string loading

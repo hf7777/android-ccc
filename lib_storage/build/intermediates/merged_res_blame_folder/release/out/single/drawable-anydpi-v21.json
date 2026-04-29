@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_answer_video.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_answer_video.xml"
+    },
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_answer_low.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_answer_low.xml"
+    },
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_answer.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_answer.xml"
+    },
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_decline.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_decline.xml"
+    },
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_answer_video_low.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_answer_video_low.xml"
+    },
+    {
+        "merged": "com.hlc.lib_storage-merged_res-43:/drawable-anydpi-v21/ic_call_decline_low.xml",
+        "source": "com.hlc.lib_storage-core-1.10.1-12:/drawable-anydpi-v21/ic_call_decline_low.xml"
+    }
+]
