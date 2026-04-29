@@ -1,6 +1,7 @@
 package com.hlc.mywallet
 
 import android.app.Application
+import com.blankj.utilcode.util.Utils
 import com.hjq.toast.Toaster
 import dagger.hilt.android.HiltAndroidApp
 import me.jessyan.autosize.AutoSizeConfig
@@ -11,9 +12,18 @@ class App : Application() {
     
     override fun onCreate() {
         super.onCreate()
-        initTimber()
-        initAutoSize()
-        initToaster()
+        try {
+            initUtils()
+            initTimber()
+            initAutoSize()
+            initToaster()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+    
+    private fun initUtils() {
+        Utils.init(this)
     }
     
     private fun initTimber() {
@@ -24,14 +34,13 @@ class App : Application() {
     
     private fun initAutoSize() {
         AutoSizeConfig.getInstance()
-            .setDesignWidthInDp(375)  // 设计稿宽度 375dp
-            .setDesignHeightInDp(812) // 设计稿高度 812dp
+            .setDesignWidthInDp(375)
+            .setDesignHeightInDp(667)
             .setLog(BuildConfig.DEBUG)
     }
     
     private fun initToaster() {
         Toaster.init(this)
-        // 设置 Toast 样式
         Toaster.setDebugMode(BuildConfig.DEBUG)
     }
 }

@@ -1,4 +1,4 @@
-package com.hlc.mywallet.feature
+package com.hlc.mywallet.feature.register
 
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -7,10 +7,8 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.mywallet.R
-import com.hlc.mywallet.databinding.ActivityLoginBinding
+import com.hlc.mywallet.databinding.ActivityRegisterBinding
 
-class LoginActivity : BaseVbActivity<ActivityLoginBinding>() {
-
-
+class RegisterActivity : BaseVbActivity<ActivityRegisterBinding>() {
 
 }

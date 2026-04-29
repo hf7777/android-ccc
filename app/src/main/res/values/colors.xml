@@ -7,4 +7,8 @@
     <!-- Bottom Navigation Colors -->
     <color name="tab_selected">@color/theme</color>
     <color name="tab_normal">#FF999999</color>
+
+    <color name="edit_line">#BFBFBF</color>
+    <color name="edit_hint">#999999</color>
+    <color name="btn_disabled">#C2C2C2</color>
 </resources>
