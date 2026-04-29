@@ -3,6 +3,6 @@
 3    package="com.hlc.lib_net" >
 4
 5    <uses-sdk android:minSdkVersion="24" />
-5-->E:\Project\BaseDemo\lib_net\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest14742021569447987914.xml
+5-->E:\Project\MyWallet\lib_net\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest8042976879114606125.xml
 6
 7</manifest>

@@ -3,6 +3,6 @@
 3    package="com.hlc.lib_storage" >
 4
 5    <uses-sdk android:minSdkVersion="24" />
-5-->E:\Project\BaseDemo\lib_storage\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest9096821168274556717.xml
+5-->E:\Project\MyWallet\lib_storage\build\intermediates\tmp\ProcessLibraryManifest\debug\tempAndroidManifest14264251502664457348.xml
 6
 7</manifest>

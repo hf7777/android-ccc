@@ -13,6 +13,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         try {
+            initRouter()
             initUtils()
             initTimber()
             initAutoSize()
@@ -20,6 +21,10 @@ class App : Application() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    
+    private fun initRouter() {
+        com.hlc.mywallet.router.RouterConfig.init()
     }
     
     private fun initUtils() {

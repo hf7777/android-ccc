@@ -1,5 +1,13 @@
 R_DEF: Internal format may change without notice
 local
+color black
+color btn_disabled
+color edit_hint
+color edit_line
+color tab_normal
+color tab_selected
+color theme
+color white
 drawable bg_loading_dialog
 id tv_loading_message
 layout dialog_loading

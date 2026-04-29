@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="black">#FF000000</color>
+    <color name="btn_disabled">#C2C2C2</color>
+    <color name="edit_hint">#999999</color>
+    <color name="edit_line">#BFBFBF</color>
+    <color name="tab_normal">#FF999999</color>
+    <color name="tab_selected">@color/theme</color>
+    <color name="theme">#DE2C2C</color>
+    <color name="white">#FFFFFFFF</color>
     <string name="dialog_confirm">OK</string>
     <string name="dialog_title">Tips</string>
     <string name="error_api_not_found">API not found</string>
