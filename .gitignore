@@ -83,3 +83,7 @@ lint-baseline.xml
 
 # Kotlin
 .kotlin/
+
+# Kiro AI files
+AGENTS.md
+CLAUDE.md
