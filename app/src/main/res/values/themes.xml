@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.BaseDemo" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Base.Theme.MyWallet" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/theme</item>
         <item name="colorPrimaryVariant">@color/theme_dark</item>
@@ -23,5 +23,5 @@
         <item name="colorOnSurface">@color/black</item>
     </style>
 
-    <style name="Theme.BaseDemo" parent="Base.Theme.BaseDemo" />
+    <style name="Theme.MyWallet" parent="Base.Theme.MyWallet" />
 </resources>

@@ -41,7 +41,7 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "BaseDemo"
+rootProject.name = "MyWallet"
 include(":app")
 include(":lib_base")
 include(":lib_storage")

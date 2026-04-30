@@ -21,32 +21,11 @@ class HomeActivity : BaseVbActivity<ActivityHomeBinding>() {
 
     override fun initView() {
         binding.btnRequest.onClick {
-            viewModel.loadDemo()
+
         }
     }
 
     override fun observeData() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.uiState.collect { state ->
-                    when (state) {
-                        is ApiResult.Loading -> {
-                            showLoading()
-                            binding.tvStatus.text = getString(R.string.home_loading)
-                        }
-                        is ApiResult.Success -> {
-                            hideLoading()
-                            binding.tvStatus.text = "${state.data.title}\n${state.data.subtitle}"
-                        }
-                        is ApiResult.Error -> {
-                            hideLoading()
-                            binding.tvStatus.text = state.exception.message
-                            showError(state.exception.message ?: getString(R.string.request_failed))
-                        }
-                        else -> {} // Idle 或其他状态不处理
-                    }
-                }
-            }
-        }
+
     }
 }

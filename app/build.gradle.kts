@@ -99,6 +99,12 @@ dependencies {
     implementation(libs.immersionbar)
     implementation(libs.immersionbar.ktx)
     
+    // Banner
+    implementation(libs.banner)
+    
+    // BaseRecyclerViewAdapterHelper
+    implementation(libs.brvah)
+    
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

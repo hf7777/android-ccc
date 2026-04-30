@@ -17,7 +17,9 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.data.api.HomeService
 import com.hlc.mywallet.data.api.UserService
+import com.hlc.mywallet.manager.UserManager
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -33,8 +35,14 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenInterceptor(userManager: com.hlc.mywallet.manager.UserManager): TokenInterceptor {
+    fun provideTokenInterceptor(userManager: UserManager): TokenInterceptor {
         return TokenInterceptor(userManager)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCommonParamsInterceptor(@ApplicationContext context: Context): CommonParamsInterceptor {
+        return CommonParamsInterceptor(context)
     }
 
     @Provides
@@ -55,6 +63,7 @@ object NetworkModule {
     @Singleton
     fun provideOkHttpClient(
         tokenInterceptor: TokenInterceptor,
+        commonParamsInterceptor: CommonParamsInterceptor,
         loggingInterceptor: HttpLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
@@ -62,6 +71,7 @@ object NetworkModule {
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
+            .addInterceptor(commonParamsInterceptor)
             .addInterceptor(tokenInterceptor)
             .addInterceptor(loggingInterceptor)
             .build()
@@ -98,5 +108,11 @@ object NetworkModule {
     @Singleton
     fun provideUserService(retrofit: Retrofit): UserService {
         return retrofit.create(UserService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideHomeService(retrofit: Retrofit): HomeService {
+        return retrofit.create(HomeService::class.java)
     }
 }

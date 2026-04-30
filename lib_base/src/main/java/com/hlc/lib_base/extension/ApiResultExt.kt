@@ -49,10 +49,9 @@ fun <T> Flow<ApiResult<T>>.collectWithError(
                         val errorMsg = result.exception.message ?: StringUtils.getString(R.string.error_network)
                         if (onError != null) {
                             onError(errorMsg)
-                        } else {
-                            // 默认弹 Toast
-                            Toaster.show(errorMsg)
                         }
+                        // 默认弹 Toast
+                        Toaster.show(errorMsg)
                     }
                     else -> {} // Idle
                 }

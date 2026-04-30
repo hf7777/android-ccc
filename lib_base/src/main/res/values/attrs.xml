@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="TitleBar">
+        <!-- 标题文字 -->
+        <attr name="title" format="string" />
+        <!-- 标题颜色 -->
+        <attr name="titleColor" format="color" />
+        <!-- 背景颜色 -->
+        <attr name="backgroundColor" format="color" />
+        <!-- 是否显示返回按钮 -->
+        <attr name="showBack" format="boolean" />
+        <!-- 右侧文字 -->
+        <attr name="rightText" format="string" />
+    </declare-styleable>
+</resources>

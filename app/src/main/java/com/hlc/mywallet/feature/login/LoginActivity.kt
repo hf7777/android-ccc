@@ -76,42 +76,34 @@ class LoginActivity : BaseVbActivity<ActivityLoginBinding>() {
     }
 
     override fun observeData() {
-        lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.STARTED) {
-                launch {
-                    viewModel.uiState.collectWithError(
-                        lifecycleOwner = this@LoginActivity,
-                        onLoading = {
-                            binding.pbLoading.visible()
-                        },
-                        onSuccess = { data->
-                            binding.pbLoading.gone()
-                            binding.ivCode.loadBase64(data.img)
-                            uuid = data.uuid
-                        },
-                        onError = { errorMsg ->
-                            binding.pbLoading.gone()
-                            Toaster.show(errorMsg)
-                        }
-                    )
-                }
-
-                launch {
-                    viewModel.LoginUiState.collectWithError(
-                        lifecycleOwner = this@LoginActivity,
-                        onLoading = {
-                            showLoading()
-                        },
-                        onSuccess = {
-                            navigation(Routes.MAIN)
-                        },
-                        onError = { errorMsg ->
-                            hideLoading()
-                            Toaster.show(errorMsg)
-                        }
-                    )
-                }
+        viewModel.uiState.collectWithError(
+            lifecycleOwner = this@LoginActivity,
+            onLoading = {
+                binding.pbLoading.visible()
+            },
+            onSuccess = { data->
+                binding.pbLoading.gone()
+                binding.ivCode.loadBase64(data.img)
+                uuid = data.uuid
+            },
+            onError = { errorMsg ->
+                binding.pbLoading.gone()
+                Toaster.show(errorMsg)
             }
-        }
+        )
+
+        viewModel.LoginUiState.collectWithError(
+            lifecycleOwner = this@LoginActivity,
+            onLoading = {
+                showLoading()
+            },
+            onSuccess = {
+                navigation(Routes.MAIN)
+            },
+            onError = { errorMsg ->
+                hideLoading()
+                Toaster.show(errorMsg)
+            }
+        )
     }
 }

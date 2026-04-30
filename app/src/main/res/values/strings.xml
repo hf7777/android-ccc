@@ -31,4 +31,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="get_opt">Get OPT</string>
     <string name="the_uuid_does_not_exist">The UUID does not exist.</string>
+    <string name="a_points">A Points</string>
+    <string name="deposit_a_points_with_usdt">Deposit A Points with USDT</string>
+    <string name="go_now">Go Now</string>
 </resources>

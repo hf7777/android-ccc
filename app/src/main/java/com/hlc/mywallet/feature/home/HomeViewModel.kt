@@ -10,28 +10,31 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.data.model.resp.BannersResp
+import com.hlc.mywallet.data.model.resp.PriceInfoResp
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val repository: HomeRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<ApiResult<DemoItem>>(ApiResult.Idle)
-    val uiState: StateFlow<ApiResult<DemoItem>> = _uiState.asStateFlow()
+    private val _bannerUiState = MutableStateFlow<ApiResult<List<BannersResp>>>(ApiResult.Idle)
+    val bannerUiState: StateFlow<ApiResult<List<BannersResp>>> = _bannerUiState.asStateFlow()
 
-    fun loadDemo(showLoading: Boolean = true) {
+    private val _priceUiState = MutableStateFlow<ApiResult<PriceInfoResp>>(ApiResult.Idle)
+    val priceUiState: StateFlow<ApiResult<PriceInfoResp>> = _priceUiState.asStateFlow()
+
+    fun getBanners() {
         viewModelScope.launch {
-            if (showLoading) {
-                _uiState.value = ApiResult.Loading
-            }
-            val result = repository.loadDemo()
-            _uiState.value = result
-            when (result) {
-                is ApiResult.Success -> LogUtils.d("Load demo success: ${result.data}")
-                is ApiResult.Error -> LogUtils.e("Load demo failed", result.exception)
-                is ApiResult.Loading -> {}
-                is ApiResult.Idle -> {}
-            }
+            val result = repository.getBanners()
+            _bannerUiState.value = result
+        }
+    }
+
+    fun getPriceInfo() {
+        viewModelScope.launch {
+            val result = repository.getPriceInfo()
+            _priceUiState.value = result
         }
     }
 }
