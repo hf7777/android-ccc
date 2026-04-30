@@ -1,12 +1,14 @@
 package com.hlc.lib_base.extension
 
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import android.graphics.Paint
 import android.graphics.PorterDuff
 import android.graphics.PorterDuffXfermode
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
+import android.util.Base64
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
@@ -17,6 +19,28 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.hlc.lib_base.R
+
+/**
+ * 加载 Base64 编码的图片
+ */
+fun ImageView.loadBase64(
+    base64String: String?,
+    @DrawableRes placeholder: Int = 0,
+    @DrawableRes error: Int = 0
+) {
+    if (base64String.isNullOrEmpty()) {
+        if (error != 0) setImageResource(error)
+        return
+    }
+    
+    try {
+        val imageBytes = Base64.decode(base64String, Base64.DEFAULT)
+        val bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
+        setImageBitmap(bitmap)
+    } catch (e: Exception) {
+        if (error != 0) setImageResource(error)
+    }
+}
 
 /**
  * 正常加载图片

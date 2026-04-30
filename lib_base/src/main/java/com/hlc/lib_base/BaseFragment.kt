@@ -1,16 +1,13 @@
 package com.hlc.lib_base
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.TextView
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import com.hjq.toast.Toaster
+import com.hlc.lib_base.widget.hideLoading
+import com.hlc.lib_base.widget.showLoading
 
 abstract class BaseFragment : Fragment() {
-
-    private var loadingDialog: Dialog? = null
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -38,33 +35,12 @@ abstract class BaseFragment : Fragment() {
     protected open fun observeData() = Unit
 
     protected fun showLoading(message: String = getString(R.string.loading)) {
-        if (!isAdded || isDetached) return
-        if (loadingDialog?.isShowing == true) return
-        
-        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_loading, null, false)
-        view.findViewById<TextView>(R.id.tv_loading_message).text = message
-        loadingDialog = AlertDialog.Builder(requireContext())
-            .setView(view)
-            .setCancelable(false)
-            .create()
-            .apply { 
-                window?.setBackgroundDrawableResource(android.R.color.transparent)
-                show() 
-            }
-    }
-
-    protected fun hideLoading() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
+        showLoading(message, false)
     }
 
     protected fun showError(message: String) {
         if (!isAdded || isDetached) return
-        AlertDialog.Builder(requireContext())
-            .setTitle(getString(R.string.dialog_title))
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.dialog_confirm), null)
-            .show()
+        Toaster.show(message)
     }
 
     /**

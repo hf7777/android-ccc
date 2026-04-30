@@ -2,7 +2,7 @@ package com.hlc.mywallet.di
 
 import android.content.Context
 import com.hlc.mywallet.BuildConfig
-import com.hlc.lib_net.MainService
+import com.hlc.mywallet.data.api.MainService
 import com.hlc.lib_storage.DataStoreTokenStorage
 import com.hlc.lib_storage.TokenStorage
 import com.squareup.moshi.Moshi
@@ -17,6 +17,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.data.api.UserService
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -32,8 +33,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideTokenInterceptor(tokenStorage: TokenStorage): TokenInterceptor {
-        return TokenInterceptor(tokenStorage)
+    fun provideTokenInterceptor(userManager: com.hlc.mywallet.manager.UserManager): TokenInterceptor {
+        return TokenInterceptor(userManager)
     }
 
     @Provides
@@ -91,5 +92,11 @@ object NetworkModule {
     @Singleton
     fun provideMainService(retrofit: Retrofit): MainService {
         return retrofit.create(MainService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideUserService(retrofit: Retrofit): UserService {
+        return retrofit.create(UserService::class.java)
     }
 }

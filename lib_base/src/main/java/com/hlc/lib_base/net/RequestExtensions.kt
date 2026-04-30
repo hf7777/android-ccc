@@ -1,6 +1,9 @@
-package com.hlc.lib_base
+package com.hlc.lib_base.net
 
 import android.content.Context
+import com.blankj.utilcode.util.StringUtils
+import com.hjq.toast.Toaster
+import com.hlc.lib_base.R
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -29,16 +32,16 @@ fun <T> requestFlow(context: Context, block: suspend () -> BaseResponse<T>): Flo
     }.flowOn(Dispatchers.IO)
 }
 
-suspend fun <T> safeRequest(context: Context, block: suspend () -> BaseResponse<T>): ApiResult<T> {
+suspend fun <T> safeRequest(block: suspend () -> BaseResponse<T>): ApiResult<T> {
     return try {
         val response = block()
         if (response.isSuccess) {
             response.data?.let { ApiResult.Success(it) } 
-                ?: ApiResult.Error(ApiException.ParseException(context.getString(R.string.error_data_empty)))
+                ?: ApiResult.Error(ApiException.ParseException(StringUtils.getString(R.string.error_data_empty)))
         } else {
             ApiResult.Error(ApiException.BusinessException(response.code, response.msg))
         }
     } catch (e: Exception) {
-        ApiResult.Error(ExceptionHandler.convertException(e, context))
+        ApiResult.Error(ExceptionHandler.convertException(e))
     }
 }

@@ -1,18 +1,15 @@
 package com.hlc.lib_base
 
-import android.app.Dialog
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.widget.TextView
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.hjq.toast.Toaster
+import com.hlc.lib_base.widget.hideLoading
+import com.hlc.lib_base.widget.showLoading
 
 abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(layoutResId) {
-
-    private var loadingDialog: Dialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,34 +37,10 @@ abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(lay
 
     protected open fun observeData() = Unit
 
-    protected fun showLoading(message: String = getString(R.string.loading)) {
-        if (isFinishing || isDestroyed) return
-        if (loadingDialog?.isShowing == true) return
-        
-        val view = LayoutInflater.from(this).inflate(R.layout.dialog_loading, null, false)
-        view.findViewById<TextView>(R.id.tv_loading_message).text = message
-        loadingDialog = AlertDialog.Builder(this)
-            .setView(view)
-            .setCancelable(false)
-            .create()
-            .apply { 
-                window?.setBackgroundDrawableResource(android.R.color.transparent)
-                show() 
-            }
-    }
-
-    protected fun hideLoading() {
-        loadingDialog?.dismiss()
-        loadingDialog = null
-    }
 
     protected fun showError(message: String) {
         if (isFinishing || isDestroyed) return
-        AlertDialog.Builder(this)
-            .setTitle(getString(R.string.dialog_title))
-            .setMessage(message)
-            .setPositiveButton(getString(R.string.dialog_confirm), null)
-            .show()
+        Toaster.show(message)
     }
 
     /**

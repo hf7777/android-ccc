@@ -3,11 +3,13 @@ package com.hlc.lib_base.widget
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.hlc.lib_base.R
+import com.hlc.lib_base.extension.dp
 
 /**
  * Loading 对话框管理器
@@ -45,10 +47,16 @@ object LoadingDialog {
             .setView(view)
             .setCancelable(cancelable)
             .create()
-            .apply {
-                window?.setBackgroundDrawableResource(android.R.color.transparent)
-                show()
-            }
+        
+        dialog.show()
+        
+        // 设置对话框宽度（在 show() 之后设置才有效）
+        dialog.window?.apply {
+            setBackgroundDrawableResource(android.R.color.transparent)
+            val dialogWidth = 120.dp
+            
+            setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
+        }
         
         dialogMap[key] = dialog
     }

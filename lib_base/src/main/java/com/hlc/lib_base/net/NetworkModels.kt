@@ -1,8 +1,11 @@
-package com.hlc.lib_base
+package com.hlc.lib_base.net
 
 import android.content.Context
+import com.blankj.utilcode.util.StringUtils
+import com.hlc.lib_base.R
 import com.squareup.moshi.JsonDataException
 import com.squareup.moshi.JsonEncodingException
+import retrofit2.HttpException
 import java.io.IOException
 
 data class BaseResponse<T>(
@@ -23,33 +26,34 @@ sealed class ApiException(message: String, val code: Int) : Exception(message) {
 }
 
 object ExceptionHandler {
-    fun convertException(e: Exception, context: Context): ApiException {
+    fun convertException(e: Exception): ApiException {
         return when (e) {
             is ApiException -> e
             is JsonDataException, is JsonEncodingException -> {
-                ApiException.ParseException(context.getString(R.string.error_parse))
+                ApiException.ParseException(StringUtils.getString(R.string.error_parse))
             }
             is IOException -> {
-                ApiException.NetworkException(context.getString(R.string.error_network))
+                ApiException.NetworkException(StringUtils.getString(R.string.error_network))
             }
-            is retrofit2.HttpException -> {
+            is HttpException -> {
                 when (e.code()) {
-                    500, 502, 503 -> ApiException.ServerException(context.getString(R.string.error_server))
-                    404 -> ApiException.NetworkException(context.getString(R.string.error_api_not_found))
+                    500, 502, 503 -> ApiException.ServerException(StringUtils.getString(R.string.error_server))
+                    404 -> ApiException.NetworkException(StringUtils.getString(R.string.error_api_not_found))
                     else -> ApiException.UnknownException(
-                        e.message ?: context.getString(R.string.error_unknown)
+                        e.message ?: StringUtils.getString(R.string.error_unknown)
                     )
                 }
             }
             else -> ApiException.UnknownException(
-                e.message ?: context.getString(R.string.error_unknown)
+                e.message ?: StringUtils.getString(R.string.error_unknown)
             )
         }
     }
 }
 
 sealed class ApiResult<out T> {
+    object Idle : ApiResult<Nothing>()
+    object Loading : ApiResult<Nothing>()
     data class Success<out T>(val data: T) : ApiResult<T>()
     data class Error(val exception: ApiException) : ApiResult<Nothing>()
-    object Loading : ApiResult<Nothing>()
 }

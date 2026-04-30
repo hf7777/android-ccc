@@ -1,4 +1,4 @@
-package com.hlc.lib_base
+package com.hlc.lib_base.net
 
 import android.content.Context
 import android.net.ConnectivityManager

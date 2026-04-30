@@ -6,6 +6,7 @@ import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.lib_base.R
+import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.navigation
 import com.hlc.mywallet.databinding.ActivitySplashBinding
 import com.hlc.mywallet.router.Routes
@@ -42,14 +43,15 @@ class SplashActivity : BaseVbActivity<ActivitySplashBinding>() {
             
             if (isLoggedIn) {
                 // 已登录，跳转到主页
-                navigation(Routes.MAIN)
+                Router.navigation(Routes.MAIN).navigation(this@SplashActivity)
             } else {
                 // 未登录，跳转到登录页
-                navigation(Routes.LOGIN)
+                Router.navigation(Routes.LOGIN).navigation(this@SplashActivity)
             }
             
-            // 关闭启动页
+            // 关闭启动页，使用淡出动画
             finish()
+            overridePendingTransition(R.anim.fade_in, R.anim.fade_out)
         }
     }
 }

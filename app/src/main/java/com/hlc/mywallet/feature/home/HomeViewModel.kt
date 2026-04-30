@@ -1,12 +1,10 @@
 package com.hlc.mywallet.feature.home
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.hlc.mywallet.R
-import com.hlc.lib_base.ApiResult
+import com.hlc.lib_base.net.ApiResult
+import com.hlc.mywallet.feature.home.model.DemoItem
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,29 +14,23 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: HomeRepository,
-    @ApplicationContext private val context: Context
+    private val repository: HomeRepository
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<HomeUiState>(HomeUiState.Idle)
-    val uiState: StateFlow<HomeUiState> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<ApiResult<DemoItem>>(ApiResult.Idle)
+    val uiState: StateFlow<ApiResult<DemoItem>> = _uiState.asStateFlow()
 
-    fun loadDemo() {
+    fun loadDemo(showLoading: Boolean = true) {
         viewModelScope.launch {
-            _uiState.value = HomeUiState.Loading
-            when (val result = repository.loadDemo()) {
-                is ApiResult.Success -> {
-                    LogUtils.d("Load demo success: ${result.data}")
-                    _uiState.value = HomeUiState.Success(result.data)
-                }
-                is ApiResult.Error -> {
-                    LogUtils.e("Load demo failed", result.exception)
-                    _uiState.value = HomeUiState.Error(
-                        result.exception.message ?: context.getString(R.string.request_failed)
-                    )
-                }
-                is ApiResult.Loading -> {
-                    _uiState.value = HomeUiState.Loading
-                }
+            if (showLoading) {
+                _uiState.value = ApiResult.Loading
+            }
+            val result = repository.loadDemo()
+            _uiState.value = result
+            when (result) {
+                is ApiResult.Success -> LogUtils.d("Load demo success: ${result.data}")
+                is ApiResult.Error -> LogUtils.e("Load demo failed", result.exception)
+                is ApiResult.Loading -> {}
+                is ApiResult.Idle -> {}
             }
         }
     }

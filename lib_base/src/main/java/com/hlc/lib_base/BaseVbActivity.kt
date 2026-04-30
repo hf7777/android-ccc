@@ -24,6 +24,11 @@ abstract class BaseVbActivity<VB : ViewBinding> : BaseActivity(0) {
         super.onCreate(savedInstanceState)
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+    }
+
     override fun onDestroy() {
         _binding = null
         super.onDestroy()

@@ -45,4 +45,3 @@ rootProject.name = "BaseDemo"
 include(":app")
 include(":lib_base")
 include(":lib_storage")
-include(":lib_net")

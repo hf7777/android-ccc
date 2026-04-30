@@ -22,7 +22,7 @@ class UserManager @Inject constructor(
      */
     suspend fun getToken(): String? {
         if (cachedToken == null) {
-            cachedToken = tokenStorage.getToken().first()
+            cachedToken = tokenStorage.getToken()
         }
         return cachedToken
     }

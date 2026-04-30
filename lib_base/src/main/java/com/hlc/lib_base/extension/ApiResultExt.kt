@@ -4,7 +4,9 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.blankj.utilcode.util.StringUtils
 import com.hjq.toast.Toaster
+import com.hlc.lib_base.R
 import com.hlc.lib_base.net.ApiResult
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
@@ -12,7 +14,6 @@ import kotlinx.coroutines.launch
 /**
  * 收集 ApiResult Flow，自动处理 Error 状态（弹 Toast）
  * 
- * @param showLoading 是否在 Loading 时显示加载框
  * @param onLoading Loading 状态回调
  * @param onSuccess Success 状态回调
  * @param onError Error 状态回调（可选，默认弹 Toast）
@@ -30,7 +31,6 @@ import kotlinx.coroutines.launch
  */
 fun <T> Flow<ApiResult<T>>.collectWithError(
     lifecycleOwner: LifecycleOwner,
-    showLoading: Boolean = false,
     onLoading: (() -> Unit)? = null,
     onSuccess: (T) -> Unit,
     onError: ((String) -> Unit)? = null
@@ -46,7 +46,7 @@ fun <T> Flow<ApiResult<T>>.collectWithError(
                         onSuccess(result.data)
                     }
                     is ApiResult.Error -> {
-                        val errorMsg = result.exception.message ?: "请求失败"
+                        val errorMsg = result.exception.message ?: StringUtils.getString(R.string.error_network)
                         if (onError != null) {
                             onError(errorMsg)
                         } else {

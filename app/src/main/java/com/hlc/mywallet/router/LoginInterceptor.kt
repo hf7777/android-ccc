@@ -5,12 +5,16 @@ import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.RouterInterceptor
 import com.hlc.lib_base.router.RouterRequest
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.manager.UserManager
+import kotlinx.coroutines.runBlocking
 
 /**
  * 登录拦截器
  * 需要登录的页面会被拦截，跳转到登录页
  */
-class LoginInterceptor : RouterInterceptor {
+class LoginInterceptor(
+    private val userManager: UserManager
+) : RouterInterceptor {
     
     // 需要登录才能访问的页面
     private val loginRequiredPages = setOf(
@@ -24,7 +28,7 @@ class LoginInterceptor : RouterInterceptor {
             return true
         }
         
-        // 检查登录状态（这里简化处理，实际应该从 DataStore 或 SharedPreferences 读取）
+        // 检查登录状态
         val isLoggedIn = checkLoginStatus()
         
         if (!isLoggedIn) {
@@ -41,10 +45,10 @@ class LoginInterceptor : RouterInterceptor {
     
     /**
      * 检查登录状态
-     * TODO: 实际项目中应该从存储中读取
      */
     private fun checkLoginStatus(): Boolean {
-        // 这里简化处理，实际应该检查 token 是否存在且有效
-        return false
+        return runBlocking {
+            userManager.isLoggedIn()
+        }
     }
 }

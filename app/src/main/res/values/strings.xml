@@ -27,4 +27,8 @@
     <string name="enter_captcha">Enter captcha</string>
     <string name="sign_up">Sign up</string>
     <string name="forget_password">Forget password?</string>
+    <string name="opt_code">OPT Code</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="get_opt">Get OPT</string>
+    <string name="the_uuid_does_not_exist">The UUID does not exist.</string>
 </resources>

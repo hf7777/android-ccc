@@ -1,4 +1,4 @@
-package com.hlc.mywallet.feature.home
+package com.hlc.mywallet.feature.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,27 +10,48 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.data.model.req.LoginReq
+import com.hlc.mywallet.data.model.resp.CaptchaImage
+import com.hlc.mywallet.data.model.resp.LoginResp
+import com.hlc.mywallet.feature.home.HomeRepository
+import com.hlc.mywallet.manager.UserManager
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(
-    private val repository: HomeRepository
+class LoginViewModel @Inject constructor(
+    private val repository: LoginRepository,
+    private val userManager: UserManager
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow<ApiResult<DemoItem>>(ApiResult.Loading)
-    val uiState: StateFlow<ApiResult<DemoItem>> = _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow<ApiResult<CaptchaImage>>(ApiResult.Idle)
+    val uiState: StateFlow<ApiResult<CaptchaImage>> = _uiState.asStateFlow()
 
-    fun loadDemo(showLoading: Boolean = true) {
+    private val _loginUiState = MutableStateFlow<ApiResult<LoginResp>>(ApiResult.Idle)
+    val LoginUiState: StateFlow<ApiResult<LoginResp>> = _loginUiState.asStateFlow()
+
+    fun captchaImage(showLoading: Boolean = true) {
         viewModelScope.launch {
             if (showLoading) {
                 _uiState.value = ApiResult.Loading
             }
-            val result = repository.loadDemo()
+            val result = repository.captchaImage()
             _uiState.value = result
-            when (result) {
-                is ApiResult.Success -> LogUtils.d("Load demo success: ${result.data}")
-                is ApiResult.Error -> LogUtils.e("Load demo failed", result.exception)
-                is ApiResult.Loading -> {}
+        }
+    }
+
+    fun login(loginReq: LoginReq, showLoading: Boolean = true) {
+        viewModelScope.launch {
+            if (showLoading) {
+                _loginUiState.value = ApiResult.Loading
             }
+            val result = repository.login(loginReq)
+            
+            // 登录成功，保存 Token
+            if (result is ApiResult.Success) {
+                userManager.saveToken(result.data.accessToken)
+                LogUtils.d("Login success, token saved: ${result.data.accessToken}")
+            }
+            
+            _loginUiState.value = result
         }
     }
 }

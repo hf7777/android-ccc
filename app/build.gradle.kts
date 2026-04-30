@@ -22,7 +22,7 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"https://httpbin.org/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115/\"")
             buildConfigField("String", "ENV", "\"DEV\"")
         }
         release {
@@ -76,7 +76,6 @@ configurations.all {
 
 dependencies {
     implementation(project(":lib_base"))
-    implementation(project(":lib_net"))
     implementation(project(":lib_storage"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

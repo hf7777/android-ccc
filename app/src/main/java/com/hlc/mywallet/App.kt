@@ -6,12 +6,21 @@ import com.hjq.toast.Toaster
 import dagger.hilt.android.HiltAndroidApp
 import me.jessyan.autosize.AutoSizeConfig
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.manager.UserManager
+import com.hlc.mywallet.router.RouterConfig
+import javax.inject.Inject
 
 @HiltAndroidApp
 class App : Application() {
     
+    @Inject
+    lateinit var userManager: UserManager
+    
     override fun onCreate() {
         super.onCreate()
+        // 初始化全局 Context
+        com.hlc.lib_base.AppContext.init(this)
+        
         try {
             initRouter()
             initUtils()
@@ -24,7 +33,9 @@ class App : Application() {
     }
     
     private fun initRouter() {
-        com.hlc.mywallet.router.RouterConfig.init()
+        RouterConfig.init()
+        // 添加登录拦截器
+        RouterConfig.addLoginInterceptor(userManager)
     }
     
     private fun initUtils() {
