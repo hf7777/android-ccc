@@ -13,8 +13,12 @@ object Routes {
     
     // 主页模块
     const val MAIN = "/main"
+    //首页
     const val HOME = "/home"
+    //注册
     const val REGISTER = "/register"
+    //课程列表
+    const val TUTORIAL_LIST = "/tutorial_list"
 
     // 其他页面
     // const val DETAIL = "/detail"

@@ -102,4 +102,10 @@ dependencies {
     
     // Glide
     api(libs.glide)
+    
+    // SwipeRefreshLayout
+    api(libs.androidx.swiperefreshlayout)
+
+    // BaseRecyclerViewAdapterHelper
+    api(libs.brvah)
 }

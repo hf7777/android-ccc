@@ -5,7 +5,9 @@ import com.hlc.mywallet.feature.MainActivity
 import com.hlc.mywallet.feature.home.HomeActivity
 import com.hlc.mywallet.feature.login.LoginActivity
 import com.hlc.mywallet.feature.register.RegisterActivity
+import com.hlc.mywallet.feature.tutorial.TutorialActivity
 import com.hlc.mywallet.manager.UserManager
+import okhttp3.Route
 
 /**
  * 路由配置
@@ -21,7 +23,8 @@ object RouterConfig {
                 Routes.LOGIN to LoginActivity::class.java,
                 Routes.MAIN to MainActivity::class.java,
                 Routes.HOME to HomeActivity::class.java,
-                Routes.REGISTER to RegisterActivity::class.java
+                Routes.REGISTER to RegisterActivity::class.java,
+                Routes.TUTORIAL_LIST to TutorialActivity::class.java
             )
         )
         

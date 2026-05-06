@@ -5,6 +5,7 @@ import com.hlc.lib_base.net.safeRequest
 import com.hlc.mywallet.data.api.HomeService
 import com.hlc.mywallet.data.model.resp.BannersResp
 import com.hlc.mywallet.data.model.resp.PriceInfoResp
+import com.hlc.mywallet.data.model.resp.TutorialResp
 import javax.inject.Inject
 
 class HomeRepository @Inject constructor(
@@ -19,6 +20,12 @@ class HomeRepository @Inject constructor(
     suspend fun getPriceInfo(): ApiResult<PriceInfoResp> {
         return safeRequest {
             homeService.priceInfo()
+        }
+    }
+
+    suspend fun getTutorials(): ApiResult<List<TutorialResp>> {
+        return safeRequest {
+            homeService.tutorials()
         }
     }
 }

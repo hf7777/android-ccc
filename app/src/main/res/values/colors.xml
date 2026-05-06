@@ -23,5 +23,9 @@
     <color name="text_color_white">#FF000000</color>
 
     <color name="bg_withdraw">#2C94DE</color>
+    <color name="bg_deposit">#0FDE2C2C</color>
+    <color name="line_deposit">#1ADE2C2C</color>
+    <color name="text_market_price">#80DE2C2C</color>
+    <color name="home_tutorial_divider">#1ADE2C2C</color>
 
 </resources>

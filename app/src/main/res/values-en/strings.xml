@@ -34,4 +34,11 @@
     <string name="a_points">A Points</string>
     <string name="deposit_a_points_with_usdt">Deposit A Points with USDT</string>
     <string name="go_now">Go Now</string>
+    <string name="market_price">Market price</string>
+    <string name="our_price">Our price</string>
+    <string name="deposit_a_points_with_rupee">Deposit A Points with Rupee</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="learn_more">Learn more</string>
+    <string name="up_to_reward">Up to %1$s + %2$s reward</string>
+    <string name="view">View</string>
 </resources>

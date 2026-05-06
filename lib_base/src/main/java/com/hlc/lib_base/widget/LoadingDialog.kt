@@ -3,6 +3,7 @@ package com.hlc.lib_base.widget
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.WindowManager
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
@@ -53,6 +54,8 @@ object LoadingDialog {
         // 设置对话框宽度（在 show() 之后设置才有效）
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent)
+            clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+            setDimAmount(0f)
             val dialogWidth = 120.dp
             
             setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
