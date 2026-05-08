@@ -45,11 +45,16 @@ class TutorialFragment : BaseLazyListFragment<TutorialResp, TutorialAdapter>() {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.tutorialResultFlow.collect { result ->
                     when (result) {
+                        is ApiResult.Loading -> {
+                            showPageLoading()
+                        }
                         is ApiResult.Success -> {
                             onListLoadSuccess(result.data, hasMore = false)
+                            showPageContent()
                         }
 
                         is ApiResult.Error -> {
+                            showPageContent()
                             onListLoadError(result.exception.message)
                         }
 

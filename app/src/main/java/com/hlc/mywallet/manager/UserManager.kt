@@ -1,7 +1,6 @@
 package com.hlc.mywallet.manager
 
-import com.hlc.lib_storage.TokenStorage
-import kotlinx.coroutines.flow.first
+import com.hlc.mywallet.storage.TokenStorage
 import javax.inject.Inject
 import javax.inject.Singleton
 

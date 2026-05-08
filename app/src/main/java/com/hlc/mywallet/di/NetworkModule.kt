@@ -3,8 +3,6 @@ package com.hlc.mywallet.di
 import android.content.Context
 import com.hlc.mywallet.BuildConfig
 import com.hlc.mywallet.data.api.MainService
-import com.hlc.lib_storage.DataStoreTokenStorage
-import com.hlc.lib_storage.TokenStorage
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -17,9 +15,15 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.mywallet.data.api.DepositService
 import com.hlc.mywallet.data.api.HomeService
+import com.hlc.mywallet.data.api.TeamService
 import com.hlc.mywallet.data.api.UserService
 import com.hlc.mywallet.manager.UserManager
+import com.hlc.mywallet.storage.CacheStorage
+import com.hlc.mywallet.storage.DataStoreCacheStorage
+import com.hlc.mywallet.storage.DataStoreTokenStorage
+import com.hlc.mywallet.storage.TokenStorage
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -31,6 +35,15 @@ object NetworkModule {
     @Singleton
     fun provideTokenStorage(@ApplicationContext context: Context): TokenStorage {
         return DataStoreTokenStorage(context)
+    }
+
+    @Provides
+    @Singleton
+    fun provideCacheStorage(
+        @ApplicationContext context: Context,
+        moshi: Moshi
+    ): CacheStorage {
+        return DataStoreCacheStorage(context, moshi)
     }
 
     @Provides
@@ -114,5 +127,17 @@ object NetworkModule {
     @Singleton
     fun provideHomeService(retrofit: Retrofit): HomeService {
         return retrofit.create(HomeService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTeamService(retrofit: Retrofit): TeamService {
+        return retrofit.create(TeamService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideDepositService(retrofit: Retrofit): DepositService {
+        return retrofit.create(DepositService::class.java)
     }
 }

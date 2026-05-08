@@ -58,7 +58,7 @@
                 app:layout_constraintTop_toTopOf="@id/tv_point"
                 app:layout_constraintBottom_toBottomOf="@id/tv_point"
                 app:layout_constraintStart_toEndOf="@id/tv_point"
-                android:text="1 Points = 1 Rs"/>
+                android:text="@string/_1_points_1_rs"/>
             <ImageView
                 android:id="@+id/iv_coin"
                 android:layout_width="18dp"

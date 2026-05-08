@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.hlc.lib_base.widget.TitleBar
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:title="@string/team"
+        app:showBack="false"/>
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/bg_page"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingHorizontal="15dp">
+
+                <com.hjq.shape.layout.ShapeConstraintLayout
+                    android:id="@+id/cl_commission"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    app:shape_radius="10dp"
+                    app:shape_solidColor="@color/white"
+                    app:shape_strokeColor="@color/border_white_block"
+                    app:shape_strokeSize="1dp">
+
+                    <TextView
+                        android:id="@+id/tv_total_commission_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="18dp"
+                        android:text="@string/total_commission_a_points"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="15sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_total_commission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="22dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="@id/tv_total_commission_tip"
+                        app:layout_constraintStart_toStartOf="@id/tv_total_commission_tip"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_commission_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_view_commission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="15dp"
+                        android:text="@string/view_commission"
+                        android:textColor="@color/theme"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_total_commission_tip"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_total_commission_tip" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sublines(0)"
+                        android:textColor="@color/theme"
+                        android:textSize="15sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_total_commission"
+                        app:layout_constraintStart_toStartOf="@id/tv_view_commission"
+                        app:layout_constraintTop_toTopOf="@id/tv_total_commission" />
+                </com.hjq.shape.layout.ShapeConstraintLayout>
+
+                <com.hjq.shape.layout.ShapeConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    app:shape_radius="10dp"
+                    app:shape_solidColor="@color/white"
+                    app:shape_strokeColor="@color/border_white_block"
+                    app:shape_strokeSize="1dp">
+
+                    <androidx.constraintlayout.widget.Guideline
+                        android:id="@+id/gl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintGuide_percent="0.5" />
+
+                    <TextView
+                        android:id="@+id/tv_today_deposit_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_today_deposit_count_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/today_deposit_count"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_deposit_count" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday_deposit_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_deposit_count_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday_deposit_count_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/yesterday_deposit_count"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_yesterday_deposit_count" />
+
+                    <TextView
+                        android:id="@+id/tv_total_deposit_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_yesterday_deposit_count_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_total_deposit_count_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/total_deposit_count"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/gl"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_deposit_count" />
+
+
+                    <TextView
+                        android:id="@+id/tv_today_commission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="14dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_today_commission_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/today_commission"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_commission" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday_commission"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toBottomOf="@id/tv_today_commission_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_yesterday_commission_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/yesterday_commission"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toBottomOf="@id/tv_yesterday_commission" />
+
+                    <TextView
+                        android:id="@+id/tv_total_subline_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="0"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="24sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toBottomOf="@id/tv_yesterday_commission_tip" />
+
+                    <TextView
+                        android:id="@+id/tv_total_subline_count_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:text="@string/total_subline_count"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/gl"
+                        app:layout_constraintTop_toBottomOf="@id/tv_total_subline_count" />
+                </com.hjq.shape.layout.ShapeConstraintLayout>
+
+                <com.hjq.shape.layout.ShapeConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="45dp"
+                    app:shape_radius="10dp"
+                    app:shape_solidColor="@color/white"
+                    app:shape_strokeColor="@color/border_white_block"
+                    app:shape_strokeSize="1dp">
+
+                    <TextView
+                        android:id="@+id/tv_invite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/invite_link"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/tv_link"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="15dp"
+                        android:layout_marginTop="15dp"
+                        android:textColor="@color/link"
+                        android:textSize="15sp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_invite" />
+
+                    <com.hjq.shape.view.ShapeButton
+                        android:id="@+id/btn_copy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="8dp"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="6dp"
+                        android:text="@string/copy"
+                        android:textColor="@color/text_color_white"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/tv_link"
+                        app:shape_radius="10dp"
+                        app:shape_solidColor="@color/theme" />
+
+                    <TextView
+                        android:id="@+id/tv_more_way"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/more_ways_to_invite"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/btn_copy" />
+
+                    <ImageView
+                        android:id="@+id/iv_telegram"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:src="@drawable/ic_share_telegram"
+                        app:layout_constraintTop_toBottomOf="@id/tv_more_way"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginStart="26dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/iv_facebook"
+                        app:layout_constraintHorizontal_chainStyle="spread_inside"/>
+                    <ImageView
+                        android:id="@+id/iv_facebook"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:src="@drawable/ic_share_facebook"
+                        app:layout_constraintTop_toTopOf="@id/iv_telegram"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_telegram"
+                        app:layout_constraintStart_toEndOf="@id/iv_telegram"
+                        app:layout_constraintEnd_toStartOf="@id/iv_whatsapp"/>
+                    <ImageView
+                        android:id="@+id/iv_whatsapp"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:src="@drawable/ic_share_whats_app"
+                        app:layout_constraintTop_toTopOf="@id/iv_telegram"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_telegram"
+                        app:layout_constraintStart_toEndOf="@id/iv_facebook"
+                        app:layout_constraintEnd_toStartOf="@id/iv_qrcode"/>
+                    <ImageView
+                        android:id="@+id/iv_qrcode"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:src="@drawable/ic_share_qrcode"
+                        app:layout_constraintTop_toTopOf="@id/iv_telegram"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_telegram"
+                        app:layout_constraintStart_toEndOf="@id/iv_whatsapp"
+                        app:layout_constraintEnd_toStartOf="@id/iv_more"/>
+                    <ImageView
+                        android:id="@+id/iv_more"
+                        android:layout_width="43dp"
+                        android:layout_height="43dp"
+                        android:src="@drawable/ic_share_more"
+                        app:layout_constraintTop_toTopOf="@id/iv_telegram"
+                        app:layout_constraintBottom_toBottomOf="@id/iv_telegram"
+                        app:layout_constraintStart_toEndOf="@id/iv_qrcode"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginEnd="26dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_team_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="20dp"
+                        android:text="@string/team_detail"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="15sp"
+                        android:textStyle="bold"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/iv_telegram" />
+
+                    <TextView
+                        android:id="@+id/tv_commission_desc"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/text_color_black"
+                        app:layout_constraintTop_toBottomOf="@id/tv_team_detail"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginHorizontal="15dp"
+                        android:gravity="start"/>
+                    
+                    <ImageView
+                        android:id="@+id/iv_cover"
+                        android:layout_width="match_parent"
+                        android:layout_height="182dp"
+                        app:layout_constraintTop_toBottomOf="@id/tv_commission_desc"
+                        android:layout_marginTop="17dp"
+                        android:layout_marginHorizontal="15dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_example"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_color_black"
+                        android:textSize="15sp"
+                        android:text="@string/for_example_if"
+                        app:layout_constraintTop_toBottomOf="@id/iv_cover"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginHorizontal="15dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_cal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="15sp"
+                        android:textColor="@color/highlight_yellow"
+                        app:layout_constraintTop_toBottomOf="@id/tv_example"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginStart="15dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginBottom="23dp"/>
+
+                </com.hjq.shape.layout.ShapeConstraintLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

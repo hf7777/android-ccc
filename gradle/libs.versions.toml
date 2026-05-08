@@ -28,6 +28,8 @@ glide = "4.16.0"
 banner = "2.2.3"
 brvah = "4.1.4"
 swiperefreshlayout = "1.1.0"
+magicindicator = "1.7.0"
+agentweb = "v5.0.6-androidx"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -65,6 +67,8 @@ glide-compiler = { group = "com.github.bumptech.glide", name = "compiler", versi
 banner = { group = "io.github.youth5201314", name = "banner", version.ref = "banner" }
 brvah = { group = "io.github.cymchad", name = "BaseRecyclerViewAdapterHelper4", version.ref = "brvah" }
 androidx-swiperefreshlayout = { group = "androidx.swiperefreshlayout", name = "swiperefreshlayout", version.ref = "swiperefreshlayout" }
+magicindicator = { group = "com.github.hackware1993", name = "MagicIndicator", version.ref = "magicindicator" }
+agentweb = { group = "com.github.Justson.AgentWeb", name = "agentweb-core", version.ref = "agentweb" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

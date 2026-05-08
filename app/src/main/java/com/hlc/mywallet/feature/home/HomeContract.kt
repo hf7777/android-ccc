@@ -12,6 +12,10 @@ data class HomeUiState(
     val isRefreshing: Boolean = false
 )
 
+fun HomeUiState.hasContent(): Boolean {
+    return banners.isNotEmpty() || priceInfo != null || tutorials.isNotEmpty()
+}
+
 sealed interface HomeEvent {
     data class ShowError(val message: String) : HomeEvent
 }

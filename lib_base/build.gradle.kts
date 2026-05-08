@@ -108,4 +108,10 @@ dependencies {
 
     // BaseRecyclerViewAdapterHelper
     api(libs.brvah)
+    
+    // MagicIndicator
+    api(libs.magicindicator)
+    
+    // AgentWeb
+    api(libs.agentweb)
 }

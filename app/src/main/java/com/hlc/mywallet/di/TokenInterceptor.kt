@@ -1,6 +1,11 @@
 package com.hlc.mywallet.di
 
+import android.content.Intent
+import com.blankj.utilcode.util.LogUtils
+import com.hlc.lib_base.AppContext
+import com.hlc.lib_base.router.Router
 import com.hlc.mywallet.manager.UserManager
+import com.hlc.mywallet.router.Routes
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
 import okhttp3.Response
@@ -23,6 +28,16 @@ class TokenInterceptor @Inject constructor(
             originalRequest
         }
         
-        return chain.proceed(newRequest)
+        val response = chain.proceed(newRequest)
+        
+        // 处理 401 未授权，跳转到登录页并清空任务栈
+        if (response.code == 401) {
+            LogUtils.w("Token expired or invalid, redirecting to login")
+            Router.navigation(Routes.LOGIN)
+                .withFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                .navigation(AppContext.get())
+        }
+        
+        return response
     }
 }

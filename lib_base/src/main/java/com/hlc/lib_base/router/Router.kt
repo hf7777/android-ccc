@@ -173,6 +173,11 @@ object Router {
                     flags?.let { addFlags(it) }
                 }
                 
+                // 如果设置了 CLEAR_TASK 标志，需要 finish 当前 Activity
+                val shouldFinishCurrent = flags != null && 
+                    (flags!! and Intent.FLAG_ACTIVITY_CLEAR_TASK) != 0 &&
+                    context is Activity
+                
                 // 启动 Activity
                 when {
                     requestCode != null && fragment != null -> {
@@ -192,6 +197,11 @@ object Router {
                 // 设置转场动画
                 if (enterAnim != null && exitAnim != null && context is Activity) {
                     context.overridePendingTransition(enterAnim!!, exitAnim!!)
+                }
+                
+                // finish 当前 Activity（如果需要清空任务栈）
+                if (shouldFinishCurrent && context is Activity) {
+                    context.finish()
                 }
                 
                 return true

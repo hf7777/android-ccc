@@ -5,6 +5,7 @@ import com.hlc.mywallet.data.model.ApiPayload
 import com.hlc.mywallet.data.model.req.LoginReq
 import com.hlc.mywallet.data.model.resp.CaptchaImage
 import com.hlc.mywallet.data.model.resp.LoginResp
+import com.hlc.mywallet.data.model.resp.UserStatisticsResp
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -19,4 +20,7 @@ interface UserService {
 
     @POST("/app/login")
     suspend fun login(@Body request: LoginReq): BaseResponse<LoginResp>
+
+    @GET("/app/mine/statistics")
+    suspend fun getUserStatistics(): BaseResponse<UserStatisticsResp>
 }

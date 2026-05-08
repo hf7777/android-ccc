@@ -1,6 +1,7 @@
 package com.hlc.lib_base.net
 
 import android.content.Context
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.StringUtils
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.R
@@ -35,6 +36,14 @@ fun <T> requestFlow(context: Context, block: suspend () -> BaseResponse<T>): Flo
 suspend fun <T> safeRequest(block: suspend () -> BaseResponse<T>): ApiResult<T> {
     return try {
         val response = block()
+        
+        // 检查 401 未授权
+        if (response.code == 401) {
+            LogUtils.w("API returned 401, token expired or invalid")
+            UnauthorizedHandlerHolder.handle()
+            return ApiResult.Error(ApiException.BusinessException(401, response.msg))
+        }
+        
         if (response.isSuccess) {
             response.data?.let { ApiResult.Success(it) } 
                 ?: ApiResult.Error(ApiException.ParseException(StringUtils.getString(R.string.error_data_empty)))

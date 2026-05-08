@@ -25,9 +25,12 @@ import com.hlc.lib_base.R
  */
 fun ImageView.loadBase64(
     base64String: String?,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
+    if (placeholder != 0) {
+        setImageResource(placeholder)
+    }
     if (base64String.isNullOrEmpty()) {
         if (error != 0) setImageResource(error)
         return
@@ -47,8 +50,8 @@ fun ImageView.loadBase64(
  */
 fun ImageView.load(
     url: Any?,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     Glide.with(this.context)
         .load(url)
@@ -69,8 +72,8 @@ fun ImageView.load(
 fun ImageView.loadRounded(
     url: Any?,
     radius: Int = 8,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     val radiusPx = (radius * context.resources.displayMetrics.density).toInt()
     val transformation = MultiTransformation<Bitmap>(
@@ -96,8 +99,8 @@ fun ImageView.loadRounded(
  */
 fun ImageView.loadCircle(
     url: Any?,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     Glide.with(this.context)
         .load(url)
@@ -121,8 +124,8 @@ fun ImageView.loadCircleWithBorder(
     url: Any?,
     borderWidth: Int = 2,
     borderColor: Int = android.graphics.Color.WHITE,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     val borderWidthPx = (borderWidth * context.resources.displayMetrics.density).toInt()
     val imageView = this
@@ -161,8 +164,8 @@ fun ImageView.loadRoundedWithBorder(
     radius: Int = 8,
     borderWidth: Int = 2,
     borderColor: Int = android.graphics.Color.WHITE,
-    @DrawableRes placeholder: Int = 0,
-    @DrawableRes error: Int = 0
+    @DrawableRes placeholder: Int = R.drawable.bg_image_placeholder,
+    @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     val radiusPx = (radius * context.resources.displayMetrics.density).toInt()
     val borderWidthPx = (borderWidth * context.resources.displayMetrics.density).toInt()

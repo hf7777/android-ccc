@@ -23,9 +23,9 @@ class CommonParamsInterceptor(
 //        Android 8.0+ 每个应用的 Android ID 不同（应用隔离）
 //        卸载重装会变化（Android 8.0+）
         val newRequest = originalRequest.newBuilder()
-//            .addHeader("deviceId", DeviceUtils.getAndroidID())
-//            .addHeader("versionCode", AppUtils.getAppVersionCode().toString())
-//            .addHeader("versionName", AppUtils.getAppVersionName())
+            .addHeader("deviceId", DeviceUtils.getAndroidID())
+            .addHeader("versionCode", AppUtils.getAppVersionCode().toString())
+            .addHeader("versionName", AppUtils.getAppVersionName())
             .build()
         
         return chain.proceed(newRequest)

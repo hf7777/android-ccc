@@ -76,7 +76,6 @@ configurations.all {
 
 dependencies {
     implementation(project(":lib_base"))
-    implementation(project(":lib_storage"))
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -85,6 +84,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.kotlinx.coroutines.android)
+    implementation(libs.androidx.datastore.preferences)
     
     // Hilt
     implementation(libs.hilt.android)

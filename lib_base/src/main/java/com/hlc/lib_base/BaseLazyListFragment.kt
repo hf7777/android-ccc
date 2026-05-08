@@ -81,8 +81,6 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
 
     protected open fun loadMorePreloadThreshold(): Int = 1
 
-    protected open fun showFirstLoadDialog(): Boolean = true
-
     protected open fun isLoadEndDisplay(): Boolean = true
 
     protected open fun onListDataChanged(data: List<T>) {
@@ -98,8 +96,8 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
         quickAdapterHelper?.trailingLoadState = LoadState.None
         if (refreshEnabled && showRefreshAnimation) {
             refreshLayout.isRefreshing = true
-        } else if (showFirstLoadDialog()) {
-            showLoading()
+        } else if (currentList.isEmpty()) {
+            showPageLoading()
         }
         requestListData(currentPage)
     }
@@ -124,13 +122,21 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
 
     protected fun onListLoadError(message: String? = null) {
         val isLoadMoreRequest = isLoadingMoreData
+        val shouldShowPageError = !isLoadMoreRequest && currentList.isEmpty()
         finishLoadingState()
         if (isLoadMoreRequest) {
             quickAdapterHelper?.trailingLoadState = LoadState.Error(Throwable(message ?: "Load more failed"))
+        } else if (shouldShowPageError) {
+            showPageError(
+                message = message ?: getString(R.string.page_error),
+                onActionClick = {
+                    refreshList(showRefreshAnimation = false)
+                }
+            )
         } else {
             updateLoadMoreState()
         }
-        if (!message.isNullOrEmpty()) {
+        if (!message.isNullOrEmpty() && !shouldShowPageError) {
             showError(message)
         }
     }
@@ -208,9 +214,7 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
         currentPage = getFirstPage()
         isRefreshingData = true
         quickAdapterHelper?.trailingLoadState = LoadState.None
-        if (showFirstLoadDialog()) {
-            showLoading()
-        }
+        showPageLoading()
         requestListData(currentPage)
     }
 
@@ -225,6 +229,11 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
     private fun finishLoadSuccess(hasMore: Boolean) {
         finishLoadingState()
         hasMoreData = hasMore
+        if (currentList.isEmpty()) {
+            showPageEmpty()
+        } else {
+            showPageContent()
+        }
         updateLoadMoreState()
         quickAdapterHelper?.trailingLoadStateAdapter?.checkDisableLoadMoreIfNotFullPage()
     }

@@ -28,7 +28,7 @@ class TutorialAdapter : BaseQuickAdapter<TutorialResp, TutorialAdapter.VH>() {
         holder.binding.apply {
             tvDate.text = item.createTime ?: ""
             tvTitle.text = item.title ?: ""
-            ivCover.loadRounded(item.coverImage ?: "", 5.dp)
+            ivCover.loadRounded(item.coverImage ?: "", 5)
         }
     }
 }

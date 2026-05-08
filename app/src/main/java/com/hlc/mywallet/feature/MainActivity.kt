@@ -7,8 +7,8 @@ import com.hlc.lib_base.BaseVbActivity
 import com.hlc.mywallet.R
 import com.hlc.mywallet.databinding.ActivityMainBinding
 import com.hlc.mywallet.feature.add.AddFragment
-import com.hlc.mywallet.feature.category.CategoryFragment
-import com.hlc.mywallet.feature.chart.ChartFragment
+import com.hlc.mywallet.feature.deposit.DepositFragment
+import com.hlc.mywallet.feature.team.TeamFragment
 import com.hlc.mywallet.feature.home.HomeFragment
 import com.hlc.mywallet.feature.mine.MineFragment
 import dagger.hilt.android.AndroidEntryPoint
@@ -36,9 +36,9 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
 
     private fun initFragments() {
         fragments.add(HomeFragment.newInstance())
-        fragments.add(CategoryFragment.newInstance())
+        fragments.add(DepositFragment.newInstance())
         fragments.add(AddFragment.newInstance())
-        fragments.add(ChartFragment.newInstance())
+        fragments.add(TeamFragment.newInstance())
         fragments.add(MineFragment.newInstance())
 
         supportFragmentManager.beginTransaction()

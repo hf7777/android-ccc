@@ -20,12 +20,23 @@
     <color name="btn_disabled">#C2C2C2</color>
 
     <color name="text_color_black">#FF000000</color>
-    <color name="text_color_white">#FF000000</color>
+    <color name="text_color_white">#FFFFFFFF</color>
+    <color name="text_color_gray">#999999</color>
 
     <color name="bg_withdraw">#2C94DE</color>
     <color name="bg_deposit">#0FDE2C2C</color>
+    <color name="bg_page">#FDF3F3</color>
     <color name="line_deposit">#1ADE2C2C</color>
     <color name="text_market_price">#80DE2C2C</color>
     <color name="home_tutorial_divider">#1ADE2C2C</color>
+    <color name="bg_mine_balance">#F49E3C</color>
+    <color name="bg_mine_withdraw">#B883F8</color>
+    <color name="bg_mine_deposit">#3DBEB8</color>
+    <color name="border_white_block">#1ADE2C2C</color>
+    <color name="link">#2C6EED</color>
+
+    <color name="highlight_yellow">#FFA600</color>
+    <color name="nav_top_line">#1ADE2C2C</color>
+    <color name="bank_stroke">#999999</color>
 
 </resources>

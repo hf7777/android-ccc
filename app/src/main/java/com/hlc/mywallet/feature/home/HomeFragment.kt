@@ -75,11 +75,11 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
         binding.refreshLayout.isRefreshing = state.isRefreshing
 
         if (state.isLoading) {
-            showLoading()
-        } else {
-            hideLoading()
+            showPageLoading()
+            return
         }
 
+        showPageContent()
         initBanner(state.banners)
         state.priceInfo?.let(::initPriceUi)
         tutorialAdapter.submitList(state.tutorials)
@@ -87,7 +87,16 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
 
     private fun handleEvent(event: HomeEvent) {
         when (event) {
-            is HomeEvent.ShowError -> Toaster.show(event.message)
+            is HomeEvent.ShowError -> {
+                if (viewModel.uiState.value.hasContent()) {
+                    Toaster.show(event.message)
+                } else {
+                    showPageError(
+                        message = event.message,
+                        onActionClick = { viewModel.loadData() }
+                    )
+                }
+            }
         }
     }
 
