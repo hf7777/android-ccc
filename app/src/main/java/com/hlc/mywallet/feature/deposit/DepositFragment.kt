@@ -3,6 +3,7 @@ package com.hlc.mywallet.feature.deposit
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.KeyboardUtils
 import com.hlc.lib_base.BaseVbFragment
+import com.hlc.lib_base.extension.optimizeSwipeSensitivity
 import com.hlc.mywallet.adapter.DepositTabAdapter
 import com.hlc.mywallet.databinding.FragmentDepositBinding
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -21,6 +22,7 @@ class DepositFragment : BaseVbFragment<FragmentDepositBinding>() {
         pagerAdapter = DepositPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.offscreenPageLimit = 1
+        binding.viewPager.optimizeSwipeSensitivity()
     }
 
     private fun setupMagicIndicator() {

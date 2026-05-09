@@ -24,4 +24,10 @@ class MineViewModel @Inject constructor(
             _userStatisticsState.value = repository.getUserStatistics()
         }
     }
+
+    fun getOrderInrList(yearMonth: String? = null) {
+        viewModelScope.launch {
+
+        }
+    }
 }

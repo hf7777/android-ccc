@@ -13,4 +13,5 @@
     <string name="error_api_not_found">API not found</string>
     <string name="error_data_empty">No data returned</string>
     <string name="error_viewbinding_init">ViewBinding initialization failed: %s</string>
+    <string name="url_cannot_be_empty">URL cannot be empty</string>
 </resources>

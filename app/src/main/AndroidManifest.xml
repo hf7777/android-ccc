@@ -16,6 +16,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet">
         <activity
+            android:name=".feature.mine.OrderActivity"
+            android:exported="false" />
+        <activity
             android:name=".feature.tutorial.TutorialActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -30,7 +33,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".feature.MainActivity"
+            android:name=".feature.main.MainActivity"
             android:exported="true"
             android:screenOrientation="portrait" />
         <activity
@@ -39,6 +42,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".feature.home.HomeActivity"
+            android:exported="false"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".feature.deposit.PaymentDetailActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity

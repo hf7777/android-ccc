@@ -8,10 +8,12 @@ import com.hlc.lib_base.BaseVbFragment
 import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.onClick
-import com.hlc.lib_base.web.WebActivity
+import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.hideLoading
+import com.hlc.lib_base.widget.showLoading
 import com.hlc.mywallet.R
 import com.hlc.mywallet.databinding.FragmentUsdtBinding
+import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -62,7 +64,10 @@ class USDTFragment : BaseVbFragment<FragmentUsdtBinding>() {
             onSuccess = { data ->
                 hideLoading()
                 data.cashierUrl?.let { url ->
-                    WebActivity.start(requireContext(), url, getString(R.string.payment))
+                    Router.navigation(Routes.WEB)
+                        .with("url", url)
+                        .with("title", getString(R.string.payment))
+                        .navigation(requireContext())
                 } ?: Toaster.show(getString(R.string.cashier_url_is_empty))
             },
             onError = { errorMsg ->

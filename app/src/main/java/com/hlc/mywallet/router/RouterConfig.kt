@@ -1,13 +1,14 @@
 package com.hlc.mywallet.router
 
 import com.hlc.lib_base.router.Router
-import com.hlc.mywallet.feature.MainActivity
+import com.hlc.lib_base.web.WebActivity
+import com.hlc.mywallet.feature.main.MainActivity
+import com.hlc.mywallet.feature.deposit.PaymentDetailActivity
 import com.hlc.mywallet.feature.home.HomeActivity
 import com.hlc.mywallet.feature.login.LoginActivity
 import com.hlc.mywallet.feature.register.RegisterActivity
 import com.hlc.mywallet.feature.tutorial.TutorialActivity
 import com.hlc.mywallet.manager.UserManager
-import okhttp3.Route
 
 /**
  * 路由配置
@@ -24,7 +25,9 @@ object RouterConfig {
                 Routes.MAIN to MainActivity::class.java,
                 Routes.HOME to HomeActivity::class.java,
                 Routes.REGISTER to RegisterActivity::class.java,
-                Routes.TUTORIAL_LIST to TutorialActivity::class.java
+                Routes.TUTORIAL_LIST to TutorialActivity::class.java,
+                Routes.PAYMENT_DETAIL to PaymentDetailActivity::class.java,
+                Routes.WEB to WebActivity::class.java
             )
         )
         

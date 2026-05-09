@@ -4,16 +4,17 @@ import com.hlc.lib_base.net.BaseResponse
 import com.hlc.mywallet.data.model.ApiPayload
 import com.hlc.mywallet.data.model.req.LoginReq
 import com.hlc.mywallet.data.model.resp.CaptchaImage
+import com.hlc.mywallet.data.model.resp.DepositInrResp
 import com.hlc.mywallet.data.model.resp.LoginResp
+import com.hlc.mywallet.data.model.resp.MyWalletResp
+import com.hlc.mywallet.data.model.resp.OrderInrResp
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
+import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface UserService {
-
-    @GET("get")
-    suspend fun fetchUser(): BaseResponse<ApiPayload>
 
     @GET("/app/captchaImage")
     suspend fun captchaImage(): BaseResponse<CaptchaImage>
@@ -23,4 +24,10 @@ interface UserService {
 
     @GET("/app/mine/statistics")
     suspend fun getUserStatistics(): BaseResponse<UserStatisticsResp>
+
+    @POST("/app/wallet/getCanPayWallets")
+    suspend fun getMyWallet(): BaseResponse<List<MyWalletResp>>
+
+    @POST("/app/deposit/inr/myList")
+    suspend fun getOrderInrList(@Body requestBody: RequestBody): BaseResponse<OrderInrResp>
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.KeyboardUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbActivity
@@ -57,7 +58,8 @@ class LoginActivity : BaseVbActivity<ActivityLoginBinding>() {
                 Toaster.show(getString(R.string.the_uuid_does_not_exist))
                 return@onClick
             }
-
+0
+            KeyboardUtils.hideSoftInput(this)
             val loginReq = LoginReq(
                 username = binding.etPhoneNumber.text.toString().trim(),
                 password = binding.etPassword.text.toString().trim(),

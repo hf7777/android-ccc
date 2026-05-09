@@ -4,8 +4,11 @@ import com.hlc.lib_base.extension.buildJsonBody
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.net.safeRequest
 import com.hlc.mywallet.data.api.DepositService
-import com.hlc.mywallet.data.model.UsdtPayResp
+import com.hlc.mywallet.data.api.UserService
+import com.hlc.mywallet.data.model.resp.UsdtPayResp
 import com.hlc.mywallet.data.model.resp.DepositInrResp
+import com.hlc.mywallet.data.model.resp.InrDetailResp
+import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.PriceInfoResp
 import com.hlc.mywallet.storage.CacheKeys
 import com.hlc.mywallet.storage.CacheStorage
@@ -36,6 +39,27 @@ class DepositRepository @Inject constructor(
             depositService.usdtPay(
                 buildJsonBody(
                     "usdtAmount" to usdtAmount
+                )
+            )
+        }
+    }
+
+    suspend fun depositInrGrab(platformOrderNo: String, walletId: String): ApiResult<String> {
+        return safeRequest {
+            depositService.depositGrab(
+                buildJsonBody(
+                    "platformOrderNo" to platformOrderNo,
+                    "walletId" to walletId
+                )
+            )
+        }
+    }
+
+    suspend fun inrDetail(grabRecordId: String): ApiResult<InrDetailResp> {
+        return safeRequest {
+            depositService.inrDetail(
+                buildJsonBody(
+                    "grabRecordId" to grabRecordId
                 )
             )
         }

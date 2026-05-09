@@ -3,9 +3,10 @@ package com.hlc.mywallet.storage
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
+import com.squareup.moshi.Types
 import kotlinx.coroutines.flow.first
+import java.lang.reflect.Type
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -20,11 +21,20 @@ class DataStoreCacheStorage @Inject constructor(
 
     override suspend fun <T> save(key: String, value: T) {
         if (value == null) return
-        @Suppress("UNCHECKED_CAST")
-        val adapter = moshi.adapter(value!!::class.java) as JsonAdapter<T>
-        val json = adapter.toJson(value)
+        val nonNullValue = value as Any
+
+        val type: Type = when (nonNullValue) {
+            is List<*> -> {
+                val elementType = nonNullValue.firstOrNull()?.javaClass ?: Any::class.java
+                Types.newParameterizedType(List::class.java, elementType)
+            }
+            else -> nonNullValue::class.java
+        }
+
+        val adapter = moshi.adapter<Any>(type)
+        val json = adapter.toJson(nonNullValue)
         val prefKey = stringPreferencesKey(key)
-        
+
         context.appDataStore.edit { preferences ->
             preferences[prefKey] = json
         }
@@ -34,9 +44,21 @@ class DataStoreCacheStorage @Inject constructor(
         val prefKey = stringPreferencesKey(key)
         val preferences = context.appDataStore.data.first()
         val json = preferences[prefKey] ?: return null
-        
+
         return runCatching {
             val adapter = moshi.adapter(clazz)
+            adapter.fromJson(json)
+        }.getOrNull()
+    }
+
+    override suspend fun <T> getList(key: String, elementClass: Class<T>): List<T>? {
+        val prefKey = stringPreferencesKey(key)
+        val preferences = context.appDataStore.data.first()
+        val json = preferences[prefKey] ?: return null
+        val type = Types.newParameterizedType(List::class.java, elementClass)
+
+        return runCatching {
+            val adapter = moshi.adapter<List<T>>(type)
             adapter.fromJson(json)
         }.getOrNull()
     }

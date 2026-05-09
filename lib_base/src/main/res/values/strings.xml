@@ -17,4 +17,5 @@
     <string name="error">Error</string>
     <string name="page_load_failed">Page load failed</string>
     <string name="reload">Reload</string>
+    <string name="url_cannot_be_empty">URL cannot be empty</string>
 </resources>

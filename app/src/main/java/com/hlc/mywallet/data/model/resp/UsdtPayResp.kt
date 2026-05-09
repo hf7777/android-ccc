@@ -1,4 +1,4 @@
-package com.hlc.mywallet.data.model
+package com.hlc.mywallet.data.model.resp
 
 /**
  * @author Wade

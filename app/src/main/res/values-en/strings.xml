@@ -100,4 +100,23 @@
     <string name="next">Next</string>
     <string name="payment">Payment</string>
     <string name="cashier_url_is_empty">Cashier URL is empty</string>
+    <string name="select_tool">Select tool</string>
+    <string name="after_selecting_the_payment_tool">* After selecting the payment tool, please use the selected toolto make payment,otherwise the account will not be credited</string>
+    <string name="payment_detail">Payment detail</string>
+    <string name="status">Status</string>
+    <string name="cancel">Cancel</string>
+    <string name="remaining">Remaining</string>
+    <string name="timeout_failure">(Timeout = Failure)</string>
+    <string name="id">ID</string>
+    <string name="order_no">Order No</string>
+    <string name="payment_tool">Payment Tool</string>
+    <string name="notice_please_pay_with_the_tool">Notice: Please pay with the tool,if this payment instrument does not work,please cancel the order</string>
+    <string name="beneficiary_name">Beneficiary name</string>
+    <string name="bank_s">Bank</string>
+    <string name="ifsc">IFSC</string>
+    <string name="account">Account</string>
+    <string name="message">Message</string>
+    <string name="_1_go_pay">1.Go pay</string>
+    <string name="_2_paid">2.Paid</string>
+    <string name="order">Order</string>
 </resources>

@@ -20,6 +20,12 @@ object Routes {
     //课程列表
     const val TUTORIAL_LIST = "/tutorial_list"
 
+    // 支付详情
+    const val PAYMENT_DETAIL = "/payment_detail"
+    
+    // WebView
+    const val WEB = "/web"
+
     // 其他页面
     // const val DETAIL = "/detail"
     // const val SETTINGS = "/settings"

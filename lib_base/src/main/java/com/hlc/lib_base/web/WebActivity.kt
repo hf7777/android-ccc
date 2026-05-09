@@ -6,6 +6,8 @@ import android.view.KeyEvent
 import android.view.ViewGroup
 import android.webkit.WebView
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.StringUtils
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbActivity
@@ -42,7 +44,7 @@ class WebActivity : BaseVbActivity<ActivityWebBinding>() {
         title = intent.getStringExtra(EXTRA_TITLE) ?: ""
         
         if (url.isEmpty()) {
-            Toaster.show("URL cannot be empty")
+            Toaster.show(StringUtils.getString(R.string.url_cannot_be_empty))
             finish()
             return
         }
@@ -116,21 +118,7 @@ class WebActivity : BaseVbActivity<ActivityWebBinding>() {
     }
 
     companion object {
-        private const val EXTRA_URL = "extra_url"
-        private const val EXTRA_TITLE = "extra_title"
-
-        /**
-         * Start WebActivity
-         * @param context Context
-         * @param url Web page URL
-         * @param title Title (optional, uses web page title if empty)
-         */
-        fun start(context: Context, url: String, title: String = "") {
-            val intent = Intent(context, WebActivity::class.java).apply {
-                putExtra(EXTRA_URL, url)
-                putExtra(EXTRA_TITLE, title)
-            }
-            context.startActivity(intent)
-        }
+        const val EXTRA_URL = "url"
+        const val EXTRA_TITLE = "title"
     }
 }
