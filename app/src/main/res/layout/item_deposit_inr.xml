@@ -40,7 +40,7 @@
         android:textSize="10sp"
         android:textColor="@color/text_color_black"
         app:shape_strokeSize="0.5dp"
-        app:shape_strokeColor="@color/bank_stroke"
+        app:shape_strokeColor="@color/edit_stroke_normal"
         app:layout_constraintTop_toBottomOf="@id/tv_price"
         android:layout_marginTop="2dp"
         android:paddingHorizontal="3dp"

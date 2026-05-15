@@ -15,16 +15,16 @@ package com.hlc.mywallet.data.model.resp
  * data.rows[].createTime	string	创建时间
  */
 data class OrderInrResp(
-    val rows: List<Row>,
+    val rows: List<OrderInr>,
     val total: Int
 )
 
-data class Row(
-    val balanceChange: String,
-    val createTime: String,
-    val id: String,
-    val orderAmount: String,
-    val orderStatus: String,
-    val platformOrderNo: String,
-    val rewardAmount: String
+data class OrderInr(
+    val balanceChange: String?,
+    val createTime: String?,
+    val id: String?,
+    val orderAmount: String?,
+    val orderStatus: String?,
+    val platformOrderNo: String?,
+    val rewardAmount: String?
 )

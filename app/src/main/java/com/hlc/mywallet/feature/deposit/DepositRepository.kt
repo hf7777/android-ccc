@@ -3,6 +3,7 @@ package com.hlc.mywallet.feature.deposit
 import com.hlc.lib_base.extension.buildJsonBody
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.net.safeRequest
+import com.hlc.lib_base.net.safeRequestWithoutData
 import com.hlc.mywallet.data.api.DepositService
 import com.hlc.mywallet.data.api.UserService
 import com.hlc.mywallet.data.model.resp.UsdtPayResp
@@ -58,6 +59,16 @@ class DepositRepository @Inject constructor(
     suspend fun inrDetail(grabRecordId: String): ApiResult<InrDetailResp> {
         return safeRequest {
             depositService.inrDetail(
+                buildJsonBody(
+                    "grabRecordId" to grabRecordId
+                )
+            )
+        }
+    }
+
+    suspend fun cancelInrOrder(grabRecordId: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            depositService.cancelInrOrder(
                 buildJsonBody(
                     "grabRecordId" to grabRecordId
                 )

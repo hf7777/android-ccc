@@ -1,5 +1,7 @@
 package com.hlc.lib_base
 
+import android.view.View
+import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter4.BaseQuickAdapter
@@ -87,6 +89,10 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
         listAdapter.submitList(data)
     }
 
+    override fun getPageStateContainer(view: View): ViewGroup? {
+        return binding.flContent
+    }
+
     protected fun refreshList(showRefreshAnimation: Boolean = true) {
         if (isRefreshingData || isLoadingMoreData) {
             return
@@ -128,7 +134,7 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
             quickAdapterHelper?.trailingLoadState = LoadState.Error(Throwable(message ?: "Load more failed"))
         } else if (shouldShowPageError) {
             showPageError(
-                message = message ?: getString(R.string.page_error),
+                message = getString(R.string.page_error),
                 onActionClick = {
                     refreshList(showRefreshAnimation = false)
                 }

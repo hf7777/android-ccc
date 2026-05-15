@@ -11,14 +11,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import com.blankj.utilcode.util.LogUtils
 import com.hlc.mywallet.data.api.DepositService
 import com.hlc.mywallet.data.api.HomeService
 import com.hlc.mywallet.data.api.TeamService
 import com.hlc.mywallet.data.api.UserService
+import com.hlc.mywallet.data.api.WalletService
 import com.hlc.mywallet.manager.UserManager
 import com.hlc.mywallet.storage.CacheStorage
 import com.hlc.mywallet.storage.DataStoreCacheStorage
@@ -60,16 +59,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor { message ->
-            LogUtils.dTag("OkHttp", message)
-        }.apply {
-            level = if (BuildConfig.DEBUG) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        }
+    fun provideLoggingInterceptor(): NetworkLoggingInterceptor {
+        return NetworkLoggingInterceptor()
     }
 
     @Provides
@@ -77,7 +68,7 @@ object NetworkModule {
     fun provideOkHttpClient(
         tokenInterceptor: TokenInterceptor,
         commonParamsInterceptor: CommonParamsInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: NetworkLoggingInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
@@ -139,5 +130,11 @@ object NetworkModule {
     @Singleton
     fun provideDepositService(retrofit: Retrofit): DepositService {
         return retrofit.create(DepositService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideWalletService(retrofit: Retrofit): WalletService {
+        return retrofit.create(WalletService::class.java)
     }
 }

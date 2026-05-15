@@ -6,8 +6,15 @@ import com.hlc.mywallet.feature.main.MainActivity
 import com.hlc.mywallet.feature.deposit.PaymentDetailActivity
 import com.hlc.mywallet.feature.home.HomeActivity
 import com.hlc.mywallet.feature.login.LoginActivity
+import com.hlc.mywallet.feature.mine.BindTgActivity
+import com.hlc.mywallet.feature.mine.bills.BillsActivity
+import com.hlc.mywallet.feature.mine.order.OrderActivity
+import com.hlc.mywallet.feature.mine.PinActivity
 import com.hlc.mywallet.feature.register.RegisterActivity
 import com.hlc.mywallet.feature.tutorial.TutorialActivity
+import com.hlc.mywallet.feature.wallet.EditUpiActivity
+import com.hlc.mywallet.feature.wallet.PayChannelActivity
+import com.hlc.mywallet.feature.wallet.PayChannelSetupActivity
 import com.hlc.mywallet.manager.UserManager
 
 /**
@@ -27,7 +34,14 @@ object RouterConfig {
                 Routes.REGISTER to RegisterActivity::class.java,
                 Routes.TUTORIAL_LIST to TutorialActivity::class.java,
                 Routes.PAYMENT_DETAIL to PaymentDetailActivity::class.java,
-                Routes.WEB to WebActivity::class.java
+                Routes.WEB to WebActivity::class.java,
+                Routes.DEPOSIT_ORDER_LIST to OrderActivity::class.java,
+                Routes.BILLS to BillsActivity::class.java,
+                Routes.PAY_CHANNEL to PayChannelActivity::class.java,
+                Routes.BIND_TG to BindTgActivity::class.java,
+                Routes.PIN to PinActivity::class.java,
+                Routes.PAY_CHANNEL_SETUP to PayChannelSetupActivity::class.java,
+                Routes.EDIT_UPI to EditUpiActivity::class.java
             )
         )
         

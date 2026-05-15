@@ -6,9 +6,10 @@ import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.lib_base.extension.collectWithError
+import com.hlc.lib_base.extension.setOnClickListener
 import com.hlc.mywallet.R
 import com.hlc.mywallet.databinding.ActivityMainBinding
-import com.hlc.mywallet.feature.add.AddFragment
+import com.hlc.mywallet.feature.wallet.WalletFragment
 import com.hlc.mywallet.feature.deposit.DepositFragment
 import com.hlc.mywallet.feature.home.HomeFragment
 import com.hlc.mywallet.feature.mine.MineFragment
@@ -36,14 +37,18 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         initFragments()
         setupBottomNavigation()
         loadMyWallet()
+
+        binding.ivTool.setOnClickListener {
+            selectTab(2)
+        }
     }
 
     private fun initFragments() {
-        fragments.add(HomeFragment.Companion.newInstance())
-        fragments.add(DepositFragment.Companion.newInstance())
-        fragments.add(AddFragment.Companion.newInstance())
-        fragments.add(TeamFragment.Companion.newInstance())
-        fragments.add(MineFragment.Companion.newInstance())
+        fragments.add(HomeFragment.newInstance())
+        fragments.add(DepositFragment.newInstance())
+        fragments.add(WalletFragment.newInstance())
+        fragments.add(TeamFragment.newInstance())
+        fragments.add(MineFragment.newInstance())
 
         supportFragmentManager.beginTransaction()
             .add(R.id.fragment_container, fragments[0])
@@ -59,6 +64,12 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     private fun switchFragment(position: Int) {
         if (position == currentPosition) return
 
+        if (position == 2) {
+            binding.ivTool.setImageResource(R.drawable.ic_nav_tools_selected)
+        } else {
+            binding.ivTool.setImageResource(R.drawable.ic_nav_tools)
+        }
+
         val transaction = supportFragmentManager.beginTransaction()
         transaction.hide(fragments[currentPosition])
 
@@ -70,6 +81,15 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
 
         transaction.commit()
         currentPosition = position
+    }
+
+    fun selectTab(position: Int) {
+        if (position == 2) {
+            binding.ivTool.setImageResource(R.drawable.ic_nav_tools_selected)
+        } else {
+            binding.ivTool.setImageResource(R.drawable.ic_nav_tools)
+        }
+        binding.bottomNavigation.selectTab(position)
     }
 
     /**
@@ -84,4 +104,5 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         )
         viewModel.getMyWallet()
     }
+
 }

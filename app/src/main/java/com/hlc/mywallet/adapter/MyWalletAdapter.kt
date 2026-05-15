@@ -3,11 +3,9 @@ package com.hlc.mywallet.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.annotation.DrawableRes
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
-import com.hlc.lib_base.R as BaseRes
 import com.hlc.mywallet.R
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.databinding.ItemMyWalletBinding
@@ -70,10 +68,5 @@ class MyWalletAdapter(
         selectedPosition = position
         notifyItemChanged(previousPosition)
         notifyItemChanged(selectedPosition)
-    }
-
-    companion object {
-        @DrawableRes
-        fun defaultPayIcon(): Int = BaseRes.drawable.bg_image_placeholder
     }
 }

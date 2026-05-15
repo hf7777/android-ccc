@@ -54,3 +54,23 @@ suspend fun <T> safeRequest(block: suspend () -> BaseResponse<T>): ApiResult<T> 
         ApiResult.Error(ExceptionHandler.convertException(e))
     }
 }
+
+suspend fun safeRequestWithoutData(block: suspend () -> BaseResponse<*>): ApiResult<Unit> {
+    return try {
+        val response = block()
+
+        if (response.code == 401) {
+            LogUtils.w("API returned 401, token expired or invalid")
+            UnauthorizedHandlerHolder.handle()
+            return ApiResult.Error(ApiException.BusinessException(401, response.msg))
+        }
+
+        if (response.isSuccess) {
+            ApiResult.Success(Unit)
+        } else {
+            ApiResult.Error(ApiException.BusinessException(response.code, response.msg))
+        }
+    } catch (e: Exception) {
+        ApiResult.Error(ExceptionHandler.convertException(e))
+    }
+}

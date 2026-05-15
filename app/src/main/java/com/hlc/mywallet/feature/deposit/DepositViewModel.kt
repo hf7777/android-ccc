@@ -44,6 +44,9 @@ class DepositViewModel @Inject constructor(
     private val _inrDetailFlow = MutableSharedFlow<ApiResult<InrDetailResp>>()
     val inrDetailFlow: SharedFlow<ApiResult<InrDetailResp>> = _inrDetailFlow.asSharedFlow()
 
+    private val _cancelInrOrderFlow = MutableSharedFlow<ApiResult<Unit>>()
+    val cancelInrOrderFlow: SharedFlow<ApiResult<Unit>> = _cancelInrOrderFlow.asSharedFlow()
+
     fun getDepositInrList(page: Int, pageSize: Int = 20) {
         viewModelScope.launch {
             _depositInrResultFlow.emit(repository.getDepositInrList(page, pageSize))
@@ -84,7 +87,7 @@ class DepositViewModel @Inject constructor(
         }
     }
 
-    fun depositInrGrab(platformOrderNo: String, walletId: String    ) {
+    fun depositInrGrab(platformOrderNo: String, walletId: String) {
         viewModelScope.launch {
             _inrGrabFlow.emit(ApiResult.Loading)
             val result = repository.depositInrGrab(platformOrderNo, walletId)
@@ -97,6 +100,14 @@ class DepositViewModel @Inject constructor(
             _inrDetailFlow.emit(ApiResult.Loading)
             val result = repository.inrDetail(grabRecordId)
             _inrDetailFlow.emit(result)
+        }
+    }
+
+    fun cancelInrOrder(grabRecordId: String) {
+        viewModelScope.launch {
+            _cancelInrOrderFlow.emit(ApiResult.Loading)
+            val result = repository.cancelInrOrder(grabRecordId)
+            _cancelInrOrderFlow.emit(result)
         }
     }
 }

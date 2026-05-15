@@ -28,7 +28,6 @@
             android:layout_centerVertical="true"
             android:padding="12dp"
             android:src="@drawable/ic_back"
-            android:contentDescription="@string/app_name"
             android:visibility="visible" />
 
         <!-- 标题文字 -->

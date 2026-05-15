@@ -88,41 +88,67 @@
                 android:orientation="vertical"
                 app:layout_constraintGuide_percent="0.5"
                 android:id="@+id/guideline"/>
-            <com.hjq.shape.view.ShapeImageView
-                android:id="@+id/iv_deposit"
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:id="@+id/ll_deposit"
                 android:layout_width="0dp"
                 android:layout_height="51dp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="@id/guideline"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="15dp"
                 app:layout_constraintTop_toBottomOf="@id/tv_balance"
                 app:shape_radius="10dp"
+                android:gravity="center"
                 app:shape_solidColor="@color/theme"
-                android:src="@drawable/ic_deposit"
-                android:layout_marginTop="10dp"
-                android:padding="15dp"/>
-            <com.hjq.shape.view.ShapeImageView
-                android:id="@+id/iv_withdraw"
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_home_deposit"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/deposit"
+                    android:layout_marginStart="4dp"/>
+            </com.hjq.shape.layout.ShapeLinearLayout>
+            <com.hjq.shape.layout.ShapeLinearLayout
+                android:id="@+id/ll_withdraw"
                 android:layout_width="0dp"
                 android:layout_height="51dp"
+                android:orientation="horizontal"
                 app:layout_constraintStart_toStartOf="@id/guideline"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_balance"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="15dp"
                 app:shape_radius="10dp"
+                android:gravity="center"
                 app:shape_solidColor="@color/bg_withdraw"
-                android:src="@drawable/ic_withdraw"
-                android:layout_marginTop="10dp"
-                android:padding="15dp"/>
+                android:layout_marginTop="10dp">
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:src="@drawable/ic_home_withdraw"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_color_white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:text="@string/withdraw"
+                    android:layout_marginStart="4dp"/>
+            </com.hjq.shape.layout.ShapeLinearLayout>
             <TextView
                 android:id="@+id/tv_usdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deposit_a_points_with_usdt"
-                app:layout_constraintStart_toStartOf="@id/iv_deposit"
-                app:layout_constraintTop_toBottomOf="@id/iv_deposit"
+                app:layout_constraintStart_toStartOf="@id/ll_deposit"
+                app:layout_constraintTop_toBottomOf="@id/ll_deposit"
                 android:textStyle="bold"
                 android:textSize="15sp"
                 android:textColor="@color/text_color_black"
@@ -136,7 +162,7 @@
                 android:textColor="@color/theme"
                 app:layout_constraintTop_toTopOf="@id/tv_usdt"
                 app:layout_constraintBottom_toBottomOf="@id/tv_usdt"
-                app:layout_constraintEnd_toEndOf="@id/iv_withdraw"/>
+                app:layout_constraintEnd_toEndOf="@id/ll_withdraw"/>
 
             <com.hjq.shape.layout.ShapeConstraintLayout
                 android:id="@+id/cl_price"
@@ -216,7 +242,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/deposit_a_points_with_rupee"
-                app:layout_constraintStart_toStartOf="@id/iv_deposit"
+                app:layout_constraintStart_toStartOf="@id/ll_deposit"
                 app:layout_constraintTop_toBottomOf="@id/cl_price"
                 android:textStyle="bold"
                 android:textSize="15sp"
@@ -231,7 +257,7 @@
                 android:textColor="@color/theme"
                 app:layout_constraintTop_toTopOf="@id/tv_rupee"
                 app:layout_constraintBottom_toBottomOf="@id/tv_rupee"
-                app:layout_constraintEnd_toEndOf="@id/iv_withdraw"/>
+                app:layout_constraintEnd_toEndOf="@id/ll_withdraw"/>
 
             <com.hjq.shape.layout.ShapeConstraintLayout
                 android:id="@+id/cl_rupee"

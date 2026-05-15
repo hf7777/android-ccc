@@ -9,13 +9,20 @@ import com.hjq.toast.Toaster
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.lib_base.extension.collectWithError
+import com.hlc.lib_base.extension.formatNumber
+import com.hlc.lib_base.extension.gone
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.extension.visibleOrGone
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.getRouterString
+import com.hlc.lib_base.widget.hideLoading
+import com.hlc.lib_base.widget.showConfirmDialog
+import com.hlc.lib_base.widget.showLoading
 import com.hlc.mywallet.R
 import com.hlc.mywallet.data.model.resp.InrDetailResp
 import com.hlc.mywallet.databinding.ActivityPaymentDetailBinding
+import com.hlc.mywallet.feature.deposit.bean.DepositStatus
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,6 +36,8 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
     }
     private var countDownTimer: CountDownTimer? = null
 
+    private var needShowPageLoading: Boolean = true
+
     override fun initImmersionBar() {
         immersionBar {
             statusBarColorInt(ColorUtils.getColor(R.color.theme))
@@ -39,12 +48,15 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
         }
     }
 
+    override fun useBaseTitleBar(): Boolean = true
+
+    override fun getBaseTitleBarTitle(): String = getString(R.string.payment_detail)
+
     override fun initView() {
-        binding.titleBar.setOnBackClickListener {
-            finish()
-        }
         binding.btnCancel.onClick {
-            finish()
+            showConfirmDialog(content = getString(R.string.are_you_sure_you_want_to_cancel_this_order)) {
+                viewModel.cancelInrOrder(grabRecordId)
+            }
         }
         binding.btnGoPay.onClick {
             Toaster.show(getString(R.string._1_go_pay))
@@ -60,26 +72,48 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
             showPageError(message = getString(R.string.request_failed))
             return
         }
+        needShowPageLoading = true
+        showPageLoading()
         viewModel.getInrDetail(grabRecordId)
     }
+
 
     override fun observeData() {
         viewModel.inrDetailFlow.collectWithError(
             lifecycleOwner = this,
-            onLoading = { showPageLoading() },
+            onLoading = {
+                if (needShowPageLoading) {
+                    showPageLoading()
+                }
+            },
             onSuccess = { detail ->
+                hideLoading()
                 showPageContent()
                 bindDetail(detail)
             },
             onError = { errorMsg ->
+                hideLoading()
                 showPageError(
-                    message = errorMsg,
                     onActionClick = {
                         if (grabRecordId.isNotEmpty()) {
+                            needShowPageLoading = true
+                            showPageLoading()
                             viewModel.getInrDetail(grabRecordId)
                         }
                     }
                 )
+            }
+        )
+
+        viewModel.cancelInrOrderFlow.collectWithError(
+            lifecycleOwner = this,
+            onLoading = { showLoading() },
+            onSuccess = {
+                needShowPageLoading = false
+                viewModel.getInrDetail(grabRecordId)
+            },
+            onError = { errorMsg ->
+                hideLoading()
             }
         )
     }
@@ -96,14 +130,26 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
         binding.tvOrderNo.text = detail.platformOrderNo
         binding.tvPaymentName.text = detail.channelCode
         binding.tvPaymentUpi.text = detail.upiId
-        binding.tvPaymentAmount.text = detail.orderAmount
+        binding.tvPaymentAmount.text = "${detail.orderAmount.formatNumber()}Rs"
         binding.tvBeneficiaryName.text = detail.beneName
         binding.tvBank.text = detail.tradeCode
         binding.tvIfsc.text = detail.ifsc
         binding.tvAccount.text = detail.accountNo
         binding.tvMessage.text = detail.paymentMessage
-        binding.clRemaining.visibleOrGone(detail.remainingSeconds > 0)
-        startCountDown(detail.remainingSeconds)
+
+        if (detail.grabStatus == DepositStatus.GRAB.state) {
+            binding.btnCancel.visible()
+            binding.clRemaining.visible()
+            startCountDown(detail.remainingSeconds ?: 0)
+        } else {
+            binding.btnCancel.gone()
+            binding.clRemaining.gone()
+            countDownTimer?.cancel()
+        }
+
+        binding.groupPaymentTool.visibleOrGone(detail.grabStatus != DepositStatus.CANCEL.state)
+
+        binding.groupIfsc.visibleOrGone(!detail.ifsc.isNullOrEmpty())
     }
 
     private fun setupCopyActions() {
@@ -135,6 +181,8 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
 
             override fun onFinish() {
                 binding.tvTime.text = "00:00"
+                needShowPageLoading = false
+                viewModel.getInrDetail(grabRecordId)
             }
         }.start()
     }
@@ -146,7 +194,7 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
     }
 
     companion object {
-        private const val KEY_GRAB_RECORD_ID = "grab_record_id"
+        const val KEY_GRAB_RECORD_ID = "grab_record_id"
 
         fun start(context: Context, grabRecordId: String) {
             Router.navigation(Routes.PAYMENT_DETAIL)

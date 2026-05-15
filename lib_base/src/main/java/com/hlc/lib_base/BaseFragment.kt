@@ -92,7 +92,7 @@ abstract class BaseFragment : Fragment() {
     }
 
     private fun attachPageStateLayout(view: View) {
-        val rootView = view as? ViewGroup ?: return
+        val rootView = getPageStateContainer(view) ?: return
         val layout = PageStateLayout(requireContext())
         rootView.addView(
             layout,
@@ -102,5 +102,9 @@ abstract class BaseFragment : Fragment() {
             )
         )
         pageStateLayout = layout
+    }
+
+    protected open fun getPageStateContainer(view: View): ViewGroup? {
+        return view as? ViewGroup
     }
 }

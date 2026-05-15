@@ -11,6 +11,7 @@ import com.hlc.lib_base.extension.dp
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.loadCircle
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.navigation
 import com.hlc.lib_base.widget.SpaceItemDecoration
 import com.hlc.lib_base.widget.hideLoading
@@ -19,6 +20,8 @@ import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.MineFunctionAdapter
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
 import com.hlc.mywallet.databinding.FragmentMineBinding
+import com.hlc.mywallet.feature.main.MainActivity
+import com.hlc.mywallet.feature.mine.bills.BillsActivity
 import com.hlc.mywallet.feature.mine.bean.MineFunction
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
@@ -50,16 +53,29 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                 }
             }
 
+            btnDetail.onClick {
+                navigation(Routes.BILLS)
+            }
+
+            btnManage.onClick {
+                (activity as? MainActivity)?.selectTab(2)
+            }
+
             commonAdapter.setOnDebouncedItemClick { adapter, view, i ->
                 when (i) {
                     0 -> {
                         // Bills
+                        navigation(Routes.BILLS)
                     }
                     1 -> {
                         // Deposit
+                        navigation(Routes.DEPOSIT_ORDER_LIST)
                     }
                     2 -> {
                         // Withdrawal
+                        Router.navigation(Routes.BILLS)
+                            .with(BillsActivity.KEY_DEFAULT_TO_WITHDRAWAL, true)
+                            .navigation(this@MineFragment)
                     }
                     3 -> {
                         // Service
@@ -83,6 +99,7 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                     }
                     4 -> {
                         // Pin
+                        navigation(Routes.PIN)
                     }
                     5 -> {
                         // Language

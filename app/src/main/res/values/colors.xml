@@ -2,7 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    
+    <color name="transparent">#00000000</color>
+
     <!-- 主题色 -->
     <color name="theme">#DE2C2C</color>
     <color name="theme_dark">#B82424</color>
@@ -38,9 +39,16 @@
     <color name="highlight_yellow">#FFA600</color>
     <color name="nav_top_line">#1ADE2C2C</color>
     <color name="item_line">#1ADE2C2C</color>
-    <color name="bank_stroke">#999999</color>
+    <color name="edit_stroke_normal">#999999</color>
     <color name="dialog_cancel_stroke">#CCCCCC</color>
     <color name="wallet_tips">#E6581D</color>
     <color name="bg_paid">#0C8CE9</color>
+    <color name="btn_fast_withdraw">#F49B1F</color>
+    <color name="bg_wallet_available">#2980E4</color>
+    <color name="bg_wallet_pause">#C5C5C5</color>
+    <color name="bg_wallet_status">#09C770</color>
+    <color name="bg_tag_invalid">#D9D9D9</color>
+    <color name="tg_color">#29A0DC</color>
+    <color name="amount_green">#09C770</color>
 
 </resources>

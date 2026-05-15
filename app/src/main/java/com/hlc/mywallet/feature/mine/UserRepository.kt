@@ -4,8 +4,11 @@ import com.hlc.lib_base.extension.buildJsonBody
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.net.safeRequest
 import com.hlc.mywallet.data.api.UserService
+import com.hlc.mywallet.data.model.resp.CheckBindingResp
+import com.hlc.mywallet.data.model.resp.BillsResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.OrderInrResp
+import com.hlc.mywallet.data.model.resp.OrderUsdtResp
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
 import com.hlc.mywallet.storage.CacheKeys
 import com.hlc.mywallet.storage.CacheStorage
@@ -35,11 +38,42 @@ class UserRepository @Inject constructor(
         return cacheStorage.getList(CacheKeys.MY_WALLET, MyWalletResp::class.java)
     }
 
-    suspend fun getOrderInrList(yearMonth: String? = null): ApiResult<OrderInrResp> {
+    suspend fun getOrderInrList(page: Int, pageSize: Int,yearMonth: String? = null): ApiResult<OrderInrResp> {
         return safeRequest {
             userService.getOrderInrList(
                 buildJsonBody(
-                    "yearMonth" to yearMonth
+                    "yearMonth" to yearMonth,
+                    "pageNum" to page,
+                    "pageSize" to pageSize
+                )
+            )
+        }
+    }
+
+    suspend fun getUsdtList(page: Int, pageSize: Int, yearMonth: String? = null): ApiResult<OrderUsdtResp> {
+        return safeRequest {
+            userService.getOrderUsdtList(
+                buildJsonBody(
+                    "yearMonth" to yearMonth,
+                    "pageNum" to page,
+                    "pageSize" to pageSize
+                )
+            )
+        }
+    }
+
+    suspend fun checkBinding(): ApiResult<CheckBindingResp> {
+        return safeRequest {
+            userService.checkBinding()
+        }
+    }
+
+    suspend fun geBills(yearMonth: String? = null, type: String? = null): ApiResult<BillsResp> {
+        return safeRequest {
+            userService.getBills(
+                buildJsonBody(
+                    "yearMonth" to yearMonth,
+                    "type" to type
                 )
             )
         }

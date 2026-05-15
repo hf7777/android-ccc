@@ -37,4 +37,10 @@ interface DepositService {
      */
     @POST("/app/deposit/inr/detail")
     suspend fun inrDetail(@Body requestBody: RequestBody): BaseResponse<InrDetailResp>
+
+    /**
+     * 本土货币充值订单取消
+     */
+    @POST("/app/deposit/inr/cancel")
+    suspend fun cancelInrOrder(@Body requestBody: RequestBody): BaseResponse<String>
 }

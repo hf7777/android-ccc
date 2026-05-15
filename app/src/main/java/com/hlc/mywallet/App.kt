@@ -11,6 +11,7 @@ import com.hlc.lib_base.AppContext
 import com.hlc.lib_base.net.UnauthorizedHandler
 import com.hlc.lib_base.net.UnauthorizedHandlerHolder
 import com.hlc.lib_base.router.Router
+import com.hlc.mywallet.common.ActivityStackManager
 import com.hlc.mywallet.manager.UserManager
 import com.hlc.mywallet.router.Routes
 import com.hlc.mywallet.router.RouterConfig
@@ -28,6 +29,7 @@ class App : Application() {
         AppContext.init(this)
         
         try {
+            initActivityStackManager()
             initRouter()
             initUnauthorizedHandler()
             initUtils()
@@ -43,6 +45,10 @@ class App : Application() {
         RouterConfig.init()
         // 添加登录拦截器
         RouterConfig.addLoginInterceptor(userManager)
+    }
+
+    private fun initActivityStackManager() {
+        ActivityStackManager.init(this)
     }
     
     private fun initUnauthorizedHandler() {

@@ -51,7 +51,7 @@
                 android:id="@+id/tab2_icon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:contentDescription="@string/tab_category"
+                android:contentDescription="@string/tab_deposit"
                 android:src="@drawable/ic_home" />
 
             <TextView
@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@string/tab_category"
+                android:text="@string/tab_deposit"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -76,7 +76,7 @@
                 android:id="@+id/tab3_icon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:contentDescription="@string/tab_add"
+                android:contentDescription="@string/tab_tool"
                 android:src="@drawable/ic_home" />
 
             <TextView
@@ -84,7 +84,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@string/tab_add"
+                android:text="@string/tab_tool"
                 android:textSize="12sp" />
         </LinearLayout>
 
@@ -101,7 +101,7 @@
                 android:id="@+id/tab4_icon"
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:contentDescription="@string/tab_chart"
+                android:contentDescription="@string/tab_team"
                 android:src="@drawable/ic_home" />
 
             <TextView
@@ -109,7 +109,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:text="@string/tab_chart"
+                android:text="@string/tab_team"
                 android:textSize="12sp" />
         </LinearLayout>
 

@@ -13,6 +13,7 @@ import com.hlc.lib_base.extension.addDividerItemDecoration
 import com.hlc.lib_base.extension.clearItemDecorations
 import com.hlc.lib_base.extension.dp
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.setOnClick
 import com.hlc.lib_base.router.navigation
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.hideLoading
@@ -22,6 +23,7 @@ import com.hlc.mywallet.adapter.TutorialAdapter
 import com.hlc.mywallet.data.model.resp.BannersResp
 import com.hlc.mywallet.data.model.resp.PriceInfoResp
 import com.hlc.mywallet.databinding.FragmentHomeBinding
+import com.hlc.mywallet.feature.main.MainActivity
 import com.hlc.mywallet.router.Routes
 import com.youth.banner.indicator.CircleIndicator
 import dagger.hilt.android.AndroidEntryPoint
@@ -52,6 +54,14 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
 
         binding.tvLearnMore.onClick {
             navigation(Routes.TUTORIAL_LIST)
+        }
+
+        binding.llWithdraw.onClick {
+            (activity as? MainActivity)?.selectTab(2)
+        }
+
+        setOnClick(binding.llDeposit, binding.clPrice, binding.tvUsdtGo, binding.tvRupeeGo, binding.clRupee) {
+            (activity as? MainActivity)?.selectTab(1)
         }
 
         setupTutorialList()

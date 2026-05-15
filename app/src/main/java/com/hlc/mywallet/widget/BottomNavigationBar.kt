@@ -42,7 +42,7 @@ class BottomNavigationBar @JvmOverloads constructor(
     }
 
     fun selectTab(position: Int) {
-        if (position == currentPosition) return
+//        if (position == currentPosition) return
         
         currentPosition = position
         updateTabStates()

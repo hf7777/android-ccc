@@ -20,11 +20,11 @@ class TutorialActivity : BaseVbActivity<ActivityTutorialBinding>() {
         }
     }
 
-    override fun initView() {
-        binding.titleBar.setOnBackClickListener {
-            finish()
-        }
+    override fun useBaseTitleBar(): Boolean = true
 
+    override fun getBaseTitleBarTitle(): String = getString(R.string.tutorial)
+
+    override fun initView() {
         if (supportFragmentManager.findFragmentById(R.id.fragment_container) == null) {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, TutorialFragment.newInstance())

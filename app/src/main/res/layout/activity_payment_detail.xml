@@ -1,27 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/white"
-    android:orientation="vertical"
     tools:context=".feature.deposit.PaymentDetailActivity">
 
-    <com.hlc.lib_base.widget.TitleBar
-        android:id="@+id/title_bar"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:title="@string/payment_detail" />
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:scrollbars="none">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:paddingHorizontal="15dp">
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:scrollbars="none">
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingHorizontal="15dp">
             <TextView
                 android:id="@+id/tv_status_tip"
                 android:layout_width="wrap_content"
@@ -31,7 +29,6 @@
                 android:text="@string/status"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="15dp"
                 android:layout_marginTop="17dp"/>
             <TextView
                 android:id="@+id/tv_status"
@@ -177,12 +174,18 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_order_no_tip"
                 android:layout_marginTop="12dp"/>
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_payment_tool"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="line4,tv_payment_tool,tv_payment_name,tv_payment_upi,tv_payment_tool_notice"/>
             <TextView
                 android:id="@+id/tv_payment_tool"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:text="@string/payment_tool"
+                android:textColor="@color/text_color_black"
                 app:layout_constraintTop_toBottomOf="@id/line2"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"/>
@@ -338,17 +341,17 @@
 
 
             <TextView
-                android:id="@+id/tv_ifsc_tip"
+                android:id="@+id/tv_account_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:textColor="@color/text_color_black"
-                android:text="@string/ifsc"
+                android:text="@string/account"
                 app:layout_constraintTop_toBottomOf="@id/line6"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"/>
             <TextView
-                android:id="@+id/tv_ifsc"
+                android:id="@+id/tv_account"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="PUNB0387500"
@@ -356,30 +359,36 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_ifsc_tip"
+                app:layout_constraintTop_toBottomOf="@id/tv_account_tip"
                 android:layout_marginTop="7dp"/>
             <ImageView
-                android:id="@+id/iv_copy_ifsc"
+                android:id="@+id/iv_copy_account"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_copy"
-                app:layout_constraintTop_toTopOf="@id/tv_ifsc"
-                app:layout_constraintBottom_toBottomOf="@id/tv_ifsc"
-                app:layout_constraintStart_toEndOf="@id/tv_ifsc"
+                app:layout_constraintTop_toTopOf="@id/tv_account"
+                app:layout_constraintBottom_toBottomOf="@id/tv_account"
+                app:layout_constraintStart_toEndOf="@id/tv_account"
                 android:layout_marginStart="5dp"/>
 
+                <androidx.constraintlayout.widget.Group
+                    android:id="@+id/group_ifsc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:constraint_referenced_ids="tv_ifsc_tip,tv_ifsc,iv_copy_ifsc"/>
+
             <TextView
-                android:id="@+id/tv_account_tip"
+                android:id="@+id/tv_ifsc_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
-                android:text="@string/account"
+                android:text="@string/ifsc"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toEndOf="@id/gl"
-                app:layout_constraintTop_toTopOf="@id/tv_ifsc_tip"
-                app:layout_constraintBottom_toBottomOf="@id/tv_ifsc_tip"/>
+                app:layout_constraintTop_toTopOf="@id/tv_account_tip"
+                app:layout_constraintBottom_toBottomOf="@id/tv_account_tip"/>
             <TextView
-                android:id="@+id/tv_account"
+                android:id="@+id/tv_ifsc"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_black"
@@ -388,17 +397,17 @@
                 android:singleLine="true"
                 tools:text="3875001700234059"
                 android:ellipsize="end"
-                app:layout_constraintStart_toStartOf="@id/tv_account_tip"
-                app:layout_constraintEnd_toStartOf="@id/iv_copy_account"
-                app:layout_constraintTop_toTopOf="@id/tv_ifsc"
-                app:layout_constraintBottom_toBottomOf="@id/tv_ifsc"/>
+                app:layout_constraintStart_toStartOf="@id/tv_ifsc_tip"
+                app:layout_constraintEnd_toStartOf="@id/iv_copy_ifsc"
+                app:layout_constraintTop_toTopOf="@id/tv_account"
+                app:layout_constraintBottom_toBottomOf="@id/tv_account"/>
             <ImageView
-                android:id="@+id/iv_copy_account"
+                android:id="@+id/iv_copy_ifsc"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_copy"
-                app:layout_constraintTop_toTopOf="@id/tv_account"
-                app:layout_constraintBottom_toBottomOf="@id/tv_account"
+                app:layout_constraintTop_toTopOf="@id/tv_ifsc"
+                app:layout_constraintBottom_toBottomOf="@id/tv_ifsc"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="5dp"/>
             
@@ -407,7 +416,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="@color/item_line"
-                app:layout_constraintTop_toBottomOf="@id/tv_ifsc"
+                app:layout_constraintTop_toBottomOf="@id/tv_account"
                 android:layout_marginTop="10dp"/>
             <TextView
                 android:id="@+id/tv_message_tip"
@@ -439,40 +448,41 @@
                 app:layout_constraintBottom_toBottomOf="@id/tv_message"
                 app:layout_constraintStart_toEndOf="@id/tv_message"
                 android:layout_marginStart="5dp"/>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:orientation="horizontal"
-        android:background="@color/white">
-        <com.hjq.shape.view.ShapeButton
-            android:id="@+id/btn_go_pay"
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            app:shape_solidColor="@color/theme"
-            android:gravity="center"
-            android:textColor="@color/text_color_white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:shape_radius="10dp"
-            android:layout_marginEnd="5dp"
-            android:layout_marginStart="15dp"
-            android:text="@string/_1_go_pay"/>
-        <com.hjq.shape.view.ShapeButton
-            android:id="@+id/btn_paid"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_weight="1"
-            app:shape_solidColor="@color/bg_paid"
-            android:gravity="center"
-            android:textColor="@color/text_color_white"
-            android:textStyle="bold"
-            android:textSize="16sp"
-            app:shape_radius="10dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="15dp"
-            android:text="@string/_2_paid"/>
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:background="@color/white">
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btn_go_pay"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:shape_solidColor="@color/theme"
+                android:gravity="center"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:shape_radius="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginStart="15dp"
+                android:text="@string/_1_go_pay"/>
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btn_paid"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                app:shape_solidColor="@color/bg_paid"
+                android:gravity="center"
+                android:textColor="@color/text_color_white"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                app:shape_radius="10dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="15dp"
+                android:text="@string/_2_paid"/>
+        </LinearLayout>
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>

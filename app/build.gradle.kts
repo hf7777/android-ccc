@@ -28,6 +28,7 @@ android {
         }
         release {
             isMinifyEnabled = true
+            isShrinkResources = true
             buildConfigField("String", "BASE_URL", "\"https://api.production.com/\"")
             buildConfigField("String", "ENV", "\"RELEASE\"")
             proguardFiles(
