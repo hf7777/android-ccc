@@ -6,6 +6,7 @@
 
     <!-- 主题色 -->
     <color name="theme">#DE2C2C</color>
+    <color name="theme_transparent_30">#4DDE2C2C</color>
     <color name="theme_dark">#B82424</color>
     <color name="theme_light">#FF5252</color>
     
@@ -25,7 +26,7 @@
     <color name="text_color_gray">#999999</color>
 
     <color name="bg_withdraw">#2C94DE</color>
-    <color name="bg_deposit">#0FDE2C2C</color>
+    <color name="bg_0f_theme">#0FDE2C2C</color>
     <color name="bg_page">#FDF3F3</color>
     <color name="line_deposit">#1ADE2C2C</color>
     <color name="text_market_price">#80DE2C2C</color>
@@ -50,5 +51,6 @@
     <color name="bg_tag_invalid">#D9D9D9</color>
     <color name="tg_color">#29A0DC</color>
     <color name="amount_green">#09C770</color>
+    <color name="status_green">#09C770</color>
 
 </resources>

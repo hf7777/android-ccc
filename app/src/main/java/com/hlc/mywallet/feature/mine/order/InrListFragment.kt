@@ -2,6 +2,9 @@ package com.hlc.mywallet.feature.mine.order
 
 import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter4.QuickAdapterHelper
 import com.chad.library.adapter4.util.setOnDebouncedItemClick
@@ -14,14 +17,17 @@ import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.SpaceItemDecoration
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.OrderInrAdapter
+import com.hlc.mywallet.common.AppEvent
+import com.hlc.mywallet.common.AppEventBus
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.common.DateMonthUtils
 import com.hlc.mywallet.data.model.resp.OrderInr
 import com.hlc.mywallet.databinding.HeaderOrderListBinding
 import com.hlc.mywallet.dialog.StringSelectDialog
-import com.hlc.mywallet.feature.deposit.PaymentDetailActivity
 import com.hlc.mywallet.feature.mine.MineViewModel
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class InrListFragment : BaseLazyListFragment<OrderInr, OrderInrAdapter>() {
@@ -34,12 +40,12 @@ class InrListFragment : BaseLazyListFragment<OrderInr, OrderInrAdapter>() {
 
     override fun initView() {
         super.initView()
-        refreshLayout.setBackgroundResource(R.color.bg_deposit)
-        listAdapter.setOnDebouncedItemClick { adapter, view, i ->
+        refreshLayout.setBackgroundResource(R.color.bg_0f_theme)
+        listAdapter.setOnDebouncedItemClick { _, _, i ->
             val id = listAdapter.getItem(i)?.id
             id?.let {
                 Router.navigation(Routes.PAYMENT_DETAIL)
-                    .with(PaymentDetailActivity.KEY_GRAB_RECORD_ID, it)
+                    .with(Constants.RouterKeys.GRAB_RECORD_ID, it)
                     .navigation(this)
             }
         }
@@ -47,6 +53,13 @@ class InrListFragment : BaseLazyListFragment<OrderInr, OrderInrAdapter>() {
 
     override fun onListViewCreated() {
         addHeaderLayout()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                AppEventBus.flow<AppEvent.OrderInrListRefreshRequested>().collect {
+                    refreshList(showRefreshAnimation = false)
+                }
+            }
+        }
         listHelper = listAdapter.buildAdapterHelper(
             headerSize = 10.dp,
             footerSize = 20.dp

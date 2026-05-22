@@ -26,5 +26,6 @@ data class TeamStatisticsResp(
     val totalSublineCount: Int?,
     val yesterdayCommission: String?,
     val yesterdayDepositCount: Int?,
-    val commissionModelImageUrl: String?
+    val commissionModelImageUrl: String?,
+    val shareText: String?
 )

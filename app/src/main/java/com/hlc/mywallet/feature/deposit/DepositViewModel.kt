@@ -8,6 +8,7 @@ import com.hlc.mywallet.data.model.resp.InrDetailResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.PriceInfoResp
 import com.hlc.mywallet.data.model.resp.UsdtPayResp
+import com.hlc.mywallet.feature.main.MainRepository
 import com.hlc.mywallet.feature.mine.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -17,11 +18,13 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
 class DepositViewModel @Inject constructor(
     private val repository: DepositRepository,
+    private val mainRepository: MainRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
 
@@ -47,9 +50,29 @@ class DepositViewModel @Inject constructor(
     private val _cancelInrOrderFlow = MutableSharedFlow<ApiResult<Unit>>()
     val cancelInrOrderFlow: SharedFlow<ApiResult<Unit>> = _cancelInrOrderFlow.asSharedFlow()
 
-    fun getDepositInrList(page: Int, pageSize: Int = 20) {
+    private val _uploadImageFlow = MutableSharedFlow<ApiResult<String>>()
+    val uploadImageFlow: SharedFlow<ApiResult<String>> = _uploadImageFlow.asSharedFlow()
+
+    private val _inrDepositConfirmFlow = MutableSharedFlow<ApiResult<Unit>>()
+    val inrDepositConfirmFlow: SharedFlow<ApiResult<Unit>> = _inrDepositConfirmFlow.asSharedFlow()
+
+    fun getDepositInrList(
+        page: Int,
+        pageSize: Int = 20,
+        minAmount: String? = null,
+        maxAmount: String? = null,
+        orderAmountSort: String? = null
+    ) {
         viewModelScope.launch {
-            _depositInrResultFlow.emit(repository.getDepositInrList(page, pageSize))
+            _depositInrResultFlow.emit(
+                repository.getDepositInrList(
+                    page = page,
+                    pageSize = pageSize,
+                    minAmount = minAmount,
+                    maxAmount = maxAmount,
+                    orderAmountSort = orderAmountSort
+                )
+            )
         }
     }
 
@@ -67,23 +90,11 @@ class DepositViewModel @Inject constructor(
         }
     }
 
-    /**
-     * 获取钱包列表
-     * 优先从缓存读取，缓存不存在则请求接口
-     */
     fun getMyWallet() {
         viewModelScope.launch {
             _myWalletResultFlow.emit(ApiResult.Loading)
-            
-            // 先尝试从缓存获取
-            val cachedWallets = userRepository.getCachedMyWallet()
-            if (!cachedWallets.isNullOrEmpty()) {
-                _myWalletResultFlow.emit(ApiResult.Success(cachedWallets))
-            } else {
-                // 缓存不存在，请求接口
-                val result = userRepository.getMyWallet()
-                _myWalletResultFlow.emit(result)
-            }
+            val result = userRepository.getMyWallet()
+            _myWalletResultFlow.emit(result)
         }
     }
 
@@ -110,4 +121,22 @@ class DepositViewModel @Inject constructor(
             _cancelInrOrderFlow.emit(result)
         }
     }
+
+    fun uploadImage(file: MultipartBody.Part) {
+        viewModelScope.launch {
+            _uploadImageFlow.emit(ApiResult.Loading)
+            val result = mainRepository.uploadImage(file)
+            _uploadImageFlow.emit(result)
+        }
+    }
+
+    fun inrDepositConfirm(platformOrderNo: String, grabId: String, utr: String, voucherUrl: String) {
+        viewModelScope.launch {
+            _inrDepositConfirmFlow.emit(ApiResult.Loading)
+            val result = repository.inrDepositConfirm(platformOrderNo, grabId, utr, voucherUrl)
+            _inrDepositConfirmFlow.emit(result)
+        }
+    }
+
+
 }

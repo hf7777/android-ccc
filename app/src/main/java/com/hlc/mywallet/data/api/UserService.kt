@@ -3,6 +3,7 @@ package com.hlc.mywallet.data.api
 import com.hlc.lib_base.net.BaseResponse
 import com.hlc.mywallet.data.model.ApiPayload
 import com.hlc.mywallet.data.model.req.LoginReq
+import com.hlc.mywallet.data.model.req.RegisterReq
 import com.hlc.mywallet.data.model.resp.BillsResp
 import com.hlc.mywallet.data.model.resp.CaptchaImage
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
@@ -45,4 +46,29 @@ interface UserService {
      */
     @POST("/app/mine/bills")
     suspend fun getBills(@Body requestBody: RequestBody): BaseResponse<BillsResp>
+
+    /**
+     * 重置密码
+     */
+    @POST("/app/resetLoginPassword")
+    suspend fun resetPassword(@Body requestBody: RequestBody): BaseResponse<String>
+
+    /**
+     * 发送忘记密码otp
+     */
+    @POST("/app/sendForgetPasswordOtp")
+    suspend fun sendPasswordOtp(@Body requestBody: RequestBody): BaseResponse<String>
+
+    /**
+     * 注销
+     */
+    @POST("/app/logout")
+    suspend fun logout(): BaseResponse<String>
+
+    /**
+     * 注册
+     */
+    @POST("/app/register")
+    suspend fun register(@Body registerReq: RegisterReq): BaseResponse<String>
+
 }

@@ -54,6 +54,7 @@ fun ImageView.load(
     @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     Glide.with(this.context)
+        .asBitmap()
         .load(url)
         .apply {
             if (placeholder != 0) placeholder(placeholder)
@@ -82,6 +83,7 @@ fun ImageView.loadRounded(
     )
     
     Glide.with(this.context)
+        .asBitmap()
         .load(url)
         .apply(RequestOptions.bitmapTransform(transformation))
         .apply {
@@ -103,6 +105,7 @@ fun ImageView.loadCircle(
     @DrawableRes error: Int = R.drawable.bg_image_placeholder
 ) {
     Glide.with(this.context)
+        .asBitmap()
         .load(url)
         .apply(RequestOptions.circleCropTransform())
         .apply {

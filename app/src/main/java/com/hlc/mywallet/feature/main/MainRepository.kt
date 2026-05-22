@@ -7,6 +7,10 @@ import com.hlc.lib_base.net.safeRequestWithoutData
 import com.hlc.mywallet.data.api.MainService
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.BindCodeResp
+import com.hlc.mywallet.data.model.resp.BulletinResp
+import com.hlc.mywallet.data.model.resp.CustomerServiceResp
+import com.hlc.mywallet.data.model.resp.SliderCaptchaResp
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 /**
@@ -59,6 +63,40 @@ class MainRepository @Inject constructor(
     suspend fun antBalanceType(): ApiResult<List<BalanceType>> {
         return safeRequest {
             mainService.antBalanceType()
+        }
+    }
+
+    suspend fun sliderCaptcha(): ApiResult<SliderCaptchaResp> {
+        return safeRequest {
+            mainService.sliderCaptcha()
+        }
+    }
+
+    suspend fun uploadImage(file: MultipartBody.Part): ApiResult<String> {
+        return safeRequest {
+            mainService.uploadImage(file)
+        }
+    }
+
+    suspend fun bulletinList(): ApiResult<List<BulletinResp>> {
+        return safeRequest {
+            mainService.bulletinList()
+        }
+    }
+
+    suspend fun confirmBulletin(announcementId: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            mainService.confirmBulletin(
+                buildJsonBody(
+                    "announcementId" to announcementId
+                )
+            )
+        }
+    }
+
+    suspend fun customerService(): ApiResult<List<CustomerServiceResp>> {
+        return safeRequest {
+            mainService.customerService()
         }
     }
 }

@@ -3,7 +3,9 @@ package com.hlc.mywallet.feature.mine
 import com.hlc.lib_base.extension.buildJsonBody
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.net.safeRequest
+import com.hlc.lib_base.net.safeRequestWithoutData
 import com.hlc.mywallet.data.api.UserService
+import com.hlc.mywallet.data.model.req.RegisterReq
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
 import com.hlc.mywallet.data.model.resp.BillsResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
@@ -76,6 +78,43 @@ class UserRepository @Inject constructor(
                     "type" to type
                 )
             )
+        }
+    }
+
+    suspend fun resetPassword(phone: String, password: String, confirmPassword: String, otp: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.resetPassword(
+                buildJsonBody(
+                    "phone" to phone,
+                    "password" to password,
+                    "confirmPassword" to confirmPassword,
+                    "otp" to otp
+                )
+            )
+        }
+    }
+
+    suspend fun sendPasswordOtp(phone: String, captchaId: String, sliderPosition: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.sendPasswordOtp(
+                buildJsonBody(
+                    "phone" to phone,
+                    "captchaId" to captchaId,
+                    "sliderPosition" to sliderPosition
+                )
+            )
+        }
+    }
+
+    suspend fun logout(): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.logout()
+        }
+    }
+
+    suspend fun register(registerReq: RegisterReq): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.register(registerReq)
         }
     }
 }

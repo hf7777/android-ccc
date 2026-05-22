@@ -1,6 +1,7 @@
 package com.hlc.lib_base
 
 import android.os.Bundle
+import android.os.Build
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
@@ -14,14 +15,17 @@ import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.PageStateLayout
 import com.hlc.lib_base.widget.TitleBar
 import com.hlc.lib_base.widget.showLoading
+import com.hlc.lib_base.router.Router
 
 abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(layoutResId) {
 
     private var pageStateLayout: PageStateLayout? = null
     private var pageContentContainer: FrameLayout? = null
     private var baseTitleBar: TitleBar? = null
+    private var hasAppliedActivityTransition = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyActivityTransitions()
         super.onCreate(savedInstanceState)
         attachBaseTitleBarIfNeeded()
         attachPageStateLayout()
@@ -29,6 +33,23 @@ abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(lay
         initView()
         initData()
         observeData()
+    }
+
+    protected fun applyActivityTransitions() {
+        if (hasAppliedActivityTransition) return
+        hasAppliedActivityTransition = true
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE) return
+
+        val enterAnim = intent.getIntExtra(Router.EXTRA_ENTER_ANIM, 0)
+        val exitAnim = intent.getIntExtra(Router.EXTRA_EXIT_ANIM, 0)
+        if (enterAnim != 0 && exitAnim != 0) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, enterAnim, exitAnim)
+        }
+        overrideActivityTransition(
+            OVERRIDE_TRANSITION_CLOSE,
+            R.anim.slide_in_left,
+            R.anim.slide_out_right
+        )
     }
 
     override fun onDestroy() {

@@ -6,7 +6,9 @@ import android.view.ViewGroup
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.hlc.lib_base.extension.dp
+import com.hlc.lib_base.extension.gone
 import com.hlc.lib_base.extension.loadRounded
+import com.hlc.lib_base.extension.visible
 import com.hlc.mywallet.data.model.resp.TutorialResp
 import com.hlc.mywallet.databinding.ItemTutorialBinding
 
@@ -26,9 +28,19 @@ class TutorialAdapter : BaseQuickAdapter<TutorialResp, TutorialAdapter.VH>() {
     override fun onBindViewHolder(holder: VH, position: Int, item: TutorialResp?) {
         item ?: return
         holder.binding.apply {
-            tvDate.text = item.createTime ?: ""
+            tvDate.text = item.updateTime ?: ""
             tvTitle.text = item.title ?: ""
-            ivCover.loadRounded(item.coverImage ?: "", 5)
+            if (item.coverImage.isNullOrBlank()) {
+                ivCover.gone()
+            } else {
+                ivCover.visible()
+                ivCover.loadRounded(item.coverImage, 5)
+            }
+            ivPlayMask.visibility = if (item.videoUrl.isNullOrBlank()) {
+                android.view.View.GONE
+            } else {
+                android.view.View.VISIBLE
+            }
         }
     }
 }

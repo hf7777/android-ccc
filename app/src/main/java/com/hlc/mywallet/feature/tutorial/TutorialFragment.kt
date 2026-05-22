@@ -6,6 +6,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.blankj.utilcode.util.ColorUtils
+import com.chad.library.adapter4.util.setOnDebouncedItemClick
 import com.hlc.lib_base.BaseLazyListFragment
 import com.hlc.lib_base.extension.dp
 import com.hlc.lib_base.net.ApiResult
@@ -20,6 +21,15 @@ import kotlinx.coroutines.launch
 class TutorialFragment : BaseLazyListFragment<TutorialResp, TutorialAdapter>() {
 
     private val viewModel: TutorialViewModel by viewModels()
+
+    override fun initView() {
+        super.initView()
+        listAdapter.setOnDebouncedItemClick { _, _, i ->
+            listAdapter.getItem(i)?.let { tutorial ->
+                TutorialDetailActivity.start(requireContext(), tutorial)
+            }
+        }
+    }
 
     override fun createAdapter(): TutorialAdapter {
         return TutorialAdapter()

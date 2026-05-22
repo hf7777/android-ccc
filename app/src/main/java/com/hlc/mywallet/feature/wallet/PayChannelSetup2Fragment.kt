@@ -11,7 +11,9 @@ import com.hlc.lib_base.extension.enableWhen
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.databinding.FragmentPayChannelSetup2Binding
+import com.hlc.mywallet.extension.setupPasswordVisibilityToggle
 import com.hlc.mywallet.feature.main.MainViewModel
 import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,7 +34,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupArgs = arguments?.getParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS)
+        setupArgs = arguments?.getParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS)
     }
 
     override fun initView() {
@@ -53,17 +55,18 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             btnNext.onClick {
                 applyAndLogin()
             }
+            etOtp.setupPasswordVisibilityToggle()
         }
     }
 
     /**
-     * 先获取授权后登录
+     * 先登录，再轮询授权状态
      */
     private fun applyAndLogin() {
         setupArgs?.let { args ->
             if (args.phone.isNotEmpty()) {
                 val otp = binding.etOtp.text.toString().trim()
-                walletViewModel.applyPermissionAndLogin(args.phone, args.channelCode, otp)
+                walletViewModel.loginAndGetPermissionStatus(args.phone, args.channelCode, otp)
             }
         }
     }
@@ -139,7 +142,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
         fun newInstance(setupArgs: PayChannelSetupArgs?) = PayChannelSetup2Fragment().apply {
             arguments = Bundle().apply {
-                putParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS, setupArgs)
+                putParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS, setupArgs)
             }
         }
     }

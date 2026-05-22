@@ -3,8 +3,7 @@ package com.hlc.mywallet.common
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.flow
 import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 
@@ -17,13 +16,20 @@ import java.util.concurrent.atomic.AtomicLong
  */
 sealed interface AppEvent {
     data object WalletRefreshRequested : AppEvent
+    data object OrderInrListRefreshRequested : AppEvent
+
+    /** 新手任务概览更新，用于首页/我的页余额区展示切换 */
+    data class NewbieSummaryUpdated(
+        val isCompleted: Boolean,
+        val totalReward: Double
+    ) : AppEvent
 }
 
 /**
  * EventBus 内部使用的事件包装体。
  *
  * - key: 事件类型标识，用于按类型过滤
- * - version: 同类型事件的递增版本号，用于避免 replay 场景下重复消费
+ * - version: 同类型事件的递增版本号，用于订阅方去重
  * - event: 真实业务事件
  */
 private data class EventEnvelope(
@@ -38,58 +44,20 @@ private data class EventEnvelope(
  * 设计目标：
  * 1. 提供类似 EventBus 的跨页面消息传递能力
  * 2. 支持按事件类型订阅，业务侧调用尽量简单
- * 3. 在页面短暂不可见后重新进入时，仍能接住最近一次事件
- * 4. 避免 SharedFlow replay 导致同一事件被重复消费
- *
- * 当前实现要点：
- * - 使用 replay = 1，保证最新一条事件可被后续恢复的页面接收到
- * - 为每种事件类型维护独立 version
- * - 订阅时记录已消费 version，避免重复处理同一条 replay 事件
- *
- * 适用场景：
- * - 页面关闭后通知上层列表刷新
- * - 跨模块的轻量 UI 事件广播
- *
- * 不适用场景：
- * - 长期持有状态
- * - 需要严格投递给单一接收者的消息
- * - 高可靠消息队列语义
+ * 3. 多个页面可同时订阅同一事件（广播语义）
+ * 4. 页面重新进入时，新订阅方可接住最近一次 replay 事件
+ * 5. 同一订阅方重复 collect 时，不重复处理同版本事件
  */
 object AppEventBus {
 
-    /**
-     * 每种事件类型各自维护一个递增版本号。
-     * 发布事件时递增，用来标识“这是该类型的第几次事件”。
-     */
     private val eventVersions = ConcurrentHashMap<String, AtomicLong>()
 
-    /**
-     * 每种事件类型最近一次已消费的版本号。
-     * 主要用于处理 SharedFlow replay = 1 带来的重复消费问题。
-     */
-    private val handledVersions = ConcurrentHashMap<String, AtomicLong>()
-
-    /**
-     * 全局事件流。
-     *
-     * replay = 1:
-     * 保留最近一条事件，确保页面从后台返回或重新进入 STARTED 状态时，
-     * 还有机会拿到最近一次广播。
-     *
-     * extraBufferCapacity = 1:
-     * 给 tryEmit 留一点缓冲，减少主线程瞬时发送失败的概率。
-     */
     private val events = MutableSharedFlow<EventEnvelope>(
         replay = 1,
         extraBufferCapacity = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
     )
 
-    /**
-     * 发送一个应用事件。
-     *
-     * 业务侧统一通过这个入口发送，避免为每个事件单独暴露 sendXxx 方法。
-     */
     fun post(event: AppEvent) {
         val key = event::class.java.name
         val version = eventVersions.getOrPut(key) { AtomicLong(0L) }.incrementAndGet()
@@ -97,46 +65,23 @@ object AppEventBus {
     }
 
     /**
-     * 按事件类型订阅。
-     *
-     * 返回的 Flow 只会发出指定类型的事件，并自动做重复消费拦截。
-     * 适合在 Fragment/Activity 中配合 repeatOnLifecycle 使用。
+     * 按事件类型订阅。每个 collect 独立维护已消费版本，互不影响。
      */
     fun <T : AppEvent> flow(eventClass: Class<T>): Flow<T> {
         val key = eventClass.name
-        return events
-            .filter { envelope ->
-                envelope.key == key && shouldConsume(key, envelope.version)
-            }
-            .map { envelope -> eventClass.cast(envelope.event)!! }
-    }
+        return flow {
+            var lastHandledVersion = 0L
 
-    /**
-     * Kotlin 友好的泛型订阅入口。
-     *
-     * 用法：
-     * AppEventBus.flow<AppEvent.WalletRefreshRequested>().collect { ... }
-     */
-    inline fun <reified T : AppEvent> flow(): Flow<T> {
-        return flow(T::class.java)
-    }
+            suspend fun emitIfNew(envelope: EventEnvelope) {
+                if (envelope.key != key || envelope.version <= lastHandledVersion) return
+                lastHandledVersion = envelope.version
+                emit(eventClass.cast(envelope.event)!!)
+            }
 
-    /**
-     * 判定某个事件版本是否应该被当前订阅方消费。
-     *
-     * 由于 SharedFlow 配置了 replay = 1，页面重新订阅时可能再次拿到上一条事件。
-     * 这里通过“同类型事件版本号去重”保证一条事件只被消费一次。
-     */
-    private fun shouldConsume(key: String, version: Long): Boolean {
-        val handledVersion = handledVersions.getOrPut(key) { AtomicLong(0L) }
-        while (true) {
-            val current = handledVersion.get()
-            if (version <= current) {
-                return false
-            }
-            if (handledVersion.compareAndSet(current, version)) {
-                return true
-            }
+            events.replayCache.forEach { emitIfNew(it) }
+            events.collect { emitIfNew(it) }
         }
     }
+
+    inline fun <reified T : AppEvent> flow(): Flow<T> = flow(T::class.java)
 }

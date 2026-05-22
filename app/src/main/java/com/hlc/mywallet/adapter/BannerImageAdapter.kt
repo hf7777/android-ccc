@@ -27,6 +27,7 @@ class BannerImageAdapter(
 
     override fun onBindView(holder: BannerViewHolder, data: BannersResp, position: Int, size: Int) {
         Glide.with(holder.imageView)
+            .asBitmap()
             .load(data.imageUrl)
             .into(holder.imageView)
     }

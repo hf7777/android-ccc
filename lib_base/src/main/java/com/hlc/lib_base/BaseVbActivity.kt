@@ -1,6 +1,7 @@
 package com.hlc.lib_base
 
 import android.os.Bundle
+import android.os.Build
 import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import java.lang.reflect.ParameterizedType
@@ -11,6 +12,7 @@ abstract class BaseVbActivity<VB : ViewBinding> : BaseActivity(0) {
 
     @Suppress("UNCHECKED_CAST")
     override fun onCreate(savedInstanceState: Bundle?) {
+        applyActivityTransitions()
         try {
             val type = javaClass.genericSuperclass as ParameterizedType
             val vbClass = type.actualTypeArguments[0] as Class<VB>
@@ -26,11 +28,19 @@ abstract class BaseVbActivity<VB : ViewBinding> : BaseActivity(0) {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(
+                OVERRIDE_TRANSITION_CLOSE,
+                R.anim.slide_in_left,
+                R.anim.slide_out_right
+            )
+        } else {
+            overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right)
+        }
     }
 
     override fun onDestroy() {
-        _binding = null
         super.onDestroy()
+        _binding = null
     }
 }

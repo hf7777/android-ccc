@@ -10,7 +10,9 @@ import com.hlc.lib_base.extension.enableWhen
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.databinding.FragmentPayChannelSetup1Binding
+import com.hlc.mywallet.extension.setupPasswordVisibilityToggle
 import com.hlc.mywallet.feature.main.MainViewModel
 import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +30,7 @@ class PayChannelSetup1Fragment: BaseVbFragment<FragmentPayChannelSetup1Binding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupArgs = arguments?.getParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS)
+        setupArgs = arguments?.getParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS)
     }
 
     override fun initView() {
@@ -58,6 +60,7 @@ class PayChannelSetup1Fragment: BaseVbFragment<FragmentPayChannelSetup1Binding>(
             btnNext.onClick {
                 checkPin()
             }
+            etPin.setupPasswordVisibilityToggle()
         }
     }
 
@@ -95,7 +98,7 @@ class PayChannelSetup1Fragment: BaseVbFragment<FragmentPayChannelSetup1Binding>(
 
         fun newInstance(setupArgs: PayChannelSetupArgs?) = PayChannelSetup1Fragment().apply {
             arguments = Bundle().apply {
-                putParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS, setupArgs)
+                putParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS, setupArgs)
             }
         }
     }

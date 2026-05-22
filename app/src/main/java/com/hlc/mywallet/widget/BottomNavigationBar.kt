@@ -20,11 +20,11 @@ class BottomNavigationBar @JvmOverloads constructor(
     private var onTabSelectedListener: ((Int) -> Unit)? = null
 
     private val tabs = listOf(
-        TabItem(R.drawable.ic_home, R.drawable.ic_home_selected, R.string.tab_home),
-        TabItem(R.drawable.ic_home, R.drawable.ic_home_selected, R.string.tab_home),
-        TabItem(R.drawable.ic_home, R.drawable.ic_home_selected, R.string.tab_home),
-        TabItem(R.drawable.ic_home, R.drawable.ic_home_selected, R.string.tab_home),
-        TabItem(R.drawable.ic_home, R.drawable.ic_home_selected, R.string.tab_home)
+        TabItem(R.drawable.ic_nav_home, R.drawable.ic_nav_home_selected, R.string.tab_home),
+        TabItem(R.drawable.ic_nav_deposit, R.drawable.ic_nav_deposit_selected, R.string.tab_home),
+        TabItem(R.drawable.ic_nav_mine, R.drawable.ic_nav_mine_selected, R.string.tab_home),
+        TabItem(R.drawable.ic_nav_team, R.drawable.ic_nav_team_selected, R.string.tab_home),
+        TabItem(R.drawable.ic_nav_mine, R.drawable.ic_nav_mine_selected, R.string.tab_home)
     )
 
     init {

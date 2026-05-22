@@ -27,7 +27,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:contentDescription="@string/tab_home"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_nav_mine" />
 
             <TextView
                 android:id="@+id/tab1_text"
@@ -52,7 +52,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:contentDescription="@string/tab_deposit"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_nav_mine" />
 
             <TextView
                 android:id="@+id/tab2_text"
@@ -77,7 +77,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:contentDescription="@string/tab_tool"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_nav_mine" />
 
             <TextView
                 android:id="@+id/tab3_text"
@@ -102,7 +102,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:contentDescription="@string/tab_team"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_nav_mine" />
 
             <TextView
                 android:id="@+id/tab4_text"
@@ -127,7 +127,7 @@
                 android:layout_width="22dp"
                 android:layout_height="22dp"
                 android:contentDescription="@string/tab_mine"
-                android:src="@drawable/ic_home" />
+                android:src="@drawable/ic_nav_mine" />
 
             <TextView
                 android:id="@+id/tab5_text"

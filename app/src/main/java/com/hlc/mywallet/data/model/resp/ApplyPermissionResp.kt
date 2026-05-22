@@ -12,5 +12,6 @@ data class ApplyPermissionResp(
     val token: String?,
     val tokenExpireDate: String?,
     val upiAccount: String?,
-    val valid: Int?
+    val valid: Int?,
+    val errorMsg: String?
 )

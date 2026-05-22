@@ -27,11 +27,19 @@ class OrderUsdtAdapter : BaseQuickAdapter<OrderUsdt, OrderUsdtAdapter.VH>() {
     override fun onBindViewHolder(holder: VH, position: Int, item: OrderUsdt?) {
         item ?: return
         holder.binding.apply {
-            tvOrderNo.text = item.platformOrderNo
-            tvStatus.text = item.status
-            tvPaymentAmount.text = "${item.usdtAmount.formatNumber()} USDT"
-            tvDeposit.text = "+${item.balanceChange.formatNumber()}"
-            tvTime.text = item.createTime
+            tvOrderNo.text = item.platformOrderNo.orEmpty().ifEmpty { "-" }
+            tvStatus.text = item.status.orEmpty().ifEmpty { "-" }
+            tvPaymentAmount.text = if (item.usdtAmount.isNullOrBlank()) {
+                "-"
+            } else {
+                "${item.usdtAmount.formatNumber()} USDT"
+            }
+            tvDeposit.text = if (item.balanceChange.isNullOrBlank()) {
+                "-"
+            } else {
+                "+${item.balanceChange.formatNumber()}"
+            }
+            tvTime.text = item.createTime.orEmpty().ifEmpty { "-" }
         }
     }
 }

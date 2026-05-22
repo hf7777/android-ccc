@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter4.QuickAdapterHelper
-import com.hjq.shape.layout.ShapeConstraintLayout
 import com.hlc.lib_base.BaseLazyListFragment
 import com.hlc.lib_base.extension.buildAdapterHelper
 import com.hlc.lib_base.extension.collectWithError
@@ -14,6 +13,7 @@ import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.SpaceItemDecoration
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.BillsAdapter
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.common.DateMonthUtils
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.Bill
@@ -35,6 +35,7 @@ class BillsFragment : BaseLazyListFragment<Bill, BillsAdapter>() {
     private val mainViewModel: MainViewModel by viewModels()
     private val dateList by lazy { DateMonthUtils.getRecentYearMonths() }
     private var defaultToWithdrawal = false
+    private var defaultToActivity = false
     private var listHelper: QuickAdapterHelper? = null
     private var selectedYearMonth = DateMonthUtils.getCurrentYearMonth()
     private var balanceTypeList: List<BalanceType> = emptyList()
@@ -43,12 +44,13 @@ class BillsFragment : BaseLazyListFragment<Bill, BillsAdapter>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        defaultToWithdrawal = arguments?.getBoolean(KEY_DEFAULT_TO_WITHDRAWAL, false) == true
+        defaultToWithdrawal = arguments?.getBoolean(Constants.RouterKeys.DEFAULT_TO_WITHDRAWAL, false) == true
+        defaultToActivity = arguments?.getBoolean(Constants.RouterKeys.DEFAULT_TO_ACTIVITY, false) == true
     }
 
     override fun initView() {
         super.initView()
-        refreshLayout.setBackgroundResource(R.color.bg_deposit)
+        refreshLayout.setBackgroundResource(R.color.bg_0f_theme)
         getBalanceType()
     }
 
@@ -66,7 +68,7 @@ class BillsFragment : BaseLazyListFragment<Bill, BillsAdapter>() {
     }
 
     override fun requestListData(page: Int) {
-        if (defaultToWithdrawal && selectedBalanceType == null) {
+        if ((defaultToWithdrawal || defaultToActivity) && selectedBalanceType == null) {
             return
         }
         requestBills()
@@ -102,13 +104,17 @@ class BillsFragment : BaseLazyListFragment<Bill, BillsAdapter>() {
                 if (selectedBalanceType == null) {
                     selectedBalanceType = if (defaultToWithdrawal) {
                         balanceTypeList.firstOrNull {
-                            it.value == DEFAULT_WITHDRAWAL_BALANCE_TYPE
+                            it.value == DEFAULT_TYPE_WITHDRAWAL
+                        } ?: balanceTypeList.firstOrNull { it.value == null }
+                    } else if (defaultToActivity) {
+                        balanceTypeList.firstOrNull {
+                            it.value == DEFAULT_TYPE_ACTIVITY_REWARD
                         } ?: balanceTypeList.firstOrNull { it.value == null }
                     } else {
                         balanceTypeList.firstOrNull { it.value == null }
                     }
                     headerBinding?.tvType?.text = selectedBalanceType?.label.orEmpty()
-                    if (defaultToWithdrawal) {
+                    if (defaultToWithdrawal || defaultToActivity) {
                         requestBills()
                     }
                 }
@@ -176,12 +182,16 @@ class BillsFragment : BaseLazyListFragment<Bill, BillsAdapter>() {
 
 
     companion object {
-        private const val DEFAULT_WITHDRAWAL_BALANCE_TYPE = "payin_system_subtract"
-        private const val KEY_DEFAULT_TO_WITHDRAWAL = "default_to_withdrawal"
+        private const val DEFAULT_TYPE_WITHDRAWAL = "payin_system_subtract"
+        private const val DEFAULT_TYPE_ACTIVITY_REWARD = "activity_reward"
 
-        fun newInstance(defaultToWithdrawal: Boolean = false) = BillsFragment().apply {
+        fun newInstance(
+            defaultToWithdrawal: Boolean = false,
+            defaultToActivity: Boolean = false
+        ) = BillsFragment().apply {
             arguments = Bundle().apply {
-                putBoolean(KEY_DEFAULT_TO_WITHDRAWAL, defaultToWithdrawal)
+                putBoolean(Constants.RouterKeys.DEFAULT_TO_WITHDRAWAL, defaultToWithdrawal)
+                putBoolean(Constants.RouterKeys.DEFAULT_TO_ACTIVITY, defaultToActivity)
             }
         }
     }

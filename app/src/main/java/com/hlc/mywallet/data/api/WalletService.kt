@@ -1,17 +1,12 @@
 package com.hlc.mywallet.data.api
 
 import com.hlc.lib_base.net.BaseResponse
-import com.hlc.mywallet.data.model.ApiPayload
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.PayChannelResp
-import com.hlc.mywallet.data.model.resp.TeamStatisticsResp
 import com.hlc.mywallet.data.model.resp.WalletListResp
 import okhttp3.RequestBody
 import retrofit2.http.Body
-import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Query
-import retrofit2.http.QueryMap
 
 interface WalletService {
 
@@ -43,7 +38,7 @@ interface WalletService {
      * 获取授权状态
      */
     @POST("/app/wallet/query")
-    suspend fun applyPermission(@Body requestBody: RequestBody): BaseResponse<ApplyPermissionResp>
+    suspend fun getPermissionStatus(@Body requestBody: RequestBody): BaseResponse<ApplyPermissionResp>
 
     /**
      * 获取授权状态

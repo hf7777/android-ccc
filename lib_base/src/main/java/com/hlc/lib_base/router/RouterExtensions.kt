@@ -3,23 +3,22 @@ package com.hlc.lib_base.router
 import android.app.Activity
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.hlc.lib_base.R
 
 /**
  * Activity 扩展函数
  */
 fun Activity.navigation(path: String, useDefaultAnim: Boolean = true): Boolean {
     val builder = Router.navigation(path)
-    if (useDefaultAnim) {
-        builder.withTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    if (!useDefaultAnim) {
+        builder.withoutTransition()
     }
     return builder.navigation(this)
 }
 
 fun Activity.navigationForResult(path: String, requestCode: Int, useDefaultAnim: Boolean = true) {
     val builder = Router.navigation(path).withRequestCode(requestCode)
-    if (useDefaultAnim) {
-        builder.withTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    if (!useDefaultAnim) {
+        builder.withoutTransition()
     }
     builder.navigation(this)
 }
@@ -29,16 +28,16 @@ fun Activity.navigationForResult(path: String, requestCode: Int, useDefaultAnim:
  */
 fun Fragment.navigation(path: String, useDefaultAnim: Boolean = true): Boolean {
     val builder = Router.navigation(path)
-    if (useDefaultAnim) {
-        builder.withTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    if (!useDefaultAnim) {
+        builder.withoutTransition()
     }
     return builder.navigation(this)
 }
 
 fun Fragment.navigationForResult(path: String, requestCode: Int, useDefaultAnim: Boolean = true) {
     val builder = Router.navigation(path).withRequestCode(requestCode)
-    if (useDefaultAnim) {
-        builder.withTransition(R.anim.slide_in_right, R.anim.slide_out_left)
+    if (!useDefaultAnim) {
+        builder.withoutTransition()
     }
     builder.navigation(this)
 }

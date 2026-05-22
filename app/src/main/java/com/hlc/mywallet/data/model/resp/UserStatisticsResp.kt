@@ -1,5 +1,8 @@
 package com.hlc.mywallet.data.model.resp
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
 /**
  *
  * @author Wade
@@ -20,6 +23,7 @@ package com.hlc.mywallet.data.model.resp
  * data.todayTotal	string	今日交易总额（INR）
  *
  */
+@Parcelize
 data class UserStatisticsResp(
     val avatar: String?,
     val balance: String?,
@@ -32,4 +36,4 @@ data class UserStatisticsResp(
     val todayWithdraw: String?,
     val userCode: String?,
     val username: String?
-)
+): Parcelable

@@ -31,6 +31,7 @@ data class InrDetailResp(
     val balanceChange: String?,
     val beneName: String?,
     val channelCode: String?,
+    val channelName: String?,
     val commissionText: String?,
     val createTime: String?,
     val grabExpireTime: String?,

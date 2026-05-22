@@ -14,6 +14,7 @@ import com.hjq.toast.Toaster
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.data.model.resp.Wallet
 import com.hlc.mywallet.databinding.ActivityEditUpiBinding
 import com.hlc.mywallet.dialog.StringSelectDialog
@@ -27,7 +28,7 @@ class EditUpiActivity : BaseVbActivity<ActivityEditUpiBinding>() {
     private val walletViewModel: WalletViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        wallet = intent.getParcelableExtra(KEY_WALLET)
+        wallet = intent.getParcelableExtra(Constants.RouterKeys.WALLET)
         super.onCreate(savedInstanceState)
     }
 
@@ -107,10 +108,6 @@ class EditUpiActivity : BaseVbActivity<ActivityEditUpiBinding>() {
     override fun useBaseTitleBar(): Boolean = true
 
     override fun getBaseTitleBarTitle(): String? = StringUtils.getString(R.string.edit_upi)
-
-    companion object {
-        const val KEY_WALLET = "wallet"
-    }
 
     override fun initImmersionBar() {
         immersionBar {

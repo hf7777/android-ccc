@@ -17,6 +17,7 @@ import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showConfirmDialog
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.PayChannelAdapter
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
 import com.hlc.mywallet.data.model.resp.PayChannelResp
 import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
@@ -39,7 +40,7 @@ class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapte
 
     override fun initView() {
         super.initView()
-        refreshLayout.setBackgroundColor(resources.getColor(R.color.bg_deposit))
+        refreshLayout.setBackgroundColor(resources.getColor(R.color.bg_0f_theme))
         listAdapter.setOnDebouncedItemClick { adapter, view, i ->
             val item = listAdapter.getItem(i)
             this.currentChannel = item
@@ -121,7 +122,7 @@ class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapte
                 Router.navigation(Routes.PAY_CHANNEL_SETUP)
                     .withBundle(Bundle().apply {
                         putParcelable(
-                            PayChannelSetupActivity.KEY_SETUP_ARGS,
+                            Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS,
                             PayChannelSetupArgs.fromPayChannel(it)
                         )
                     })

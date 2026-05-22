@@ -4,5 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="theme">#DE2C2C</color>
 
+    <color name="text_color_black">#FF000000</color>
+    <color name="text_color_white">#FFFFFFFF</color>
+    <color name="text_color_gray">#999999</color>
+
     <color name="bg_loading_dialog">#88000000</color>
 </resources>

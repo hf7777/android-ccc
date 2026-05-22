@@ -34,12 +34,31 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         android:layout_marginTop="10dp"
         android:textColor="@color/theme"/>
-    <com.hjq.shape.view.ShapeImageView
-        android:id="@+id/iv_cover"
+    <FrameLayout
+        android:id="@+id/fl_cover"
         android:layout_width="110dp"
         android:layout_height="70dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <com.hjq.shape.view.ShapeImageView
+            android:id="@+id/iv_cover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/iv_play_mask"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:background="@drawable/bg_tutorial_play_mask"
+            android:padding="8dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_tutorial_play"
+            android:visibility="gone"
+            app:tint="@android:color/white"
+            tools:visibility="visible" />
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

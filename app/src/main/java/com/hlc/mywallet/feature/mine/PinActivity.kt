@@ -22,6 +22,7 @@ import com.hlc.mywallet.data.model.resp.BindCodeResp
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
 import com.hlc.mywallet.databinding.ActivityBindTgBinding
 import com.hlc.mywallet.databinding.ActivityPinBinding
+import com.hlc.mywallet.extension.setupPasswordVisibilityToggle
 import com.hlc.mywallet.feature.main.MainViewModel
 import com.hlc.mywallet.feature.wallet.WalletViewModel
 import com.hlc.mywallet.router.Routes
@@ -72,6 +73,8 @@ class PinActivity : BaseVbActivity<ActivityPinBinding>() {
                 val otp = binding.etTgOtp.text.toString().trim()
                 mainViewModel.setPin(pin, confirmPin, otp)
             }
+            etPin.setupPasswordVisibilityToggle()
+            etConfirmPin.setupPasswordVisibilityToggle()
         }
     }
 

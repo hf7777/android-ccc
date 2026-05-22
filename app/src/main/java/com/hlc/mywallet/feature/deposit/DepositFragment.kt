@@ -1,5 +1,6 @@
 package com.hlc.mywallet.feature.deposit
 
+import android.os.Bundle
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.KeyboardUtils
 import com.hlc.lib_base.BaseVbFragment
@@ -12,8 +13,16 @@ class DepositFragment : BaseVbFragment<FragmentDepositBinding>() {
 
     private val titles = listOf("INR", "USDT")
     private lateinit var pagerAdapter: DepositPagerAdapter
+    private var showBack = false
 
     override fun initView() {
+        showBack = arguments?.getBoolean(ARG_SHOW_BACK, false) == true
+        binding.titleBar.setBackVisible(showBack)
+        if (showBack) {
+            binding.titleBar.setOnBackClickListener {
+                activity?.finish()
+            }
+        }
         setupViewPager()
         setupMagicIndicator()
     }
@@ -61,6 +70,12 @@ class DepositFragment : BaseVbFragment<FragmentDepositBinding>() {
     }
 
     companion object {
-        fun newInstance() = DepositFragment()
+        private const val ARG_SHOW_BACK = "show_back"
+
+        fun newInstance(showBack: Boolean = false) = DepositFragment().apply {
+            arguments = Bundle().apply {
+                putBoolean(ARG_SHOW_BACK, showBack)
+            }
+        }
     }
 }

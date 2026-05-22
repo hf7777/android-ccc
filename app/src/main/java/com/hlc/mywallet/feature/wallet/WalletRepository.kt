@@ -56,9 +56,9 @@ class WalletRepository @Inject constructor(
         }
     }
 
-    suspend fun applyPermission(phone: String, channelCode: String): ApiResult<ApplyPermissionResp> {
+    suspend fun getPermissionStatus(phone: String, channelCode: String): ApiResult<ApplyPermissionResp> {
         return safeRequest {
-            walletService.applyPermission(buildJsonBody(
+            walletService.getPermissionStatus(buildJsonBody(
                 "phone" to phone,
                 "channelCode" to channelCode
             ))

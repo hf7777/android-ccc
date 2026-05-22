@@ -59,7 +59,7 @@
                 android:id="@+id/cl_remaining"
                 android:layout_width="match_parent"
                 android:layout_height="45dp"
-                app:shape_solidColor="@color/bg_deposit"
+                app:shape_solidColor="@color/bg_0f_theme"
                 app:layout_constraintTop_toBottomOf="@id/tv_status_tip"
                 android:layout_marginTop="15dp"
                 app:shape_radius="10dp">
@@ -299,17 +299,17 @@
                 app:layout_constraintGuide_percent="0.5"/>
 
             <TextView
-                android:id="@+id/tv_bank_tip"
+                android:id="@+id/tv_account_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
-                android:text="@string/bank_s"
+                android:text="@string/account"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toEndOf="@id/gl"
                 app:layout_constraintTop_toTopOf="@id/tv_beneficiary_name_tip"
                 app:layout_constraintBottom_toBottomOf="@id/tv_beneficiary_name_tip"/>
             <TextView
-                android:id="@+id/tv_bank"
+                android:id="@+id/tv_account"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_color_black"
@@ -318,17 +318,17 @@
                 android:singleLine="true"
                 tools:text="Punjab National Bank"
                 android:ellipsize="end"
-                app:layout_constraintStart_toStartOf="@id/tv_bank_tip"
-                app:layout_constraintEnd_toStartOf="@id/iv_copy_bank"
+                app:layout_constraintStart_toStartOf="@id/tv_account_tip"
+                app:layout_constraintEnd_toStartOf="@id/iv_copy_account"
                 app:layout_constraintTop_toTopOf="@id/tv_beneficiary_name"
                 app:layout_constraintBottom_toBottomOf="@id/tv_beneficiary_name"/>
             <ImageView
-                android:id="@+id/iv_copy_bank"
+                android:id="@+id/iv_copy_account"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_copy"
-                app:layout_constraintTop_toTopOf="@id/tv_bank"
-                app:layout_constraintBottom_toBottomOf="@id/tv_bank"
+                app:layout_constraintTop_toTopOf="@id/tv_account"
+                app:layout_constraintBottom_toBottomOf="@id/tv_account"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginStart="5dp"/>
             <View
@@ -341,17 +341,17 @@
 
 
             <TextView
-                android:id="@+id/tv_account_tip"
+                android:id="@+id/tv_message_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="13sp"
                 android:textColor="@color/text_color_black"
-                android:text="@string/account"
+                android:text="@string/message"
                 app:layout_constraintTop_toBottomOf="@id/line6"
                 android:layout_marginTop="10dp"
                 app:layout_constraintStart_toStartOf="parent"/>
             <TextView
-                android:id="@+id/tv_account"
+                android:id="@+id/tv_message"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="PUNB0387500"
@@ -359,16 +359,16 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_account_tip"
+                app:layout_constraintTop_toBottomOf="@id/tv_message_tip"
                 android:layout_marginTop="7dp"/>
             <ImageView
-                android:id="@+id/iv_copy_account"
+                android:id="@+id/iv_copy_message"
                 android:layout_width="15dp"
                 android:layout_height="15dp"
                 android:src="@drawable/ic_copy"
-                app:layout_constraintTop_toTopOf="@id/tv_account"
-                app:layout_constraintBottom_toBottomOf="@id/tv_account"
-                app:layout_constraintStart_toEndOf="@id/tv_account"
+                app:layout_constraintTop_toTopOf="@id/tv_message"
+                app:layout_constraintBottom_toBottomOf="@id/tv_message"
+                app:layout_constraintStart_toEndOf="@id/tv_message"
                 android:layout_marginStart="5dp"/>
 
                 <androidx.constraintlayout.widget.Group
@@ -385,8 +385,8 @@
                 android:text="@string/ifsc"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toEndOf="@id/gl"
-                app:layout_constraintTop_toTopOf="@id/tv_account_tip"
-                app:layout_constraintBottom_toBottomOf="@id/tv_account_tip"/>
+                app:layout_constraintTop_toTopOf="@id/tv_message_tip"
+                app:layout_constraintBottom_toBottomOf="@id/tv_message_tip"/>
             <TextView
                 android:id="@+id/tv_ifsc"
                 android:layout_width="0dp"
@@ -399,8 +399,8 @@
                 android:ellipsize="end"
                 app:layout_constraintStart_toStartOf="@id/tv_ifsc_tip"
                 app:layout_constraintEnd_toStartOf="@id/iv_copy_ifsc"
-                app:layout_constraintTop_toTopOf="@id/tv_account"
-                app:layout_constraintBottom_toBottomOf="@id/tv_account"/>
+                app:layout_constraintTop_toTopOf="@id/tv_message"
+                app:layout_constraintBottom_toBottomOf="@id/tv_message"/>
             <ImageView
                 android:id="@+id/iv_copy_ifsc"
                 android:layout_width="15dp"
@@ -418,36 +418,6 @@
                 android:background="@color/item_line"
                 app:layout_constraintTop_toBottomOf="@id/tv_account"
                 android:layout_marginTop="10dp"/>
-            <TextView
-                android:id="@+id/tv_message_tip"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/message"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/line7"
-                android:layout_marginTop="10dp"
-                android:textSize="13sp"
-                android:textColor="@color/text_color_black"/>
-            <TextView
-                android:id="@+id/tv_message"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/text_color_black"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                tools:text="23955ed"
-                app:layout_constraintStart_toStartOf="@id/tv_message_tip"
-                app:layout_constraintTop_toBottomOf="@id/tv_message_tip"
-                android:layout_marginTop="7dp"/>
-            <ImageView
-                android:id="@+id/iv_copy_message"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
-                android:src="@drawable/ic_copy"
-                app:layout_constraintTop_toTopOf="@id/tv_message"
-                app:layout_constraintBottom_toBottomOf="@id/tv_message"
-                app:layout_constraintStart_toEndOf="@id/tv_message"
-                android:layout_marginStart="5dp"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
         <LinearLayout

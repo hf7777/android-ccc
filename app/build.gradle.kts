@@ -106,6 +106,7 @@ dependencies {
     
     // BaseRecyclerViewAdapterHelper
     implementation(libs.brvah)
+    debugImplementation(libs.leakcanary.android)
     
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -7,12 +7,15 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.blankj.utilcode.util.LogUtils
+import com.hlc.lib_base.R
 
 /**
  * 路由管理器
  * 支持页面跳转、参数传递、自定义协议跳转
  */
 object Router {
+    internal const val EXTRA_ENTER_ANIM = "com.hlc.lib_base.router.EXTRA_ENTER_ANIM"
+    internal const val EXTRA_EXIT_ANIM = "com.hlc.lib_base.router.EXTRA_EXIT_ANIM"
     
     private val routes = mutableMapOf<String, Class<out Activity>>()
     private val interceptors = mutableListOf<RouterInterceptor>()
@@ -66,9 +69,9 @@ object Router {
     class NavigationBuilder(private val path: String) {
         private val bundle = Bundle()
         private var requestCode: Int? = null
-        private var flags: Int? = null
-        private var enterAnim: Int? = null
-        private var exitAnim: Int? = null
+        private var intentFlags: Int? = null
+        private var enterAnim: Int? = R.anim.slide_in_right
+        private var exitAnim: Int? = R.anim.slide_out_left
         
         /**
          * 添加参数
@@ -117,7 +120,7 @@ object Router {
          * 设置 Intent Flags
          */
         fun withFlags(flags: Int): NavigationBuilder {
-            this.flags = flags
+            intentFlags = flags
             return this
         }
         
@@ -127,6 +130,15 @@ object Router {
         fun withTransition(enterAnim: Int, exitAnim: Int): NavigationBuilder {
             this.enterAnim = enterAnim
             this.exitAnim = exitAnim
+            return this
+        }
+
+        /**
+         * 禁用转场动画
+         */
+        fun withoutTransition(): NavigationBuilder {
+            enterAnim = null
+            exitAnim = null
             return this
         }
         
@@ -170,12 +182,16 @@ object Router {
                 // 创建 Intent
                 val intent = Intent(context, targetClass).apply {
                     putExtras(bundle)
-                    flags?.let { addFlags(it) }
+                    if (enterAnim != null && exitAnim != null) {
+                        putExtra(EXTRA_ENTER_ANIM, enterAnim!!)
+                        putExtra(EXTRA_EXIT_ANIM, exitAnim!!)
+                    }
+                    intentFlags?.let { addFlags(it) }
                 }
                 
                 // 如果设置了 CLEAR_TASK 标志，需要 finish 当前 Activity
-                val shouldFinishCurrent = flags != null && 
-                    (flags!! and Intent.FLAG_ACTIVITY_CLEAR_TASK) != 0 &&
+                val shouldFinishCurrent = intentFlags != null &&
+                    (intentFlags!! and Intent.FLAG_ACTIVITY_CLEAR_TASK) != 0 &&
                     context is Activity
                 
                 // 启动 Activity

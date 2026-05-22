@@ -113,14 +113,6 @@
                     app:layout_constraintBottom_toBottomOf="@id/tv_point"
                     app:layout_constraintStart_toEndOf="@id/tv_point"
                     android:text="@string/_1_points_1_rs"/>
-                <ImageView
-                    android:id="@+id/iv_coin"
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:src="@drawable/ic_coin"
-                    app:layout_constraintStart_toStartOf="@id/tv_point"
-                    app:layout_constraintTop_toBottomOf="@id/tv_point"
-                    android:layout_marginTop="17dp"/>
                 <TextView
                     android:id="@+id/tv_balance"
                     android:layout_width="wrap_content"
@@ -130,16 +122,54 @@
                     android:textStyle="bold"
                     android:textSize="30sp"
                     android:layout_marginStart="5dp"
-                    app:layout_constraintStart_toEndOf="@id/iv_coin"
-                    app:layout_constraintTop_toTopOf="@id/iv_coin"
-                    app:layout_constraintBottom_toBottomOf="@id/iv_coin"/>
+                    app:layout_constraintStart_toStartOf="@id/tv_point"
+                    app:layout_constraintTop_toBottomOf="@id/tv_point"
+                    android:layout_marginTop="17dp"/>
+                <LinearLayout
+                    android:id="@+id/ll_balance_newbie"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginTop="19dp"
+                    android:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@id/tv_balance"
+                    app:layout_constraintStart_toStartOf="@id/tv_balance">
+                    <com.hjq.shape.view.ShapeTextView
+                        android:id="@+id/tv_balance_newbie"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:textSize="32sp"
+                        android:text="0"
+                        android:textColor="@color/theme"
+                        tools:text="200"
+                        android:gravity="center"
+                        app:shape_strokeColor="@color/theme"
+                        app:shape_strokeSize="1dp"
+                        app:shape_strokeDashSize="6dp"
+                        app:shape_strokeDashGap="5dp"
+                        app:shape_radius="5dp"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="2dp"/>
+                    <com.hjq.shape.view.ShapeTextView
+                        android:id="@+id/tv_complete_tip"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/complete_newbie_task_to_get_100_bonus"
+                        app:shape_solidColor="@color/theme"
+                        app:shape_radius="5dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingHorizontal="10dp"
+                        android:paddingVertical="3dp"
+                        android:textColor="@color/text_color_white"/>
+                </LinearLayout>
                 <TextView
                     android:id="@+id/tv_earnings"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:layout_constraintTop_toBottomOf="@id/iv_coin"
+                    app:layout_constraintTop_toBottomOf="@id/ll_balance_newbie"
                     android:layout_marginTop="14dp"
-                    app:layout_constraintStart_toStartOf="@id/iv_coin"
+                    app:layout_constraintStart_toStartOf="@id/tv_balance"
                     android:textSize="15sp"
                     android:text="Today's earnings: 0"
                     tools:text="Today's earnings: 0"

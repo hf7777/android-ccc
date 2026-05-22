@@ -3,9 +3,9 @@ package com.hlc.mywallet.feature.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hlc.lib_base.net.ApiResult
-import com.hlc.lib_base.net.safeRequest
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.BindCodeResp
+import com.hlc.mywallet.data.model.resp.BulletinResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.feature.mine.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -43,6 +43,12 @@ class MainViewModel @Inject constructor(
 
     private val _balanceTypeState = MutableStateFlow<ApiResult<List<BalanceType>>>(ApiResult.Idle)
     val balanceTypeState = _balanceTypeState.asStateFlow()
+
+    private val _bulletinListState = MutableStateFlow<ApiResult<List<BulletinResp>>>(ApiResult.Idle)
+    val bulletinListState = _bulletinListState.asStateFlow()
+
+    private val _confirmBulletinState = MutableSharedFlow<ApiResult<Unit>>()
+    val confirmBulletinState = _confirmBulletinState.asSharedFlow()
 
     fun getMyWallet() {
         viewModelScope.launch {
@@ -96,6 +102,24 @@ class MainViewModel @Inject constructor(
     fun antBalanceType() {
         viewModelScope.launch {
             _balanceTypeState.emit(mainRepository.antBalanceType())
+        }
+    }
+
+    fun getBulletinList() {
+        viewModelScope.launch {
+            _bulletinListState.value = ApiResult.Loading
+            _bulletinListState.value = mainRepository.bulletinList()
+        }
+    }
+
+    fun consumeBulletinListState() {
+        _bulletinListState.value = ApiResult.Idle
+    }
+
+    fun confirmBulletin(announcementId: String) {
+        if (announcementId.isBlank()) return
+        viewModelScope.launch {
+            _confirmBulletinState.emit(mainRepository.confirmBulletin(announcementId))
         }
     }
 }

@@ -24,6 +24,7 @@ import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.WalletAdapter
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.data.model.resp.Wallet
 import com.hlc.mywallet.dialog.WalletStatusDialog
 import com.hlc.mywallet.databinding.HeaderWalletBinding
@@ -163,7 +164,7 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
         Router.navigation(Routes.PAY_CHANNEL_SETUP)
             .withBundle(Bundle().apply {
                 putParcelable(
-                    PayChannelSetupActivity.KEY_SETUP_ARGS,
+                    Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS,
                     PayChannelSetupArgs.fromWallet(wallet)
                 )
             })
@@ -202,7 +203,7 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
     private fun handleEditUpi(wallet: Wallet) {
         Router.navigation(Routes.EDIT_UPI)
             .withBundle(Bundle().apply {
-                putParcelable(EditUpiActivity.KEY_WALLET, wallet)
+                putParcelable(Constants.RouterKeys.WALLET, wallet)
             })
             .navigation(this)
     }

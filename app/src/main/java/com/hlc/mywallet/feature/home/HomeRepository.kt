@@ -31,8 +31,12 @@ class HomeRepository @Inject constructor(
     }
 
     suspend fun getTutorials(): ApiResult<List<TutorialResp>> {
-        return safeRequest {
+        val result = safeRequest {
             homeService.tutorials()
         }
+        if (result is ApiResult.Success) {
+            cacheStorage.save(CacheKeys.TUTORIALS, result.data)
+        }
+        return result
     }
 }

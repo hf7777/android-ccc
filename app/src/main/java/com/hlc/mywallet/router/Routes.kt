@@ -41,6 +41,11 @@ object Routes {
     const val PAYMENT_DETAIL = "/payment_detail"
 
     /**
+     * 充值
+     */
+    const val DEPOSIT = "/deposit"
+
+    /**
      * WebView
      */
     const val WEB = "/web"
@@ -51,7 +56,7 @@ object Routes {
     const val DEPOSIT_ORDER_LIST = "/deposit_order_list"
 
     /**
-     * Bills
+     * 账单
      */
     const val BILLS = "/bills"
 
@@ -79,4 +84,29 @@ object Routes {
      * 编辑UPI
      */
     const val EDIT_UPI = "/edit_upi"
+
+    /**
+     * Bonus Center
+     */
+    const val BONUS_CENTER = "/mine/bonus"
+
+    /**
+     * Subline
+     */
+    const val SUBLINE = "/subline"
+
+    /**
+     * 个人信息
+     */
+    const val PERSONAL = "/personal"
+
+    /**
+     * 设置密码
+     */
+    const val SET_PASSWORD = "/set_password"
+
+    /**
+     * 客服
+     */
+    const val CUSTOMER_SERVICE = "/customer_service"
 }

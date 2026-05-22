@@ -20,13 +20,24 @@ class DepositRepository @Inject constructor(
     private val cacheStorage: CacheStorage
 ) {
 
-    suspend fun getDepositInrList(page: Int, pageSize: Int): ApiResult<DepositInrResp> {
+    suspend fun getDepositInrList(
+        page: Int,
+        pageSize: Int,
+        minAmount: String? = null,
+        maxAmount: String? = null,
+        orderAmountSort: String? = null
+    ): ApiResult<DepositInrResp> {
         return safeRequest {
+            val params = mutableListOf<Pair<String, Any?>>(
+                "pageNum" to page,
+                "pageSize" to pageSize
+            )
+            minAmount?.let { params.add("minAmount" to it) }
+            maxAmount?.let { params.add("maxAmount" to it) }
+            orderAmountSort?.let { params.add("orderAmountSort" to it) }
+
             depositService.depositInrList(
-                buildJsonBody(
-                    "pageNum" to page,
-                    "pageSize" to pageSize
-                )
+                buildJsonBody(*params.toTypedArray())
             )
         }
     }
@@ -71,6 +82,19 @@ class DepositRepository @Inject constructor(
             depositService.cancelInrOrder(
                 buildJsonBody(
                     "grabRecordId" to grabRecordId
+                )
+            )
+        }
+    }
+
+    suspend fun inrDepositConfirm(platformOrderNo: String, grabId: String, utr: String, voucherUrl: String): ApiResult<Unit> {
+        return  safeRequestWithoutData {
+            depositService.inrDepositConfirm(
+                buildJsonBody(
+                    "platformOrderNo" to platformOrderNo,
+                    "grabId" to grabId,
+                    "utr" to utr,
+                    "voucherUrl" to voucherUrl
                 )
             )
         }

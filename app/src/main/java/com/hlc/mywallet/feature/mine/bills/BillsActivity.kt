@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.StringUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.databinding.ActivityBillsBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -26,15 +27,12 @@ class BillsActivity : BaseVbActivity<ActivityBillsBinding>() {
     override fun getBaseTitleBarTitle(): String = StringUtils.getString(R.string.bills)
 
     override fun initView() {
-        val defaultToWithdrawal = intent.getBooleanExtra(KEY_DEFAULT_TO_WITHDRAWAL, false)
+        val defaultToWithdrawal = intent.getBooleanExtra(Constants.RouterKeys.DEFAULT_TO_WITHDRAWAL, false)
+        val defaultToActivity = intent.getBooleanExtra(Constants.RouterKeys.DEFAULT_TO_ACTIVITY, false)
         if (supportFragmentManager.findFragmentById(R.id.fl_container) == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fl_container, BillsFragment.newInstance(defaultToWithdrawal))
+                .replace(R.id.fl_container, BillsFragment.newInstance(defaultToWithdrawal, defaultToActivity))
                 .commit()
         }
-    }
-
-    companion object {
-        const val KEY_DEFAULT_TO_WITHDRAWAL = "default_to_withdrawal"
     }
 }

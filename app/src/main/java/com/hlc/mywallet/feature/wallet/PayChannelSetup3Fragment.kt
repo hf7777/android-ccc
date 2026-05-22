@@ -10,6 +10,7 @@ import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.common.ActivityStackManager
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.dialog.StringSelectDialog
 import com.hlc.mywallet.R
 import com.hlc.mywallet.databinding.FragmentPayChannelSetup3Binding
@@ -31,7 +32,7 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setupArgs = arguments?.getParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS)
+        setupArgs = arguments?.getParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS)
     }
 
     override fun initView() {
@@ -112,7 +113,7 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
     companion object {
         fun newInstance(setupArgs: PayChannelSetupArgs?) = PayChannelSetup3Fragment().apply {
             arguments = Bundle().apply {
-                putParcelable(PayChannelSetupActivity.KEY_SETUP_ARGS, setupArgs)
+                putParcelable(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS, setupArgs)
             }
         }
     }

@@ -44,7 +44,9 @@ interface CacheStorage {
  * 缓存键常量
  */
 object CacheKeys {
+    const val LOGIN_PHONE = "login_phone"
     const val PRICE_INFO = "price_info"
+    const val TUTORIALS = "tutorials"
     const val USER_INFO = "user_info"
     const val TEAM_STATISTICS = "team_statistics"
     const val MY_WALLET = "my_wallet"

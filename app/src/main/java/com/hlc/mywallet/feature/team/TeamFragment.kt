@@ -11,10 +11,13 @@ import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.loadRounded
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.router.navigation
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.TeamShareHelper
 import com.hlc.mywallet.data.model.resp.TeamStatisticsResp
 import com.hlc.mywallet.databinding.FragmentTeamBinding
+import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -40,6 +43,22 @@ class TeamFragment : BaseVbFragment<FragmentTeamBinding>() {
                     Toaster.show(getString(R.string.copy_success))
                 }
             }
+        }
+
+        binding.tvViewCommission.onClick {
+            navigation(Routes.BILLS)
+        }
+
+        binding.tvSublineDetail.onClick {
+            navigation(Routes.SUBLINE)
+        }
+
+        binding.apply {
+            ivTelegram.onClick { shareInvite(TeamShareHelper.ShareChannel.TELEGRAM) }
+            ivFacebook.onClick { shareInvite(TeamShareHelper.ShareChannel.FACEBOOK) }
+            ivWhatsapp.onClick { shareInvite(TeamShareHelper.ShareChannel.WHATSAPP) }
+            ivQrcode.onClick { shareInvite(TeamShareHelper.ShareChannel.GENERIC) }
+            ivMore.onClick { shareInvite(TeamShareHelper.ShareChannel.GENERIC) }
         }
         
         viewModel.getTeamStatistics()
@@ -69,6 +88,34 @@ class TeamFragment : BaseVbFragment<FragmentTeamBinding>() {
         )
     }
 
+    private fun shareInvite(channel: TeamShareHelper.ShareChannel) {
+        val shareContent = resolveShareContent()
+        if (shareContent.isNullOrBlank()) {
+            Toaster.show(getString(R.string.share_failed))
+            return
+        }
+        val started = TeamShareHelper.share(
+            context = requireActivity(),
+            shareText = shareContent,
+            channel = channel
+        )
+        if (!started) {
+            Toaster.show(getString(R.string.share_failed))
+        }
+    }
+
+    private fun resolveShareContent(): String? {
+        val stats = teamStatistics ?: return null
+        val shareText = stats.shareText?.trim().orEmpty()
+        val inviteLink = stats.inviteLink?.trim().orEmpty()
+        return when {
+            shareText.isNotEmpty() && inviteLink.isNotEmpty() -> "$shareText\n$inviteLink"
+            shareText.isNotEmpty() -> shareText
+            inviteLink.isNotEmpty() -> inviteLink
+            else -> null
+        }
+    }
+
     private fun updateTeamStatistics(data: TeamStatisticsResp) {
         teamStatistics = data
         binding.apply {
@@ -79,6 +126,7 @@ class TeamFragment : BaseVbFragment<FragmentTeamBinding>() {
             tvTodayCommission.text = data.todayCommission ?: ""
             tvYesterdayCommission.text = data.yesterdayCommission ?: ""
             tvTotalSublineCount.text = data.totalSublineCount.toString()
+            tvSublineDetail.text = "Sublines(${data.totalSublineCount})"
             tvLink.text = data.inviteLink ?: ""
 
             // 构建佣金描述文本，高亮显示百分比
@@ -88,7 +136,7 @@ class TeamFragment : BaseVbFragment<FragmentTeamBinding>() {
             
             val parentRateText = "$parentRate%"
             val grandParentRateText = "$grandParentRate%"
-            val highlightColor = ColorUtils.getColor(R.color.highlight_yellow)
+            val highlightColor = ColorUtils.getColor(R.color.theme)
             val parentStart = commissionText.indexOf(parentRateText)
             val grandParentStart = commissionText.indexOf(
                 grandParentRateText,

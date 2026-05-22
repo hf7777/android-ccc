@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="tag_password_toggle_setup" type="id" />
+    <item name="tag_breathing_scale_animator" type="id" />
+</resources>

@@ -5,6 +5,7 @@ import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.databinding.ActivityPayChannelSetupBinding
 import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +29,7 @@ class PayChannelSetupActivity : BaseVbActivity<ActivityPayChannelSetupBinding>()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setupArgs = intent.getParcelableExtra(KEY_SETUP_ARGS)
+        setupArgs = intent.getParcelableExtra(Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS)
         super.onCreate(savedInstanceState)
     }
 
@@ -87,9 +88,5 @@ class PayChannelSetupActivity : BaseVbActivity<ActivityPayChannelSetupBinding>()
                 else -> 1
             }
         )
-    }
-
-    companion object {
-        const val KEY_SETUP_ARGS = "setup_args"
     }
 }

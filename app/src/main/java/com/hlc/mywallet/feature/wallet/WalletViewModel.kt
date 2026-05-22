@@ -3,6 +3,7 @@ package com.hlc.mywallet.feature.wallet
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hlc.lib_base.extension.buildJsonBody
+import com.hlc.lib_base.net.ApiException
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
@@ -159,27 +160,46 @@ class WalletViewModel @Inject constructor(
         }
     }
 
-    fun applyPermissionAndLogin(phone: String, channelCode: String, otp: String) {
+    fun loginAndGetPermissionStatus(phone: String, channelCode: String, otp: String) {
         viewModelScope.launch {
             _applyPermissionFlow.emit(ApiResult.Loading)
-            // 轮询期间只发送一次事件即可
+
+            when (val loginResult = repository.loginWallet(phone, channelCode, otp)) {
+                is ApiResult.Success -> Unit
+                is ApiResult.Error -> {
+                    _loginWalletFlow.emit(loginResult)
+                    return@launch
+                }
+                else -> return@launch
+            }
+
+            // 登录成功后轮询授权状态
             var hasEmittedApplySuccess = false
             while (true) {
-                when (val applyResult = repository.applyPermission(phone, channelCode)) {
+                when (val applyResult = repository.getPermissionStatus(phone, channelCode)) {
                     is ApiResult.Success -> {
                         if (!hasEmittedApplySuccess) {
                             _applyPermissionFlow.emit(applyResult)
                             hasEmittedApplySuccess = true
                         }
-                        if (applyResult.data.authStatus == "3") {
-                            when (val loginResult = repository.loginWallet(phone, channelCode, otp)) {
-                                is ApiResult.Success -> _loginWalletFlow.emit(loginResult)
-                                is ApiResult.Error -> _loginWalletFlow.emit(loginResult)
-                                else -> Unit
+                        when (applyResult.data.authStatus) {
+                            AUTH_STATUS_FAILED -> {
+                                _applyPermissionFlow.emit(
+                                    ApiResult.Error(
+                                        ApiException.BusinessException(
+                                            AUTH_STATUS_FAILED.toIntOrNull() ?: 5,
+                                            applyResult.data.errorMsg ?: ""
+                                        )
+                                    )
+                                )
+                                break
                             }
-                            break
+                            AUTH_STATUS_SUCCESS -> {
+                                _loginWalletFlow.emit(ApiResult.Success(Unit))
+                                break
+                            }
+                            else -> delay(APPLY_PERMISSION_POLL_INTERVAL_MILLIS)
                         }
-                        delay(APPLY_PERMISSION_POLL_INTERVAL_MILLIS)
                     }
 
                     is ApiResult.Error -> {
@@ -196,6 +216,8 @@ class WalletViewModel @Inject constructor(
 
     companion object {
         private const val STATUS_ENABLE = "enable"
+        private const val AUTH_STATUS_SUCCESS = "3"
+        private const val AUTH_STATUS_FAILED = "5"
         private const val APPLY_PERMISSION_POLL_INTERVAL_MILLIS = 1_000L
     }
 }

@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.chad.library.adapter4.QuickAdapterHelper
+import com.chad.library.adapter4.util.setOnDebouncedItemClick
 import com.hlc.lib_base.BaseLazyListFragment
 import com.hlc.lib_base.extension.buildAdapterHelper
 import com.hlc.lib_base.extension.collectWithError
@@ -15,6 +16,7 @@ import com.hlc.mywallet.adapter.OrderUsdtAdapter
 import com.hlc.mywallet.common.DateMonthUtils
 import com.hlc.mywallet.data.model.resp.OrderUsdt
 import com.hlc.mywallet.databinding.HeaderOrderListBinding
+import com.hlc.mywallet.dialog.OrderDetailsDialog
 import com.hlc.mywallet.dialog.StringSelectDialog
 import com.hlc.mywallet.feature.mine.MineViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,13 @@ class UsdtListFragment : BaseLazyListFragment<OrderUsdt, OrderUsdtAdapter>() {
 
     override fun initView() {
         super.initView()
-        refreshLayout.setBackgroundResource(R.color.bg_deposit)
+        refreshLayout.setBackgroundResource(R.color.bg_0f_theme)
+        listAdapter.setOnDebouncedItemClick { _, _, i ->
+            listAdapter.getItem(i)?.let { order ->
+                OrderDetailsDialog.newInstance(order)
+                    .show(parentFragmentManager, OrderDetailsDialog::class.java.simpleName)
+            }
+        }
     }
 
     override fun onListViewCreated() {
