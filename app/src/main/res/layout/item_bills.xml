@@ -28,29 +28,24 @@
         app:layout_constraintTop_toBottomOf="@id/tv_title"
         android:layout_marginTop="5dp"
         tools:text="00000"/>
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_utr"
+    <TextView
+        android:id="@+id/tv_upi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="tv_utr,iv_copy"/>
+        android:textSize="13sp"
+        android:textColor="@color/text_color_black"
+        app:layout_constraintTop_toBottomOf="@id/tv_date"
+        android:layout_marginTop="5dp"
+        tools:text="upi"/>
     <TextView
         android:id="@+id/tv_utr"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_color_black"
         android:textSize="13sp"
-        app:layout_constraintTop_toBottomOf="@id/tv_date"
+        app:layout_constraintTop_toBottomOf="@id/tv_upi"
         android:layout_marginTop="5dp"
         tools:text="000000"/>
-    <ImageView
-        android:id="@+id/iv_copy"
-        android:layout_width="18dp"
-        android:layout_height="18dp"
-        android:src="@drawable/ic_copy"
-        app:layout_constraintStart_toEndOf="@id/tv_utr"
-        app:layout_constraintTop_toTopOf="@id/tv_utr"
-        app:layout_constraintBottom_toBottomOf="@id/tv_utr"
-        android:layout_marginStart="10sp"/>
     <TextView
         android:id="@+id/tv_amount"
         android:layout_width="wrap_content"

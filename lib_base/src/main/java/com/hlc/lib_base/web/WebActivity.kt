@@ -1,10 +1,12 @@
 package com.hlc.lib_base.web
 
-import android.content.Context
 import android.content.Intent
 import android.view.KeyEvent
 import android.view.ViewGroup
 import android.webkit.WebView
+import androidx.activity.OnBackPressedCallback
+import com.hlc.lib_base.router.Router
+import com.hlc.lib_base.router.RouterParams
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.StringUtils
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -51,13 +53,53 @@ class WebActivity : BaseVbActivity<ActivityWebBinding>() {
 
         setupTitleBar()
         setupWebView()
+        setupBackNavigation()
     }
 
     private fun setupTitleBar() {
         binding.titleBar.apply {
             setTitle(title.ifEmpty { getString(R.string.loading) })
-            setOnBackClickListener { onBackPressed() }
+            setOnBackClickListener { handleBackPressed() }
         }
+    }
+
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    handleBackPressed()
+                }
+            }
+        )
+    }
+
+    private fun handleBackPressed() {
+        if (navigateBackByRoute()) return
+        if (agentWeb?.webCreator?.webView?.canGoBack() == true) {
+            agentWeb?.back()
+            return
+        }
+        finish()
+    }
+
+    /**
+     * 配置了 [EXTRA_BACK_ROUTE_PATH] 时，返回先打开指定路由（如订单页 USDT Tab），再结束当前页。
+     */
+    private fun navigateBackByRoute(): Boolean {
+        val route = intent.getStringExtra(EXTRA_BACK_ROUTE_PATH) ?: return false
+        val builder = Router.navigation(route)
+        val tabIndex = intent.getIntExtra(RouterParams.ORDER_TAB_INDEX, -1)
+        if (tabIndex >= 0) {
+            builder.with(RouterParams.ORDER_TAB_INDEX, tabIndex)
+        }
+        if (intent.getBooleanExtra(RouterParams.CLEAR_DEPOSIT_ON_OPEN, false)) {
+            builder.with(RouterParams.CLEAR_DEPOSIT_ON_OPEN, true)
+        }
+        builder.withFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            .navigation(this)
+        finish()
+        return true
     }
 
     private fun setupWebView() {
@@ -120,5 +162,8 @@ class WebActivity : BaseVbActivity<ActivityWebBinding>() {
     companion object {
         const val EXTRA_URL = "url"
         const val EXTRA_TITLE = "title"
+
+        /** 返回时跳转的路由 path，见 [Router.register] */
+        const val EXTRA_BACK_ROUTE_PATH = "back_route_path"
     }
 }

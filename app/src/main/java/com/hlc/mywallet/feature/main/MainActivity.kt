@@ -1,6 +1,8 @@
 package com.hlc.mywallet.feature.main
 
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import com.hjq.toast.Toaster
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,15 +12,21 @@ import com.blankj.utilcode.util.LogUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.lib_base.extension.collectWithError
+import com.hlc.mywallet.extension.playQuickScaleAnim
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.extension.setOnClickListener
 import com.hlc.mywallet.R
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
+import com.hlc.mywallet.common.AppUpdateCheckEvent
+import com.hlc.mywallet.common.showUpdateDialog
 import com.hlc.mywallet.data.model.resp.BulletinResp
 import com.hlc.mywallet.databinding.ActivityMainBinding
 import com.hlc.mywallet.dialog.BulletinDialog
+import com.hlc.mywallet.dialog.ChoosePlanDialog
+import com.hlc.mywallet.dialog.StatusDescDialog
+import com.hlc.mywallet.dialog.UpdateDialog
 import com.hlc.mywallet.feature.bonus.BonusViewModel
 import com.hlc.mywallet.feature.wallet.WalletFragment
 import com.hlc.mywallet.feature.deposit.DepositFragment
@@ -38,6 +46,7 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     private val pendingBulletins = ArrayDeque<BulletinResp>()
     private var currentPosition = 0
     private var skipNextBulletinChain = false
+    private var lastBackPressTime = 0L
 
     override fun initImmersionBar() {
         immersionBar {
@@ -52,25 +61,31 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     override fun initView() {
         initFragments()
         setupBottomNavigation()
+        setupDoubleBackToExit()
         loadMyWallet()
         loadBulletins()
 
         binding.ivTool.setOnClickListener {
+            binding.ivTool.playQuickScaleAnim()
             selectTab(2)
         }
+
     }
 
     override fun observeData() {
         observeBulletins()
         observeConfirmBulletin()
         observeNewbieSummary()
+        observeAppUpdate()
     }
 
     override fun onResume() {
         super.onResume()
         showNextBulletinIfNeeded()
-        // 查询完成新手任务没有，没有则需要显示引导UI
         bonusViewModel.getNewbieSummary()
+        if (supportFragmentManager.findFragmentByTag(UpdateDialog.TAG) == null) {
+            viewModel.checkUpdate(manual = false)
+        }
     }
 
     private fun initFragments() {
@@ -89,6 +104,24 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         binding.bottomNavigation.setOnTabSelectedListener { position ->
             switchFragment(position)
         }
+    }
+
+    /** 首页连续按两次返回键才退出应用 */
+    private fun setupDoubleBackToExit() {
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    val now = System.currentTimeMillis()
+                    if (now - lastBackPressTime <= BACK_PRESS_INTERVAL_MS) {
+                        finishAffinity()
+                        return
+                    }
+                    lastBackPressTime = now
+                    Toaster.show(getString(R.string.press_back_again_to_exit))
+                }
+            }
+        )
     }
 
     private fun switchFragment(position: Int) {
@@ -178,6 +211,19 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         )
     }
 
+    private fun observeAppUpdate() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.updateCheckEvent.collect { event ->
+                    when (event) {
+                        is AppUpdateCheckEvent.HasUpdate -> showUpdateDialog(event.version)
+                        else -> Unit
+                    }
+                }
+            }
+        }
+    }
+
     private fun observeNewbieSummary() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -240,5 +286,6 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     companion object {
         private const val BULLETIN_STATUS_ENABLE = "enable"
         private const val AUTO_CONFIRM_GO = "N"
+        private const val BACK_PRESS_INTERVAL_MS = 2000L
     }
 }

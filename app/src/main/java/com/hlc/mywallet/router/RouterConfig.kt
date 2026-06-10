@@ -16,6 +16,8 @@ import com.hlc.mywallet.feature.mine.order.OrderActivity
 import com.hlc.mywallet.feature.mine.PinActivity
 import com.hlc.mywallet.feature.mine.SetPasswordActivity
 import com.hlc.mywallet.feature.mine.register.RegisterActivity
+import com.hlc.mywallet.feature.mine.withdraw.WithdrawActivity
+import com.hlc.mywallet.feature.mine.withdraw.WithdrawRecordsActivity
 import com.hlc.mywallet.feature.team.SublineActivity
 import com.hlc.mywallet.feature.tutorial.TutorialActivity
 import com.hlc.mywallet.feature.wallet.EditUpiActivity
@@ -53,7 +55,9 @@ object RouterConfig {
                 Routes.SUBLINE to SublineActivity::class.java,
                 Routes.PERSONAL to PersonalActivity::class.java,
                 Routes.SET_PASSWORD to SetPasswordActivity::class.java,
-                Routes.CUSTOMER_SERVICE to CustomerServiceActivity::class.java
+                Routes.CUSTOMER_SERVICE to CustomerServiceActivity::class.java,
+                Routes.BANK_WITHDRAWAL to WithdrawActivity::class.java,
+                Routes.WITHDRAW_RECORDS to WithdrawRecordsActivity::class.java
             )
         )
         

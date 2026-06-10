@@ -26,5 +26,6 @@ data class Bill(
     val direction: String?,
     val type: String?,
     val typeText: String?,
-    val utr: String?
+    val utr: String?,
+    val upi: String?
 )

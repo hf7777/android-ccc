@@ -11,6 +11,7 @@ android {
 
     defaultConfig {
         minSdk = appConfig["minSdk"] as Int
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildFeatures {

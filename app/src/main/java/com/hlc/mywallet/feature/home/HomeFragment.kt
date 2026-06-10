@@ -1,5 +1,7 @@
 package com.hlc.mywallet.feature.home
 
+import android.content.Intent
+import android.net.Uri
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -13,6 +15,7 @@ import com.hlc.lib_base.BaseVbFragment
 import com.hlc.lib_base.extension.addDividerItemDecoration
 import com.hlc.lib_base.extension.clearItemDecorations
 import com.hlc.lib_base.extension.dp
+import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.gone
@@ -22,6 +25,7 @@ import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.router.navigation
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.hideLoading
+import com.hlc.lib_base.widget.showLoading
 import com.hlc.mywallet.R
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
@@ -82,6 +86,14 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
             }
         }
 
+        binding.llBalanceNewbie.onClick {
+            navigation(Routes.BONUS_CENTER)
+        }
+
+        binding.ivCs.onClick {
+            viewModel.loadCustomerServiceUrl()
+        }
+
         setupTutorialList()
         viewModel.loadData()
     }
@@ -100,6 +112,29 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
                 }
             }
         }
+
+        viewModel.customerServiceUrlFlow.collectWithError(
+            lifecycleOwner = viewLifecycleOwner,
+            onLoading = { showLoading() },
+            onSuccess = { data ->
+                hideLoading()
+                val url = data.url?.trim().orEmpty()
+                if (url.isBlank()) {
+                    Toaster.show(getString(R.string.error_unknown))
+                    return@collectWithError
+                }
+
+                runCatching {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url)))
+                }.onFailure {
+                    Toaster.show(getString(R.string.error_unknown))
+                }
+            },
+            onError = { message ->
+                hideLoading()
+                Toaster.show(message)
+            }
+        )
     }
 
     private fun renderNewbieBalanceUi(event: AppEvent.NewbieSummaryUpdated) {
@@ -157,7 +192,11 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
             setOnBannerListener { _, position ->
                 val banner = data[position]
                 if (!banner.linkValue.isNullOrEmpty()) {
-                    Router.navigation(banner.linkValue)
+                    if (banner.linkValue == Routes.FRAGMENT_TEAM) {
+                        (activity as? MainActivity)?.selectTab(TEAM_TAB_INDEX)
+                    } else {
+                        Router.navigation(banner.linkValue).navigation(this@HomeFragment)
+                    }
                 }
             }
         }
@@ -191,6 +230,8 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
     }
 
     companion object {
+        private const val TEAM_TAB_INDEX = 3
+
         fun newInstance() = HomeFragment()
     }
 }

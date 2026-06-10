@@ -31,6 +31,7 @@ data class UserStatisticsResp(
     val inWithdrawUpiTool: Int?,
     val phone: String?,
     val todayEarnings: String?,
+    val totalEarnings: String?,
     val todayOrders: Int?,
     val todayTotal: String?,
     val todayWithdraw: String?,

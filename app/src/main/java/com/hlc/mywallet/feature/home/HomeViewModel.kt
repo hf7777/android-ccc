@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.blankj.utilcode.util.StringUtils
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.mywallet.R
+import com.hlc.mywallet.data.model.resp.CsUrlResp
+import com.hlc.mywallet.feature.main.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -20,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repository: HomeRepository
+    private val repository: HomeRepository,
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(HomeUiState())
@@ -28,6 +31,16 @@ class HomeViewModel @Inject constructor(
 
     private val _eventFlow = MutableSharedFlow<HomeEvent>()
     val eventFlow: SharedFlow<HomeEvent> = _eventFlow.asSharedFlow()
+
+    private val _customerServiceUrlFlow = MutableSharedFlow<ApiResult<CsUrlResp>>()
+    val customerServiceUrlFlow: SharedFlow<ApiResult<CsUrlResp>> = _customerServiceUrlFlow.asSharedFlow()
+
+    fun loadCustomerServiceUrl() {
+        viewModelScope.launch {
+            _customerServiceUrlFlow.emit(ApiResult.Loading)
+            _customerServiceUrlFlow.emit(mainRepository.getCustomerServiceUrl())
+        }
+    }
 
     fun loadData(isRefresh: Boolean = false) {
         viewModelScope.launch {

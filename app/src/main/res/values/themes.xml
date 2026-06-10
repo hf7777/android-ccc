@@ -22,6 +22,9 @@
         <item name="colorSurface">@color/white</item>
         <item name="colorOnSurface">@color/black</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+        <!-- 配合 AutoSize，保证 EditText 可正常唤起输入法 -->
+        <item name="android:windowSoftInputMode">adjustResize</item>
+
     </style>
 
     <style name="Theme.MyWallet" parent="Base.Theme.MyWallet" />
@@ -31,6 +34,11 @@
         <item name="android:activityOpenExitAnimation">@anim/slide_out_left</item>
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_left</item>
         <item name="android:activityCloseExitAnimation">@anim/slide_out_right</item>
+    </style>
+
+    <style name="Theme.Splash" parent="Base.Theme.MyWallet">
+        <item name="android:windowBackground">@drawable/splash_bg</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
 
     <style name="ButtonStyle">

@@ -30,7 +30,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/cl_user"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent">
                 <ImageView
                     android:id="@+id/iv_avatar"
                     android:layout_width="40dp"
@@ -173,6 +174,17 @@
                     android:textSize="15sp"
                     android:text="Today's earnings: 0"
                     tools:text="Today's earnings: 0"
+                    android:textColor="@color/text_color_white"/>
+                <TextView
+                    android:id="@+id/tv_total_earnings"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/tv_earnings"
+                    android:layout_marginTop="5dp"
+                    app:layout_constraintStart_toStartOf="@id/tv_balance"
+                    android:textSize="15sp"
+                    android:text="Total's earnings: 0"
+                    tools:text="Total's earnings: 0"
                     android:textColor="@color/text_color_white"
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginBottom="14dp"/>
@@ -358,6 +370,37 @@
 
             </com.hjq.shape.layout.ShapeConstraintLayout>
 
+            <com.hjq.shape.layout.ShapeConstraintLayout
+                android:id="@+id/cl_bank_withdraw"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:layout_constraintTop_toBottomOf="@id/cl_deposit"
+                app:shape_solidColor="@color/bg_mine_bank"
+                app:shape_radius="15dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/withdraw"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:layout_marginStart="15dp"/>
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:src="@drawable/ic_arrow_light"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginEnd="15dp"/>
+            </com.hjq.shape.layout.ShapeConstraintLayout>
+
             <TextView
                 android:id="@+id/tv_common"
                 android:layout_width="wrap_content"
@@ -366,7 +409,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 android:text="@string/common_functions"
-                app:layout_constraintTop_toBottomOf="@id/cl_deposit"
+                app:layout_constraintTop_toBottomOf="@id/cl_bank_withdraw"
                 app:layout_constraintStart_toStartOf="parent"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="20dp"/>

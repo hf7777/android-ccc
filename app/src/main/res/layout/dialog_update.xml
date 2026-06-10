@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:shape_radius="20dp"
+    app:shape_solidColor="@color/white">
+
+    <LinearLayout
+        android:id="@+id/layout_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bulletin_dialog_header"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="22dp"
+        android:paddingVertical="15dp">
+
+        <ImageView
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginEnd="10dp"
+            android:contentDescription="@null"
+            android:src="@drawable/ic_update" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/app_update_title"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingHorizontal="20dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="8dp">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="16sp"
+            tools:text="v1.0.1 is available" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:layout_marginTop="16dp"
+            android:max="100"
+            android:progress="0"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="end"
+            android:textColor="@color/text_color_gray"
+            android:textSize="13sp"
+            android:visibility="gone"
+            tools:text="45%"
+            tools:visibility="visible" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
+        android:paddingTop="2dp"
+        android:paddingBottom="10dp">
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btn_later"
+            android:layout_width="120dp"
+            android:layout_height="52dp"
+            android:gravity="center"
+            android:text="@string/later"
+            android:textColor="@color/text_color_gray"
+            android:textSize="16sp"
+            app:shape_radius="12dp" />
+
+        <Space
+            android:id="@+id/space_footer"
+            android:layout_width="16dp"
+            android:layout_height="1dp" />
+
+        <com.hjq.shape.view.ShapeButton
+            android:id="@+id/btn_primary"
+            android:layout_width="120dp"
+            android:layout_height="52dp"
+            android:gravity="center"
+            android:text="@string/update_now"
+            android:textColor="@color/theme"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</com.hjq.shape.layout.ShapeLinearLayout>

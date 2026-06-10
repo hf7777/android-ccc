@@ -12,6 +12,8 @@ import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.OrderInrResp
 import com.hlc.mywallet.data.model.resp.OrderUsdtResp
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
+import com.hlc.mywallet.data.model.resp.WithdrawRecordResp
+import com.hlc.mywallet.data.model.resp.WithdrawStatus
 import com.hlc.mywallet.storage.CacheKeys
 import com.hlc.mywallet.storage.CacheStorage
 import javax.inject.Inject
@@ -115,6 +117,47 @@ class UserRepository @Inject constructor(
     suspend fun register(registerReq: RegisterReq): ApiResult<Unit> {
         return safeRequestWithoutData {
             userService.register(registerReq)
+        }
+    }
+
+    suspend fun getWithdrawStatus(): ApiResult<WithdrawStatus> {
+        return safeRequest {
+            userService.getWithdrawStatus()
+        }
+    }
+
+    suspend fun submitWithdraw(amount: String, pin: String, otp: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.submitWithdraw(
+                buildJsonBody(
+                    "amount" to amount,
+                    "pin" to pin,
+                    "otp" to otp
+                )
+            )
+        }
+    }
+
+    suspend fun startAutoBuy(): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.startAutoBuy()
+        }
+    }
+
+    suspend fun stopAutoBuy(): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.stopAutoBuy()
+        }
+    }
+
+    suspend fun getWithdrawRecords(page: Int, pageSize: Int): ApiResult<WithdrawRecordResp> {
+        return safeRequest {
+            userService.withdrawRecords(
+                buildJsonBody(
+                    "pageNum" to page,
+                    "pageSize" to pageSize
+                )
+            )
         }
     }
 }

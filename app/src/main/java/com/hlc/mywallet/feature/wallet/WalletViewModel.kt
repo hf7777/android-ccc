@@ -2,12 +2,18 @@ package com.hlc.mywallet.feature.wallet
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.blankj.utilcode.util.StringUtils
 import com.hlc.lib_base.extension.buildJsonBody
 import com.hlc.lib_base.net.ApiException
 import com.hlc.lib_base.net.ApiResult
+import com.hlc.mywallet.R
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.CheckBindingResp
+import com.hlc.mywallet.data.model.resp.InstallGuide
+import com.hlc.mywallet.data.model.resp.OtpActiveStatus
 import com.hlc.mywallet.data.model.resp.PayChannelResp
+import com.hlc.mywallet.data.model.req.WalletBankInfoReq
+import com.hlc.mywallet.data.model.resp.WalletBankInfoResp
 import com.hlc.mywallet.data.model.resp.WalletListResp
 import com.hlc.mywallet.feature.mine.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -52,8 +58,18 @@ class WalletViewModel @Inject constructor(
     val deAuthorizeFlow: SharedFlow<ApiResult<Unit>> = _deAuthorizeFlow.asSharedFlow()
     private val _relinkFlow = MutableSharedFlow<ApiResult<Boolean>>()
     val relinkFlow: SharedFlow<ApiResult<Boolean>> = _relinkFlow.asSharedFlow()
+    private val _walletVersionFlow = MutableSharedFlow<ApiResult<String>>()
+    val walletVersionFlow: SharedFlow<ApiResult<String>> = _walletVersionFlow.asSharedFlow()
+    private val _moduleGuideListFlow = MutableSharedFlow<ApiResult<List<InstallGuide>>>()
+    val moduleGuideListFlow: SharedFlow<ApiResult<List<InstallGuide>>> = _moduleGuideListFlow.asSharedFlow()
+    private val _autoActiveStatusFlow = MutableSharedFlow<ApiResult<OtpActiveStatus>>()
+    val autoActiveStatusFlow: SharedFlow<ApiResult<OtpActiveStatus>> = _autoActiveStatusFlow.asSharedFlow()
 
-
+    private val _walletBankCardFlow = MutableSharedFlow<ApiResult<Unit>>()
+    val walletBankCardFlow: SharedFlow<ApiResult<Unit>> = _walletBankCardFlow.asSharedFlow()
+    private val _walletBankCardListFlow = MutableSharedFlow<ApiResult<List<WalletBankInfoResp>>>()
+    val walletBankCardListFlow: SharedFlow<ApiResult<List<WalletBankInfoResp>>> =
+        _walletBankCardListFlow.asSharedFlow()
 
     fun getWalletList(page: Int, pageSize: Int = 20) {
         viewModelScope.launch {
@@ -105,15 +121,11 @@ class WalletViewModel @Inject constructor(
         }
     }
 
-    fun payChannelList(isBuy: Boolean) {
+    fun payChannelList(sellStatus: String = "", buyStatus: String = "", autoBuyStatus: String = "") {
         viewModelScope.launch {
             _payChannelListState.emit(ApiResult.Loading)
             _payChannelListState.emit(
-                if (isBuy) {
-                    repository.payChannelList(buyStatus = STATUS_ENABLE)
-                } else {
-                    repository.payChannelList(sellStatus = STATUS_ENABLE)
-                }
+                repository.payChannelList(buyStatus = buyStatus, sellStatus = sellStatus, autoBuyStatus = autoBuyStatus)
             )
         }
     }
@@ -152,6 +164,84 @@ class WalletViewModel @Inject constructor(
             _relinkFlow.emit(repository.relink(phone, channelCode))
         }
     }
+
+    fun walletVersion() {
+        viewModelScope.launch {
+            _walletVersionFlow.emit(ApiResult.Loading)
+            _walletVersionFlow.emit(repository.walletVersion())
+        }
+    }
+
+    fun moduleGuideList(channelCode: String) {
+        viewModelScope.launch {
+            _moduleGuideListFlow.emit(ApiResult.Loading)
+            _moduleGuideListFlow.emit(repository.moduleGuideList(channelCode))
+        }
+    }
+
+    fun autoActiveStatus(phone: String, channelCode: String) {
+        viewModelScope.launch {
+            _autoActiveStatusFlow.emit(repository.autoActiveStatus(phone, channelCode))
+        }
+    }
+
+    fun getWalletBankCardList(walletId: String) {
+        viewModelScope.launch {
+            _walletBankCardListFlow.emit(ApiResult.Loading)
+            _walletBankCardListFlow.emit(repository.walletBankCardList(walletId))
+        }
+    }
+
+    fun checkUpiPinAndAddWalletBankCard(req: WalletBankInfoReq, isEditMode: Boolean) {
+        viewModelScope.launch {
+            _walletBankCardFlow.emit(ApiResult.Loading)
+            when (val checkResult = repository.checkUpiPin(req)) {
+                is ApiResult.Success -> {
+                    val bankCardId = checkResult.data
+                    when (val pollResult = pollBankCardUntilVerified(bankCardId)) {
+                        is ApiResult.Success -> {
+                            if (isEditMode) {
+                                _walletBankCardFlow.emit(repository.editWalletBankCard(bankCardId))
+                            } else {
+                                _walletBankCardFlow.emit(repository.addWalletBankCard(bankCardId))
+                            }
+                        }
+                        is ApiResult.Error -> {
+                            _walletBankCardFlow.emit(pollResult)
+                        }
+                        else -> Unit
+                    }
+                }
+                is ApiResult.Error -> {
+                    _walletBankCardFlow.emit(checkResult)
+                }
+                else -> Unit
+            }
+        }
+    }
+
+    private suspend fun pollBankCardUntilVerified(bankCardId: String): ApiResult<Unit> {
+        while (true) {
+            when (val detailResult = repository.walletBankCardDetail(bankCardId)) {
+                is ApiResult.Success -> {
+                    if (detailResult.data.status == BANK_CARD_STATUS_VERIFIED) {
+                        return ApiResult.Success(Unit)
+                    } else if (detailResult.data.status == BANK_CARD_STATUS_FAILED) {
+                        return ApiResult.Error(
+                            ApiException.BusinessException(
+                                -1,
+                                detailResult.data.errorMsg?: StringUtils.getString(R.string.error_network)
+                            )
+                        )
+                    }
+                    delay(BANK_CARD_VERIFY_POLL_INTERVAL_MILLIS)
+                }
+                is ApiResult.Error -> return detailResult
+                else -> delay(BANK_CARD_VERIFY_POLL_INTERVAL_MILLIS)
+            }
+        }
+    }
+
 
     fun checkBinding() {
         viewModelScope.launch {
@@ -215,9 +305,11 @@ class WalletViewModel @Inject constructor(
 
 
     companion object {
-        private const val STATUS_ENABLE = "enable"
         private const val AUTH_STATUS_SUCCESS = "3"
         private const val AUTH_STATUS_FAILED = "5"
         private const val APPLY_PERMISSION_POLL_INTERVAL_MILLIS = 1_000L
+        private const val BANK_CARD_STATUS_VERIFIED = "verified"
+        private const val BANK_CARD_STATUS_FAILED = "failed"
+        private const val BANK_CARD_VERIFY_POLL_INTERVAL_MILLIS = 1_000L
     }
 }

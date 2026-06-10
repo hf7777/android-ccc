@@ -4,19 +4,24 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.ColorUtils
 import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
+import com.hjq.shape.layout.ShapeConstraintLayout
+import com.hlc.lib_base.extension.dp
+import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.gone
-import com.hlc.lib_base.extension.load
+import com.hlc.lib_base.extension.invisible
+import com.hlc.lib_base.extension.loadRounded
+import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.setDrawablePadding
 import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.extension.visibleOrGone
-import com.hjq.shape.layout.ShapeConstraintLayout
-import com.hlc.lib_base.extension.onClick
-import com.hlc.mywallet.common.WalletIconMapper
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.WalletIconMapper
 import com.hlc.mywallet.data.model.resp.Wallet
 import com.hlc.mywallet.databinding.ItemWalletBinding
 
@@ -44,9 +49,41 @@ class WalletAdapter(
     override fun onBindViewHolder(holder: VH, position: Int, item: Wallet?) {
         item ?: return
         holder.binding.apply {
-            ivIcon.load(WalletIconMapper.getIconRes(item.channelCode))
+            ivIcon.loadRounded(WalletIconMapper.getIconRes(item.channelCode), radius = 1, scaleType = ImageView.ScaleType.CENTER_INSIDE)
             tvName.text = item.channelName ?: ""
             tvEmail.text = item.upi ?: ""
+
+            tvPhone.visibleOrGone(!item.phone.isNullOrEmpty())
+            tvPhone.text = item.phone ?: ""
+
+            if (item.walletVersion == WALLET_VERSION_1) {
+                tvSelling.text = context.getString(R.string.start_selling)
+                tvRealBalance.gone()
+                tvBankAccount.gone()
+            } else if (item.walletVersion == WALLET_VERSION_2) {
+                tvSelling.text = context.getString(R.string.auto_trade)
+                val balance = item.realBalance.formatNumber()
+                if (balance == "0") {
+                    //余额为0不展示
+                    tvRealBalance.gone()
+                } else {
+                    tvRealBalance.visible()
+                    tvRealBalance.text = item.realBalance.formatNumber()
+                    tvRealBalance.setDrawablePadding(leftResId = R.drawable.ic_coin, leftPadding = 4.dp, drawableWidth = 18.dp, drawableHeight = 18.dp)
+                }
+
+                tvBankAccount.visible()
+                if (item.bankCardAccountNo.isNullOrEmpty()) {
+                    tvBankAccount.text = context.getString(R.string.please_add_bank_card)
+                } else {
+                    tvBankAccount.text = "AC:${item.bankCardAccountNo.takeLast(4)}"
+                }
+
+            } else {
+                tvSelling.text = ""
+                tvRealBalance.gone()
+                tvBankAccount.gone()
+            }
 
             if (item.onlineStatus == ONLINE_STATUS_ENABLE) {
                 clContainer.updateSolidColor(ColorUtils.getColor(R.color.bg_wallet_available))
@@ -103,5 +140,8 @@ class WalletAdapter(
         private const val ONLINE_STATUS_ENABLE = "Y"
         private const val SELL_STATUS_OPEN = "enable"
         private const val CHANNEL_SELL_STATUS_OPEN = "enable"
+
+        const val WALLET_VERSION_1 = "1.0"
+        const val WALLET_VERSION_2 = "2.0"
     }
 }

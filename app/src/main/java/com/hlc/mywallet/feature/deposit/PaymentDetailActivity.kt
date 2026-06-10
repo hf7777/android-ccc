@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.CountDownTimer
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.blankj.utilcode.util.ClipboardUtils
@@ -33,6 +34,7 @@ import com.hlc.mywallet.data.model.resp.InrDetailResp
 import com.hlc.mywallet.databinding.ActivityPaymentDetailBinding
 import com.hlc.mywallet.dialog.UploadProofDialog
 import com.hlc.mywallet.feature.deposit.bean.DepositStatus
+import com.hlc.mywallet.feature.mine.order.OrderNavigation
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -78,6 +80,22 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
             showUploadProofDialog()
         }
         setupCopyActions()
+        setupBackNavigation()
+    }
+
+    /** 返回统一进入订单页 INR 列表（含从充值页抢单进入的场景） */
+    private fun setupBackNavigation() {
+        onBackPressedDispatcher.addCallback(
+            this,
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    OrderNavigation.returnToOrderTab(
+                        this@PaymentDetailActivity,
+                        OrderNavigation.TAB_INR
+                    )
+                }
+            }
+        )
     }
 
     override fun initData() {
@@ -194,10 +212,12 @@ class PaymentDetailActivity : BaseVbActivity<ActivityPaymentDetailBinding>() {
         binding.tvMessage.text = detail.tradeCode
 
         if (detail.grabStatus == DepositStatus.GRAB.state) {
+            binding.llAction.visible()
             binding.btnCancel.visible()
             binding.clRemaining.visible()
             startCountDown(detail.remainingSeconds ?: 0)
         } else {
+            binding.llAction.gone()
             binding.btnCancel.gone()
             binding.clRemaining.gone()
             countDownTimer?.cancel()

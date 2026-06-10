@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="185dp"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_marginStart="15dp"
@@ -14,9 +14,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         app:shape_solidColor="@color/white"
-        app:shape_type="oval"
-        android:padding="2dp"
-        android:scaleType="centerInside"
+        app:shape_radius="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:layout_marginStart="15dp"
@@ -31,7 +29,6 @@
         tools:text="AA"
         app:layout_constraintStart_toEndOf="@id/iv_icon"
         app:layout_constraintTop_toTopOf="@id/iv_icon"
-        android:layout_marginTop="3dp"
         android:layout_marginStart="10dp"/>
     <TextView
         android:id="@+id/tv_email"
@@ -42,7 +39,64 @@
         tools:text="1234@qq.com"
         app:layout_constraintStart_toStartOf="@id/tv_name"
         app:layout_constraintTop_toBottomOf="@id/tv_name"
-        android:layout_marginTop="4dp"/>
+        android:layout_marginTop="3dp"/>
+    <TextView
+        android:id="@+id/tv_real_balance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textStyle="bold"
+        android:textColor="@color/text_color_white"
+        app:layout_constraintStart_toStartOf="@id/tv_email"
+        app:layout_constraintTop_toBottomOf="@id/tv_email"
+        android:layout_marginTop="3dp"
+        android:text="-"/>
+
+    <TextView
+        android:id="@+id/tv_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/text_color_white"
+        app:layout_constraintTop_toBottomOf="@id/tv_real_balance"
+        app:layout_constraintStart_toStartOf="@id/tv_email"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="00000"/>
+    <TextView
+        android:id="@+id/tv_bank_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="@color/text_color_white"
+        app:layout_constraintTop_toBottomOf="@id/tv_phone"
+        app:layout_constraintStart_toStartOf="@id/tv_email"
+        android:layout_marginTop="3dp"
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="00000"/>
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:maxWidth="220dp"
+        android:ellipsize="end"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintTop_toBottomOf="@id/tv_bank_account"
+        app:layout_constraintBottom_toTopOf="@id/ms_switcher"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="1"
+        android:layout_marginBottom="6dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="15dp"
+        android:text="@string/please_relink_the_tool"
+        android:textColor="@color/wallet_tips"/>
+
     <TextView
         android:id="@+id/tv_status"
         android:layout_width="wrap_content"
@@ -62,6 +116,11 @@
         android:id="@+id/ms_switcher"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        app:thumbTint="@color/wallet_switch_thumb_tint"
+        app:trackTint="@color/wallet_switch_track_tint"
+        app:trackDecorationTint="@color/wallet_switch_track_decoration_tint"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/tv_tips"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginBottom="3dp"
@@ -77,20 +136,7 @@
         android:layout_marginStart="10dp"
         app:layout_constraintTop_toTopOf="@id/ms_switcher"
         app:layout_constraintBottom_toBottomOf="@id/ms_switcher"/>
-    <TextView
-        android:id="@+id/tv_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:maxWidth="220dp"
-        android:ellipsize="end"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@id/ms_switcher"
-        android:layout_marginBottom="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_marginStart="15dp"
-        android:text="@string/please_relink_the_tool"
-        android:textColor="@color/wallet_tips"/>
+
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btn_status"
         android:layout_width="85dp"
@@ -105,6 +151,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginEnd="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_operate"
         android:layout_marginBottom="12dp"/>
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btn_operate"
@@ -117,7 +164,11 @@
         android:text="@string/operates"
         app:shape_solidColor="@color/black"
         app:shape_radius="10dp"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintVertical_bias="1"
+        app:layout_constraintTop_toBottomOf="@id/tv_status"
         app:layout_constraintEnd_toEndOf="@id/btn_status"
         app:layout_constraintBottom_toTopOf="@id/btn_status"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="20dp"/>
 </com.hjq.shape.layout.ShapeConstraintLayout>

@@ -51,10 +51,14 @@ data class Wallet(
     val phone: String?,
     val sellStatus: String?,
     val status: String?,
-    val timezone: @RawValue Any?,
     val updateBy: Long?,
     val updateTime: String?,
     val upi: String?,
     val username: String?,
-    val walletType: String?
+    val walletType: String?,
+    val walletVersion: String?,
+    val realBalance: String?,
+    val description: String?,
+    val multiCard: Int,
+    val bankCardAccountNo: String?
 ) : Parcelable

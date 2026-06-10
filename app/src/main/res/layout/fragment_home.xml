@@ -36,7 +36,10 @@
                 android:layout_height="150dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginHorizontal="15dp"
+                app:banner_radius="15dp"
+                android:layout_marginTop="15dp"/>
 
             <TextView
                 android:id="@+id/tv_point"
@@ -356,4 +359,20 @@
     </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <com.hjq.shape.view.ShapeImageView
+        android:id="@+id/iv_cs"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="230dp"
+        android:src="@drawable/ic_cs"
+        app:shape_type="oval"
+        android:padding="8dp"
+        app:shape_shadowColor="@color/text_color_gray"
+        app:shape_shadowOffsetX="3dp"
+        app:shape_shadowOffsetY="3dp"
+        app:shape_shadowSize="3dp"
+        android:layout_marginEnd="10dp"
+        app:shape_solidColor="@color/bg_cs"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

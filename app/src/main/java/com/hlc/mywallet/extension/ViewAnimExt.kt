@@ -5,6 +5,8 @@ import android.animation.PropertyValuesHolder
 import android.animation.ValueAnimator
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.view.animation.OvershootInterpolator
 import com.hlc.mywallet.R
 
 private const val BREATH_MIN_SCALE = 0.92f
@@ -46,4 +48,34 @@ fun View.stopBreathingScaleAnimation() {
     animate().cancel()
     scaleX = 1f
     scaleY = 1f
+}
+
+/**
+ * 快速缩放点击反馈：放大后缩回原尺寸
+ */
+fun View.playQuickScaleAnim(
+    peakScale: Float = 1.12f,
+    expandDurationMs: Long = 150L,
+    shrinkDurationMs: Long = 170L,
+) {
+    animate().cancel()
+    pivotX = width / 2f
+    pivotY = height / 2f
+    scaleX = 1f
+    scaleY = 1f
+
+    animate()
+        .scaleX(peakScale)
+        .scaleY(peakScale)
+        .setDuration(expandDurationMs)
+        .setInterpolator(AccelerateDecelerateInterpolator())
+        .withEndAction {
+            animate()
+                .scaleX(1f)
+                .scaleY(1f)
+                .setDuration(shrinkDurationMs)
+                .setInterpolator(AccelerateDecelerateInterpolator())
+                .start()
+        }
+        .start()
 }

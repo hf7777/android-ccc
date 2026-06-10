@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="15dp"
+    android:paddingBottom="24dp"
+    app:shape_radiusInTopLeft="15dp"
+    app:shape_radiusInTopRight="15dp"
+    app:shape_solidColor="@color/white">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="@string/security_verification"
+        android:textColor="@color/text_color_black"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="4dp"
+        android:padding="6dp"
+        android:src="@drawable/ic_dialog_close"
+        app:layout_constraintBottom_toBottomOf="@id/tv_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_title" />
+
+    <View
+        android:id="@+id/line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/item_line"
+        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+    <TextView
+        android:id="@+id/tv_pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/pin"
+        android:textColor="@color/text_color_black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/line" />
+
+    <com.hjq.shape.view.ShapeEditText
+        android:id="@+id/et_pin"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_marginTop="9dp"
+        android:gravity="center_vertical"
+        android:hint="@string/_6_digits"
+        android:inputType="numberPassword"
+        android:maxLength="6"
+        android:paddingHorizontal="15dp"
+        android:textColor="@color/text_color_black"
+        android:textColorHint="@color/edit_hint"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_pin"
+        app:shape_radius="10dp"
+        app:shape_strokeColor="@color/edit_stroke_normal"
+        app:shape_strokeSize="1dp" />
+
+    <TextView
+        android:id="@+id/tv_tg_otp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="11dp"
+        android:text="@string/telegram_otp"
+        android:textColor="@color/text_color_black"
+        android:textSize="15sp"
+        app:layout_constraintTop_toBottomOf="@id/et_pin" />
+
+    <com.hjq.shape.view.ShapeEditText
+        android:id="@+id/et_tg_otp"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginTop="9dp"
+        android:gravity="center_vertical"
+        android:hint="@string/enter_otp_code"
+        android:inputType="number"
+        android:paddingHorizontal="15dp"
+        android:textColor="@color/text_color_black"
+        android:textColorHint="@color/edit_hint"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_tg_otp"
+        app:shape_radius="10dp"
+        app:shape_strokeColor="@color/edit_stroke_normal"
+        app:shape_strokeSize="1dp" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_send"
+        android:layout_width="80dp"
+        android:layout_height="36dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/send"
+        android:textColor="@color/text_color_white"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/et_tg_otp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/et_tg_otp"
+        android:layout_marginEnd="8dp"
+        app:shape_radius="10dp"
+        app:shape_solidColor="@color/theme"
+        app:shape_solidDisabledColor="@color/btn_disabled" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_confirm"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="35dp"
+        android:enabled="false"
+        android:gravity="center"
+        android:text="@string/confirm"
+        android:textColor="@color/text_color_white"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/et_tg_otp"
+        app:shape_radius="10dp"
+        app:shape_solidColor="@color/theme"
+        app:shape_solidDisabledColor="@color/btn_disabled" />
+</com.hjq.shape.layout.ShapeConstraintLayout>

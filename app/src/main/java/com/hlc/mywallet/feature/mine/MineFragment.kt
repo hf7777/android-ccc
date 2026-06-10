@@ -7,6 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.blankj.utilcode.util.ClipboardUtils
+import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter4.util.setOnDebouncedItemClick
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbFragment
@@ -18,6 +19,7 @@ import com.hlc.lib_base.extension.loadCircle
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.extension.setDrawablePadding
 import com.hlc.lib_base.extension.visible
+import com.hlc.lib_base.extension.visibleOrGone
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.navigation
 import com.hlc.lib_base.widget.SpaceItemDecoration
@@ -28,12 +30,15 @@ import com.hlc.mywallet.adapter.MineFunctionAdapter
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
 import com.hlc.mywallet.common.Constants
+import com.hlc.mywallet.data.model.resp.CheckBindingResp
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
 import com.hlc.mywallet.databinding.FragmentMineBinding
 import com.hlc.mywallet.extension.startBreathingScaleAnimation
 import com.hlc.mywallet.extension.stopBreathingScaleAnimation
 import com.hlc.mywallet.feature.main.MainActivity
 import com.hlc.mywallet.feature.mine.bean.MineFunction
+import com.hlc.mywallet.feature.wallet.WalletViewModel
+import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -42,10 +47,12 @@ import kotlinx.coroutines.launch
 class MineFragment : BaseVbFragment<FragmentMineBinding>() {
 
     private val viewModel: MineViewModel by viewModels()
+    private val walletViewModel: WalletViewModel by viewModels()
     private val commonAdapter by lazy { MineFunctionAdapter() }
     private val otherAdapter by lazy { MineFunctionAdapter() }
 
     private var userStatistics: UserStatisticsResp? = null
+    private var checkBind: CheckBindingResp? = null
 
     override fun initView() {
         binding.tvBalance.setDrawablePadding(leftResId = R.drawable.ic_coin, leftPadding = 4.dp, drawableWidth = 18.dp, drawableHeight = 18.dp)
@@ -75,6 +82,10 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                 (activity as? MainActivity)?.selectTab(2)
             }
 
+            clBankWithdraw.onClick {
+                navigation(Routes.BANK_WITHDRAWAL)
+            }
+
             clUser.onClick {
                 userStatistics?.let { statistics ->
                     Router.navigation(Routes.PERSONAL)
@@ -83,6 +94,10 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                         })
                         .navigation(this@MineFragment)
                 }
+            }
+
+            llBalanceNewbie.onClick {
+                navigation(Routes.BONUS_CENTER)
             }
 
             commonAdapter.setOnDebouncedItemClick { adapter, view, i ->
@@ -116,10 +131,15 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                     }
                     1 -> {
                         // Lucky Draw
+                        Toaster.show(getString(R.string.coming_soon))
                     }
                     2 -> {
                         // 绑定 tg
-                        navigation(Routes.BIND_TG)
+                        if (checkBind?.tgBound == true) {
+                            Toaster.show(getString(R.string.already_bound))
+                        } else {
+                            navigation(Routes.BIND_TG)
+                        }
                     }
                     3 -> {
                         // Password
@@ -140,12 +160,24 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                 }
             }
         }
+        binding.clBankWithdraw.gone()
         setupRecyclerView()
         viewModel.getUserStatistics()
+        loadWalletVersionVisibility()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        walletViewModel.checkBinding()
     }
 
     private fun refreshData() {
         viewModel.getUserStatistics()
+        loadWalletVersionVisibility()
+    }
+
+    private fun loadWalletVersionVisibility() {
+        walletViewModel.walletVersion()
     }
 
     override fun observeData() {
@@ -169,9 +201,39 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                AppEventBus.flow<AppEvent.NewbieSummaryUpdated>().collect(::renderNewbieBalanceUi)
+                launch {
+                    AppEventBus.flow<AppEvent.NewbieSummaryUpdated>().collect(::renderNewbieBalanceUi)
+                }
+                launch {
+                    AppEventBus.flow<AppEvent.MineRefreshRequested>().collect {
+                        refreshData()
+                    }
+                }
             }
         }
+
+        walletViewModel.checkBindingFlow.collectWithError(
+            lifecycleOwner = viewLifecycleOwner,
+            onLoading = {
+
+            },
+            onSuccess = { data ->
+                this.checkBind = data
+            },
+            onError = { errorMsg ->
+            }
+        )
+
+        walletViewModel.walletVersionFlow.collectWithError(
+            lifecycleOwner = viewLifecycleOwner,
+            onLoading = {},
+            onSuccess = { version ->
+                binding.clBankWithdraw.visibleOrGone(version == WALLET_VERSION_2)
+            },
+            onError = {
+                binding.clBankWithdraw.gone()
+            }
+        )
     }
 
     private fun renderNewbieBalanceUi(event: AppEvent.NewbieSummaryUpdated) {
@@ -200,6 +262,7 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
             tvId.text = data.userCode ?: ""
             tvBalance.text = data.balance.formatNumber()
             tvEarnings.text = getString(R.string.today_s_earnings, data.todayEarnings ?: "0")
+            tvTotalEarnings.text = getString(R.string.total_s_earnings, data.totalEarnings ?: "0")
             tvInTransaction.text = data.inTransaction?.toString() ?: "0"
             tvTodayWithdraw.text = data.todayWithdraw ?: "0"
             tvWithdrawUpiTool.text = getString(R.string.withdraw_upi_tool, data.inWithdrawUpiTool ?:"0")
@@ -253,6 +316,8 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
     }
 
     companion object {
+        private const val WALLET_VERSION_2 = "2.0"
+
         fun newInstance() = MineFragment()
     }
 }

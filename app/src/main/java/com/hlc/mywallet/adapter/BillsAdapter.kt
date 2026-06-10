@@ -7,9 +7,11 @@ import com.blankj.utilcode.util.ClipboardUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.hjq.toast.Toaster
+import com.hlc.lib_base.extension.dp
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.gone
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.setDrawablePadding
 import com.hlc.lib_base.extension.visible
 import com.hlc.mywallet.R
 import com.hlc.mywallet.data.model.resp.Bill
@@ -39,12 +41,25 @@ class BillsAdapter : BaseQuickAdapter<Bill, BillsAdapter.VH>() {
             tvPoint.text =
                 context.getString(R.string.a_points_after_balance, item.afterBalance.formatNumber())
 
-            if (item.utr.isNullOrEmpty()) {
-                groupUtr.gone()
+            tvUpi.setDrawablePadding(rightResId = R.drawable.ic_copy, rightPadding = 3.dp, drawableWidth = 16.dp, drawableHeight = 16.dp)
+            if (item.upi.isNullOrEmpty()) {
+                tvUpi.gone()
             } else {
-                groupUtr.visible()
+                tvUpi.visible()
+                tvUpi.text = context.getString(R.string.upi_format, item.upi)
+                tvUpi.onClick {
+                    ClipboardUtils.copyText(item.upi)
+                    Toaster.show(R.string.copy_success)
+                }
+            }
+
+            tvUtr.setDrawablePadding(rightResId = R.drawable.ic_copy, rightPadding = 3.dp, drawableWidth = 16.dp, drawableHeight = 16.dp)
+            if (item.utr.isNullOrEmpty()) {
+                tvUtr.gone()
+            } else {
+                tvUtr.visible()
                 tvUtr.text = context.getString(R.string.utr_format, item.utr)
-                ivCopy.onClick {
+                tvUtr.onClick {
                     ClipboardUtils.copyText(item.utr)
                     Toaster.show(R.string.copy_success)
                 }

@@ -23,13 +23,14 @@ android {
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115/\"")
+            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115\"")
             buildConfigField("String", "ENV", "\"DEV\"")
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            buildConfigField("String", "BASE_URL", "\"https://api.production.com/\"")
+//            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115\"")
+            buildConfigField("String", "BASE_URL", "\"https://appapi.aapay.app\"")
             buildConfigField("String", "ENV", "\"RELEASE\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -69,6 +70,13 @@ android {
     }
 }
 
+android.applicationVariants.configureEach {
+    outputs.configureEach {
+        val apkOutput = this as com.android.build.gradle.internal.api.BaseVariantOutputImpl
+        apkOutput.outputFileName = "AApay_v$versionName.apk"
+    }
+}
+
 configurations.all {
     exclude(group = "com.android.support", module = "support-compat")
     exclude(group = "com.android.support", module = "support-core-utils")
@@ -79,6 +87,7 @@ configurations.all {
 dependencies {
     implementation(project(":lib_base"))
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.core.splashscreen)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
@@ -101,6 +110,9 @@ dependencies {
     implementation(libs.immersionbar)
     implementation(libs.immersionbar.ktx)
     
+    // Media3：教程 MP4 直链播放（仅 exoplayer 模块）
+    implementation(libs.androidx.media3.exoplayer)
+
     // Banner
     implementation(libs.banner)
     

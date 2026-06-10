@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.blankj.utilcode.util.ColorUtils
+import com.blankj.utilcode.util.StringUtils
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.hjq.shape.view.ShapeTextView
@@ -12,7 +13,7 @@ import com.hlc.mywallet.common.WalletIconMapper
 import com.hlc.mywallet.data.model.resp.PayChannelResp
 import com.hlc.mywallet.databinding.ItemPayChannelBinding
 
-class PayChannelAdapter : BaseQuickAdapter<PayChannelResp, PayChannelAdapter.VH>() {
+class PayChannelAdapter(private val isAutoBuy: Boolean) : BaseQuickAdapter<PayChannelResp, PayChannelAdapter.VH>() {
 
     class VH(
         parent: ViewGroup,
@@ -32,7 +33,12 @@ class PayChannelAdapter : BaseQuickAdapter<PayChannelResp, PayChannelAdapter.VH>
         holder.binding.apply {
             tvChannel.text = item.channelName
             ivChannel.setImageResource(WalletIconMapper.getIconRes(item.channelCode))
-            tvBuy.updateTagStatus(item.buyStatus == STATUS_ENABLE)
+            tvBuy.text = if (isAutoBuy) StringUtils.getString(R.string.auto_buy) else StringUtils.getString(R.string.buy)
+            if (isAutoBuy) {
+                tvBuy.updateTagStatus(item.autoBuyStatus == STATUS_ENABLE)
+            } else {
+                tvBuy.updateTagStatus(item.buyStatus == STATUS_ENABLE)
+            }
             tvSell.updateTagStatus(item.sellStatus == STATUS_ENABLE)
         }
     }

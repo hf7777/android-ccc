@@ -33,9 +33,39 @@
                 app:layout_constraintStart_toStartOf="@id/tv_opt_title"
                 android:textColor="@color/text_color_black"
                 android:textSize="15sp"
-                android:text="@string/_1_please_click_the_send_otp"
+                tools:text="@string/_1_please_click_the_send_otp"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="8dp"/>
+            <androidx.constraintlayout.widget.Group
+                android:id="@+id/group_auto_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:constraint_referenced_ids="btn_active_otp,btn_guide"/>
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btn_guide"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/install_guide"
+                android:textSize="12sp"
+                app:shape_solidColor="@color/highlight_yellow"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_tips"
+                android:layout_marginTop="15dp"/>
+            <com.hjq.shape.view.ShapeButton
+                android:id="@+id/btn_active_otp"
+                style="@style/ButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="@string/active_otp"
+                android:textSize="12sp"
+                app:shape_solidColor="@color/btn_active"
+                android:paddingHorizontal="10dp"
+                app:layout_constraintEnd_toStartOf="@id/btn_guide"
+                app:layout_constraintTop_toTopOf="@id/btn_guide"
+                app:layout_constraintBottom_toBottomOf="@id/btn_guide"
+                android:layout_marginEnd="15dp"/>
             <TextView
                 android:id="@+id/tv_your_phone"
                 android:layout_width="wrap_content"
@@ -45,7 +75,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_tips"
+                app:layout_constraintTop_toBottomOf="@id/btn_guide"
                 android:layout_marginTop="16dp"/>
             <com.hjq.shape.view.ShapeTextView
                 android:id="@+id/et_phone"
@@ -100,6 +130,7 @@
                 android:textColor="@color/text_color_white"
                 android:textSize="14sp"
                 android:textStyle="bold"
+                android:enabled="false"
                 app:shape_solidDisabledColor="@color/btn_disabled"
                 app:layout_constraintTop_toTopOf="@id/et_otp"
                 app:layout_constraintBottom_toBottomOf="@id/et_otp"

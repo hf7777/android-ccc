@@ -11,7 +11,6 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.gyf.immersionbar.ktx.immersionBar
-import java.lang.reflect.ParameterizedType
 
 /**
  * 底部弹窗基类
@@ -61,16 +60,15 @@ abstract class BaseBottomSheetDialog<VB : ViewBinding> : BottomSheetDialogFragme
     /**
      * 创建 ViewBinding
      */
-    @Suppress("UNCHECKED_CAST")
     private fun createViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB {
-        val type = javaClass.genericSuperclass as ParameterizedType
-        val clazz = type.actualTypeArguments[0] as Class<VB>
+        val clazz = resolveViewBindingClass<VB>()
         val method = clazz.getMethod(
             "inflate",
             LayoutInflater::class.java,
             ViewGroup::class.java,
             Boolean::class.java
         )
+        @Suppress("UNCHECKED_CAST")
         return method.invoke(null, inflater, container, false) as VB
     }
 

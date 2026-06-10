@@ -13,10 +13,13 @@ import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.OrderInrResp
 import com.hlc.mywallet.data.model.resp.OrderUsdtResp
 import com.hlc.mywallet.data.model.resp.UserStatisticsResp
+import com.hlc.mywallet.data.model.resp.WithdrawRecordResp
+import com.hlc.mywallet.data.model.resp.WithdrawStatus
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface UserService {
 
@@ -70,5 +73,35 @@ interface UserService {
      */
     @POST("/app/register")
     suspend fun register(@Body registerReq: RegisterReq): BaseResponse<String>
+
+    /**
+     * 查询提现状态
+     */
+    @GET("/app/withdraw/status")
+    suspend fun getWithdrawStatus(): BaseResponse<WithdrawStatus>
+
+    /**
+     * 提交提现申请
+     */
+    @POST("/app/withdraw/submit")
+    suspend fun submitWithdraw(@Body requestBody: RequestBody): BaseResponse<String>
+
+    /**
+     * 查询提现记录
+     */
+    @POST("/app/withdraw/records")
+    suspend fun withdrawRecords(@Body requestBody: RequestBody): BaseResponse<WithdrawRecordResp>
+
+    /**
+     * 开启自动代付
+     */
+    @POST("/app/withdraw/startAutoBuy")
+    suspend fun startAutoBuy(): BaseResponse<String>
+
+    /**
+     * 关闭自动代付
+     */
+    @POST("/app/withdraw/stopAutoBuy")
+    suspend fun stopAutoBuy(): BaseResponse<String>
 
 }

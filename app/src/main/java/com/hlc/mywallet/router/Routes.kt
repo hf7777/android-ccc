@@ -5,6 +5,11 @@ package com.hlc.mywallet.router
  */
 object Routes {
 
+//    Fragment ------------------------------------------------------
+
+    const val FRAGMENT_TEAM = "/main/team"
+
+//    Activity ------------------------------------------------------
     /**
      * 启动页
      */
@@ -109,4 +114,14 @@ object Routes {
      * 客服
      */
     const val CUSTOMER_SERVICE = "/customer_service"
+
+    /**
+     * 提现
+     */
+    const val BANK_WITHDRAWAL = "/bank_withdrawal"
+
+    /**
+     * 提现记录
+     */
+    const val WITHDRAW_RECORDS = "/withdraw_records"
 }

@@ -28,14 +28,21 @@ import dagger.hilt.android.AndroidEntryPoint
 class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapter>() {
 
     private val viewModel: WalletViewModel by viewModels()
-    private var isBuy: Boolean = true
+    private var sellStatus: String = ""
+    private var buyStatus: String = ""
+    private var autoBuyStatus: String = ""
+
+    private var isAutoBuyVersion: Boolean = true
 
     private var listHelper: QuickAdapterHelper? = null
     private var currentChannel: PayChannelResp? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        isBuy = arguments?.getBoolean(KEY_IS_BUY) ?: true
+        isAutoBuyVersion = arguments?.getBoolean(KEY_IS_AUTO_BUY) ?: true
+        sellStatus = arguments?.getString(KEY_SELL) ?: ""
+        buyStatus = arguments?.getString(KEY_BUY) ?: ""
+        autoBuyStatus = arguments?.getString(KEY_AUTO_BUY) ?: ""
     }
 
     override fun initView() {
@@ -59,11 +66,11 @@ class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapte
     }
 
     override fun createAdapter(): PayChannelAdapter {
-        return PayChannelAdapter()
+        return PayChannelAdapter(isAutoBuyVersion)
     }
 
     override fun requestListData(page: Int) {
-        viewModel.payChannelList(isBuy)
+        viewModel.payChannelList(sellStatus, buyStatus, autoBuyStatus)
     }
 
     override fun createLayoutManager(): LinearLayoutManager {
@@ -123,7 +130,7 @@ class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapte
                     .withBundle(Bundle().apply {
                         putParcelable(
                             Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS,
-                            PayChannelSetupArgs.fromPayChannel(it)
+                            PayChannelSetupArgs.fromPayChannel(it, isAutoBuyVersion)
                         )
                     })
                     .navigation(this)
@@ -132,11 +139,18 @@ class PayChannelFragment : BaseLazyListFragment<PayChannelResp, PayChannelAdapte
     }
 
     companion object {
-        private const val KEY_IS_BUY = "is_buy"
+        private const val KEY_SELL = "sell"
+        private const val KEY_BUY = "buy"
+        private const val KEY_AUTO_BUY = "auto_buy"
 
-        fun newInstance(isBuy: Boolean) = PayChannelFragment().apply {
+        private const val KEY_IS_AUTO_BUY = "is_auto_buy"
+
+        fun newInstance(isAutoBuyVersion: Boolean = true, sellStatus: String = "", buyStatus: String = "", autoBuyStatus: String = "") = PayChannelFragment().apply {
             arguments = Bundle().apply {
-                putBoolean(KEY_IS_BUY, isBuy)
+                putBoolean(KEY_IS_AUTO_BUY, isAutoBuyVersion)
+                putString(KEY_SELL, sellStatus)
+                putString(KEY_BUY, buyStatus)
+                putString(KEY_AUTO_BUY, autoBuyStatus)
             }
         }
     }

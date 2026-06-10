@@ -10,6 +10,9 @@ import com.hlc.lib_base.extension.buildAdapterHelper
 import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.dp
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.router.Router
+import com.hlc.lib_base.router.RouterParams
+import com.hlc.lib_base.web.WebActivity
 import com.hlc.lib_base.widget.SpaceItemDecoration
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.OrderUsdtAdapter
@@ -18,7 +21,9 @@ import com.hlc.mywallet.data.model.resp.OrderUsdt
 import com.hlc.mywallet.databinding.HeaderOrderListBinding
 import com.hlc.mywallet.dialog.OrderDetailsDialog
 import com.hlc.mywallet.dialog.StringSelectDialog
+import com.hlc.mywallet.feature.deposit.bean.UsdtStatus
 import com.hlc.mywallet.feature.mine.MineViewModel
+import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,8 +40,20 @@ class UsdtListFragment : BaseLazyListFragment<OrderUsdt, OrderUsdtAdapter>() {
         refreshLayout.setBackgroundResource(R.color.bg_0f_theme)
         listAdapter.setOnDebouncedItemClick { _, _, i ->
             listAdapter.getItem(i)?.let { order ->
-                OrderDetailsDialog.newInstance(order)
-                    .show(parentFragmentManager, OrderDetailsDialog::class.java.simpleName)
+                if (order.status == UsdtStatus.PENDING.state) {
+                    order.cashierUrl?.let { url ->
+                        Router.navigation(Routes.WEB)
+                            .with(WebActivity.EXTRA_URL, url)
+                            .with(WebActivity.EXTRA_TITLE, getString(R.string.payment))
+                            .with(WebActivity.EXTRA_BACK_ROUTE_PATH, Routes.DEPOSIT_ORDER_LIST)
+                            .with(RouterParams.ORDER_TAB_INDEX, OrderNavigation.TAB_USDT)
+                            .with(RouterParams.CLEAR_DEPOSIT_ON_OPEN, true)
+                            .navigation(requireContext())
+                    }
+                } else {
+                    OrderDetailsDialog.newInstance(order)
+                        .show(parentFragmentManager, OrderDetailsDialog::class.java.simpleName)
+                }
             }
         }
     }

@@ -5,7 +5,11 @@ import android.content.Intent
 import com.blankj.utilcode.util.Utils
 import com.hjq.toast.Toaster
 import dagger.hilt.android.HiltAndroidApp
+import android.app.Activity
+import com.hlc.lib_base.autosize.AutoSizeFoldConfigurator
+import com.hlc.lib_base.autosize.FoldScreenUtil
 import me.jessyan.autosize.AutoSizeConfig
+import me.jessyan.autosize.onAdaptListener
 import com.blankj.utilcode.util.LogUtils
 import com.hlc.lib_base.AppContext
 import com.hlc.lib_base.net.UnauthorizedHandler
@@ -82,6 +86,15 @@ class App : Application() {
         AutoSizeConfig.getInstance()
             .setDesignWidthInDp(375)
             .setDesignHeightInDp(667)
+            .setCustomFragment(true)
+            .setOnAdaptListener(object : onAdaptListener {
+                override fun onAdaptBefore(target: Any, activity: Activity) {
+                    if (activity.isFinishing || !FoldScreenUtil.isWindowManagerReady(activity)) return
+                    AutoSizeFoldConfigurator.configure(activity)
+                }
+
+                override fun onAdaptAfter(target: Any, activity: Activity) = Unit
+            })
             .setLog(BuildConfig.DEBUG)
     }
     

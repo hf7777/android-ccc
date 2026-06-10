@@ -160,6 +160,11 @@ class NewbieFragment : BaseLazyFragment<FragmentNewbieBinding>() {
         } else {
             R.color.theme
         }
+        binding.btnClaim.text = if (data.isRewarded == 0) {
+            getString(R.string.claim)
+        } else {
+            getString(R.string.claimed)
+        }
         binding.btnClaim.shapeDrawableBuilder
             .setSolidColor(ColorUtils.getColor(colorRes))
             .intoBackground()

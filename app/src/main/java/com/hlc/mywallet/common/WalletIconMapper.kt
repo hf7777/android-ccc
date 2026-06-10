@@ -13,6 +13,8 @@ object WalletIconMapper {
             "slice" -> R.drawable.ic_pay_slice
             "airtel" -> R.drawable.ic_pay_airtel
             "mobikwik" -> R.drawable.ic_pay_mobikwik
+            "mobikwik_pocket" -> R.drawable.ic_pay_mobikwik
+            "mobikwik_upi" -> R.drawable.ic_pay_mobikwik
             "phonepe" -> R.drawable.ic_pay_phonepe
             "phonepe_business" -> R.drawable.ic_pay_phonepebusiness
             "paytm" -> R.drawable.ic_pay_paytm

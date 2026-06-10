@@ -9,10 +9,13 @@ import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.formatNumber
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.router.Router
+import com.hlc.lib_base.router.RouterParams
+import com.hlc.lib_base.web.WebActivity
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showLoading
 import com.hlc.mywallet.R
 import com.hlc.mywallet.databinding.FragmentUsdtBinding
+import com.hlc.mywallet.feature.mine.order.OrderNavigation
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -65,8 +68,11 @@ class USDTFragment : BaseVbFragment<FragmentUsdtBinding>() {
                 hideLoading()
                 data.cashierUrl?.let { url ->
                     Router.navigation(Routes.WEB)
-                        .with("url", url)
-                        .with("title", getString(R.string.payment))
+                        .with(WebActivity.EXTRA_URL, url)
+                        .with(WebActivity.EXTRA_TITLE, getString(R.string.payment))
+                        .with(WebActivity.EXTRA_BACK_ROUTE_PATH, Routes.DEPOSIT_ORDER_LIST)
+                        .with(RouterParams.ORDER_TAB_INDEX, OrderNavigation.TAB_USDT)
+                        .with(RouterParams.CLEAR_DEPOSIT_ON_OPEN, true)
                         .navigation(requireContext())
                 } ?: Toaster.show(getString(R.string.cashier_url_is_empty))
             },

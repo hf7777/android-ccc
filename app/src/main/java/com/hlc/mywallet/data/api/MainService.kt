@@ -5,11 +5,13 @@ import com.hlc.mywallet.data.model.req.ClaimBonusReq
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.BindCodeResp
 import com.hlc.mywallet.data.model.resp.BulletinResp
+import com.hlc.mywallet.data.model.resp.CsUrlResp
 import com.hlc.mywallet.data.model.resp.CustomerServiceResp
 import com.hlc.mywallet.data.model.resp.NewbieSummaryResp
 import com.hlc.mywallet.data.model.resp.NewbieTaskResp
 import com.hlc.mywallet.data.model.resp.ReferralResp
 import com.hlc.mywallet.data.model.resp.SliderCaptchaResp
+import com.hlc.mywallet.data.model.resp.VersionResp
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
@@ -17,6 +19,7 @@ import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
+import retrofit2.http.Query
 
 interface MainService {
 
@@ -31,6 +34,12 @@ interface MainService {
      */
     @POST("/app/tg/sendPinOtp")
     suspend fun sendPinOtp(): BaseResponse<String>
+
+    /**
+     * 发送提现tg验证码
+     */
+    @POST("/app/tg/sendWithdrawOtp")
+    suspend fun sendWithdrawOtp(): BaseResponse<String>
 
      /**
      * 设置pin
@@ -110,5 +119,17 @@ interface MainService {
      */
     @GET("/app/mine/customer/services")
     suspend fun customerService(): BaseResponse<List<CustomerServiceResp>>
+
+    /**
+     * 检查版本更新
+     */
+    @GET("/app/version/check")
+    suspend fun checkUpdate(@Query("currentVersionCode") currentVersionCode: Int): BaseResponse<VersionResp>
+
+    /**
+     * 获取客服链接
+     */
+    @GET("/common/customerService/url")
+    suspend fun getCustomerServiceUrl(): BaseResponse<CsUrlResp>
 
 }

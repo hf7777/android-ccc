@@ -8,8 +8,10 @@ import com.hlc.mywallet.data.api.MainService
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.BindCodeResp
 import com.hlc.mywallet.data.model.resp.BulletinResp
+import com.hlc.mywallet.data.model.resp.CsUrlResp
 import com.hlc.mywallet.data.model.resp.CustomerServiceResp
 import com.hlc.mywallet.data.model.resp.SliderCaptchaResp
+import com.hlc.mywallet.data.model.resp.VersionResp
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
@@ -30,6 +32,12 @@ class MainRepository @Inject constructor(
     suspend fun sendPinOtp(): ApiResult<Unit> {
         return safeRequestWithoutData {
             mainService.sendPinOtp()
+        }
+    }
+
+    suspend fun sendWithdrawOtp(): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            mainService.sendWithdrawOtp()
         }
     }
 
@@ -97,6 +105,18 @@ class MainRepository @Inject constructor(
     suspend fun customerService(): ApiResult<List<CustomerServiceResp>> {
         return safeRequest {
             mainService.customerService()
+        }
+    }
+
+    suspend fun checkUpdate(currentVersionCode: Int): ApiResult<VersionResp> {
+        return safeRequest {
+            mainService.checkUpdate(currentVersionCode)
+        }
+    }
+
+    suspend fun getCustomerServiceUrl(): ApiResult<CsUrlResp> {
+        return safeRequest {
+            mainService.getCustomerServiceUrl()
         }
     }
 }

@@ -17,6 +17,8 @@ import java.util.concurrent.atomic.AtomicLong
 sealed interface AppEvent {
     data object WalletRefreshRequested : AppEvent
     data object OrderInrListRefreshRequested : AppEvent
+    /** 我的页用户统计等数据刷新 */
+    data object MineRefreshRequested : AppEvent
 
     /** 新手任务概览更新，用于首页/我的页余额区展示切换 */
     data class NewbieSummaryUpdated(

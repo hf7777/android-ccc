@@ -2,7 +2,10 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <!-- 视频播放页悬浮控件半透明背景 -->
+    <color name="video_overlay_scrim">#99000000</color>
     <color name="transparent">#00000000</color>
+    <color name="transparent_80">#80000000</color>
 
     <!-- 主题色 -->
     <color name="theme">#DE2C2C</color>
@@ -51,6 +54,9 @@
     <color name="bg_tag_invalid">#D9D9D9</color>
     <color name="tg_color">#29A0DC</color>
     <color name="amount_green">#09C770</color>
+    <color name="btn_active">#09C770</color>
     <color name="status_green">#09C770</color>
+    <color name="bg_mine_bank">#5C87FF</color>
+    <color name="bg_cs">#FDB7B7</color>
 
 </resources>

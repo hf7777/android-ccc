@@ -22,6 +22,7 @@
         <item name="colorSurface">#1E1E1E</item>
         <item name="colorOnSurface">@color/white</item>
         <item name="android:windowAnimationStyle">@style/ActivityAnimation</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
     </style>
 
     <style name="ActivityAnimation">

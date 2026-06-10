@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="15dp"
+    app:shape_radius="15dp"
+    app:shape_solidColor="@color/white">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:text="Edit Bank Info"
+        android:textColor="@color/text_color_black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="HardcodedText" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_amount_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/account_name"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_amount_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_amount_number"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/account_number"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/til_amount_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_amount_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_beneficiary_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/beneficiary_name"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/til_amount_number">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_beneficiary_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_ifsc_code"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:hint="@string/ifsc_code"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/til_beneficiary_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_ifsc_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textCapCharacters"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_save"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:enabled="false"
+        android:paddingHorizontal="16dp"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_ifsc_code"
+        app:shape_solidDisabledColor="@color/btn_disabled" />
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_close"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginEnd="20dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        android:paddingHorizontal="12dp"
+        android:text="@string/cancel"
+        android:textColor="@color/theme"
+        app:layout_constraintBottom_toBottomOf="@id/btn_save"
+        app:layout_constraintEnd_toStartOf="@id/btn_save"
+        app:layout_constraintTop_toTopOf="@id/btn_save"
+        app:shape_solidColor="@color/white" />
+</com.hjq.shape.layout.ShapeConstraintLayout>

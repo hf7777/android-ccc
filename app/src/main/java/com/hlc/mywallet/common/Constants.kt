@@ -13,6 +13,10 @@ object Constants {
         const val PAY_CHANNEL_SETUP_ARGS = "setup_args"
         const val USER_STATISTICS = "user_statistics"
         const val TUTORIAL = "tutorial"
+        const val VIDEO_URL = "video_url"
+        const val VIDEO_COVER_URL = "video_cover_url"
+        const val VIDEO_TITLE = "video_title"
         const val WALLET = "wallet"
+        const val IS_AUTO_BUY = "isAutoBuy"
     }
 }

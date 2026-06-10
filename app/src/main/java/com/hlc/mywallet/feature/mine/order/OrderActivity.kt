@@ -1,13 +1,19 @@
 package com.hlc.mywallet.feature.mine.order
 
+import android.content.Intent
 import androidx.viewpager2.widget.ViewPager2
 import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
 import com.hlc.lib_base.extension.optimizeSwipeSensitivity
+import com.hlc.lib_base.router.RouterParams
+import com.hlc.lib_base.router.getRouterBoolean
+import com.hlc.lib_base.router.getRouterInt
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.DepositTabAdapter
+import com.hlc.mywallet.common.ActivityStackManager
 import com.hlc.mywallet.databinding.ActivityOrderBinding
+import com.hlc.mywallet.feature.deposit.DepositActivity
 import com.hlc.mywallet.feature.mine.OrderPagerAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -35,6 +41,27 @@ class OrderActivity : BaseVbActivity<ActivityOrderBinding>() {
     override fun initView() {
         setupViewPager()
         setupMagicIndicator()
+        handleOrderIntent(intent)
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleOrderIntent(intent)
+    }
+
+    private fun handleOrderIntent(intent: Intent) {
+        val tabIndex = intent.getRouterInt(RouterParams.ORDER_TAB_INDEX, OrderNavigation.TAB_INR)
+            .coerceIn(OrderNavigation.TAB_INR, OrderNavigation.TAB_USDT)
+        selectTab(tabIndex)
+        if (intent.getRouterBoolean(RouterParams.CLEAR_DEPOSIT_ON_OPEN)) {
+            ActivityStackManager.finishActivities(DepositActivity::class.java)
+        }
+    }
+
+    private fun selectTab(index: Int) {
+        if (!::pagerAdapter.isInitialized) return
+        binding.viewPager.setCurrentItem(index, false)
     }
 
     private fun setupViewPager() {

@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingVertical="6dp"
     app:shape_radius="12dp"
@@ -20,6 +21,19 @@
         android:textSize="14sp"
         android:textStyle="bold" />
     <TextView
+        android:id="@+id/tv_bank"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minWidth="128dp"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="10dp"
+        android:text="@string/bank_account_list"
+        android:textColor="@color/text_color_black"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        tools:visibility="visible"
+        android:visibility="gone"/>
+    <TextView
         android:id="@+id/tv_de_authorize"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -29,5 +43,7 @@
         android:text="@string/de_authorize"
         android:textColor="@color/text_color_black"
         android:textSize="14sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:visibility="visible"
+        android:visibility="gone"/>
 </com.hjq.shape.layout.ShapeLinearLayout>

@@ -3,8 +3,9 @@ package com.hlc.lib_base.widget
 import android.app.Dialog
 import android.content.Context
 import android.view.LayoutInflater
-import android.view.WindowManager
+import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
@@ -17,7 +18,9 @@ import com.hlc.lib_base.extension.dp
  * 统一管理 Activity 和 Fragment 的 Loading 对话框
  */
 object LoadingDialog {
-    
+
+    private const val LOADING_DIALOG_MIN_WIDTH_DP = 120
+
     private val dialogMap = mutableMapOf<String, Dialog>()
     
     /**
@@ -51,17 +54,24 @@ object LoadingDialog {
         
         dialog.show()
         
-        // 设置对话框宽度（在 show() 之后设置才有效）
+        val dialogWidth = measureDialogWidth(context, view)
         dialog.window?.apply {
             setBackgroundDrawableResource(android.R.color.transparent)
             clearFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
             setDimAmount(0f)
-            val dialogWidth = 120.dp
-            
             setLayout(dialogWidth, ViewGroup.LayoutParams.WRAP_CONTENT)
         }
-        
+
         dialogMap[key] = dialog
+    }
+
+    private fun measureDialogWidth(context: Context, contentView: View): Int {
+        val minWidthPx = LOADING_DIALOG_MIN_WIDTH_DP.dp
+        val maxWidthPx = (context.resources.displayMetrics.widthPixels * 0.80f).toInt()
+        val widthSpec = View.MeasureSpec.makeMeasureSpec(maxWidthPx, View.MeasureSpec.AT_MOST)
+        val heightSpec = View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+        contentView.measure(widthSpec, heightSpec)
+        return contentView.measuredWidth.coerceIn(minWidthPx, maxWidthPx)
     }
     
     /**

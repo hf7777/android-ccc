@@ -29,6 +29,7 @@ class ReferralFragment : BaseLazyFragment<FragmentReferralBinding>() {
     private val viewModel: BonusViewModel by activityViewModels()
 
     private var taskCode: String? = null
+    private var hasCompletedFirstPageLoad = false
 
     private val referralAdapter by lazy {
         ReferralAdapter(
@@ -41,7 +42,9 @@ class ReferralFragment : BaseLazyFragment<FragmentReferralBinding>() {
     }
 
     override fun initView() {
-        showPageLoading()
+        if (!hasCompletedFirstPageLoad) {
+            showPageLoading()
+        }
         binding.btnClaim.onClick {
             Router.navigation(Routes.BILLS)
                 .with(Constants.RouterKeys.DEFAULT_TO_ACTIVITY, true)
@@ -75,17 +78,30 @@ class ReferralFragment : BaseLazyFragment<FragmentReferralBinding>() {
         viewModel.referralListState.collectWithError(
             lifecycleOwner = viewLifecycleOwner,
             onLoading = {
-                showPageLoading()
+                if (!hasCompletedFirstPageLoad) {
+                    showPageLoading()
+                } else {
+                    showLoading()
+                }
             },
             onSuccess = { data ->
-                showPageContent()
+                if (!hasCompletedFirstPageLoad) {
+                    hasCompletedFirstPageLoad = true
+                    showPageContent()
+                } else {
+                    hideLoading()
+                }
                 renderReferral(data)
             },
             onError = {
-                showPageError(onActionClick = {
-                    showPageLoading()
-                    viewModel.getReferralList()
-                })
+                if (!hasCompletedFirstPageLoad) {
+                    showPageError(onActionClick = {
+                        showPageLoading()
+                        viewModel.getReferralList()
+                    })
+                } else {
+                    hideLoading()
+                }
             }
         )
 
@@ -95,6 +111,7 @@ class ReferralFragment : BaseLazyFragment<FragmentReferralBinding>() {
                 showLoading()
             },
             onSuccess = {
+                hideLoading()
                 viewModel.getReferralList()
             },
             onError = {

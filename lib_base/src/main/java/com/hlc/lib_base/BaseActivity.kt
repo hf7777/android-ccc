@@ -1,5 +1,6 @@
 package com.hlc.lib_base
 
+import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Build
 import android.view.View
@@ -15,7 +16,11 @@ import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.PageStateLayout
 import com.hlc.lib_base.widget.TitleBar
 import com.hlc.lib_base.widget.showLoading
+import com.hlc.lib_base.autosize.AutoSizeFoldConfigurator
+import com.hlc.lib_base.autosize.FoldScreenUtil
 import com.hlc.lib_base.router.Router
+import me.jessyan.autosize.AutoSize
+import me.jessyan.autosize.AutoSizeConfig
 
 abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(layoutResId) {
 
@@ -52,12 +57,32 @@ abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(lay
         )
     }
 
+    override fun onStart() {
+        super.onStart()
+        refreshFoldableAutoSize()
+    }
+
     override fun onDestroy() {
         hideLoading()
         pageStateLayout = null
         pageContentContainer = null
         baseTitleBar = null
         super.onDestroy()
+    }
+
+    /**
+     * 仅在生命周期中做屏幕适配。勿在 [getResources] 中反复改 density，否则易导致输入法无法弹出。
+     */
+    override fun onConfigurationChanged(newConfig: Configuration) {
+        super.onConfigurationChanged(newConfig)
+        refreshFoldableAutoSize()
+    }
+
+    private fun refreshFoldableAutoSize() {
+        if (AutoSizeConfig.getInstance().isStop) return
+        if (!FoldScreenUtil.isWindowManagerReady(this)) return
+        AutoSizeFoldConfigurator.configure(this, resources.configuration)
+        AutoSize.autoConvertDensityOfGlobal(this)
     }
 
     /**

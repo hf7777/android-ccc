@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.hjq.shape.layout.ShapeConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:shape_radius="15dp"
+    app:shape_solidColor="@color/white">
+
+    <com.hjq.shape.layout.ShapeConstraintLayout
+        android:id="@+id/cl_header"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:shape_radiusInTopLeft="15dp"
+        app:shape_radiusInTopRight="15dp"
+        app:shape_solidColor="@color/theme">
+
+        <TextView
+            android:id="@+id/tv_upi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="@color/text_color_white"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_close"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="9205416846-1@airtel" />
+
+        <ImageView
+            android:id="@+id/btn_close"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="6dp"
+            android:padding="8dp"
+            android:src="@drawable/ic_dialog_close"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/white" />
+    </com.hjq.shape.layout.ShapeConstraintLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_account_no"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="15dp"
+        android:hint="@string/account_number"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/cl_header">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_account_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textColorHint="@color/edit_hint"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_bank_name"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="15dp"
+        android:layout_marginTop="12dp"
+        android:hint="@string/bank_name"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintTop_toBottomOf="@id/til_account_no">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_bank_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textColorHint="@color/edit_hint"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_upi_pin"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox.Dense"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="15dp"
+        android:hint="@string/upi_pin"
+        app:boxCornerRadiusBottomEnd="10dp"
+        app:boxCornerRadiusBottomStart="10dp"
+        app:boxCornerRadiusTopEnd="10dp"
+        app:boxCornerRadiusTopStart="10dp"
+        app:boxStrokeColor="@color/text_input_box_stroke_color"
+        app:boxStrokeWidth="1dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/btn_check_pin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/til_bank_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/et_upi_pin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:paddingHorizontal="10dp"
+            android:textColor="@color/text_color_black"
+            android:textColorHint="@color/edit_hint"
+            android:textSize="13sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.hjq.shape.view.ShapeButton
+        android:id="@+id/btn_check_pin"
+        style="@style/ButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="44dp"
+        android:layout_marginEnd="15dp"
+        android:enabled="false"
+        android:paddingHorizontal="12dp"
+        android:text="@string/check_pin"
+        android:textColor="@color/text_color_white"
+        app:layout_constraintBottom_toBottomOf="@id/til_upi_pin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/til_upi_pin"
+        app:shape_radius="10dp"
+        android:layout_marginTop="2dp"
+        app:shape_solidDisabledColor="@color/btn_disabled" />
+</com.hjq.shape.layout.ShapeConstraintLayout>

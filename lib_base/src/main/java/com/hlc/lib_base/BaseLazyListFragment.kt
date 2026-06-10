@@ -20,7 +20,6 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
         private set
 
     protected var quickAdapterHelper: QuickAdapterHelper? = null
-        private set
 
     protected val recyclerView: RecyclerView
         get() = binding.recyclerView
@@ -200,7 +199,7 @@ abstract class BaseLazyListFragment<T : Any, A : BaseQuickAdapter<T, out Recycle
             .adapter
     }
 
-    private fun createTrailingLoadMoreListener(): TrailingLoadStateAdapter.OnTrailingListener {
+    protected fun createTrailingLoadMoreListener(): TrailingLoadStateAdapter.OnTrailingListener {
         return object : TrailingLoadStateAdapter.OnTrailingListener {
             override fun onLoad() {
                 startLoadMore()

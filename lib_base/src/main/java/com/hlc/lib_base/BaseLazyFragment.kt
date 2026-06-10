@@ -5,8 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.viewbinding.ViewBinding
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
 abstract class BaseLazyFragment<VB : ViewBinding> : BaseFragment() {
 
@@ -24,8 +22,7 @@ abstract class BaseLazyFragment<VB : ViewBinding> : BaseFragment() {
         savedInstanceState: Bundle?
     ): View {
         try {
-            val vbClass = findViewBindingClass(javaClass)
-                ?: throw IllegalStateException("ViewBinding class not found")
+            val vbClass = resolveViewBindingClass<VB>()
             val method = vbClass.getMethod(
                 "inflate",
                 LayoutInflater::class.java,
@@ -91,42 +88,5 @@ abstract class BaseLazyFragment<VB : ViewBinding> : BaseFragment() {
 
     private fun isFragmentVisible(): Boolean {
         return isResumed && !isHidden && view != null
-    }
-
-    private fun findViewBindingClass(clazz: Class<*>): Class<out ViewBinding>? {
-        var type: Type? = clazz.genericSuperclass
-        while (type != null) {
-            when (type) {
-                is ParameterizedType -> {
-                    val bindingClass = extractViewBindingClass(type.actualTypeArguments.firstOrNull())
-                    if (bindingClass != null) {
-                        return bindingClass
-                    }
-                    type = (type.rawType as? Class<*>)?.genericSuperclass
-                }
-                is Class<*> -> {
-                    type = type.genericSuperclass
-                }
-                else -> {
-                    type = null
-                }
-            }
-        }
-        return null
-    }
-
-    @Suppress("UNCHECKED_CAST")
-    private fun extractViewBindingClass(type: Type?): Class<out ViewBinding>? {
-        val clazz = when (type) {
-            is Class<*> -> type
-            is ParameterizedType -> type.rawType as? Class<*>
-            else -> null
-        } ?: return null
-
-        return if (ViewBinding::class.java.isAssignableFrom(clazz)) {
-            clazz as Class<out ViewBinding>
-        } else {
-            null
-        }
     }
 }

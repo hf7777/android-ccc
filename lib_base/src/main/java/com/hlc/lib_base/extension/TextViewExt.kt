@@ -1,5 +1,6 @@
 package com.hlc.lib_base.extension
 
+import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.InsetDrawable
 import android.widget.TextView
@@ -142,4 +143,12 @@ private fun Drawable.buildCompoundDrawable(
         targetHeight + topInset + bottomInset
     )
     return insetDrawable
+}
+
+fun TextView.setUnderlineEnabled(enabled: Boolean = true) {
+    paintFlags = if (enabled) {
+        paintFlags or Paint.UNDERLINE_TEXT_FLAG
+    } else {
+        paintFlags and Paint.UNDERLINE_TEXT_FLAG.inv()
+    }
 }

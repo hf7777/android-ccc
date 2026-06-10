@@ -1,7 +1,10 @@
 package com.hlc.mywallet.feature.splash
 
+import android.os.Bundle
 import androidx.activity.viewModels
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.ColorUtils
 import com.gyf.immersionbar.ktx.immersionBar
 import com.hlc.lib_base.BaseVbActivity
@@ -30,11 +33,12 @@ class SplashActivity : BaseVbActivity<ActivitySplashBinding>() {
     }
 
     override fun initView() {
-        // 延迟一段时间后检查登录状态
-        lifecycleScope.launch {
-            delay(1000) // 显示 1 秒启动页
+        binding.tvVersion.text = "v${AppUtils.getAppVersionName()}"
+
+//        lifecycleScope.launch {
+//            delay(1000) // 显示 1 秒启动页
             checkLoginStatus()
-        }
+//        }
     }
 
     private fun checkLoginStatus() {

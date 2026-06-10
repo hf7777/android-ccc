@@ -5,8 +5,13 @@ import com.hlc.lib_base.net.ApiResult
 import com.hlc.lib_base.net.safeRequest
 import com.hlc.lib_base.net.safeRequestWithoutData
 import com.hlc.mywallet.data.api.WalletService
+import com.hlc.mywallet.data.model.req.BankInfoReq
+import com.hlc.mywallet.data.model.req.WalletBankInfoReq
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.PayChannelResp
+import com.hlc.mywallet.data.model.resp.InstallGuide
+import com.hlc.mywallet.data.model.resp.OtpActiveStatus
+import com.hlc.mywallet.data.model.resp.WalletBankInfoResp
 import com.hlc.mywallet.data.model.resp.WalletListResp
 import okhttp3.RequestBody
 import javax.inject.Inject
@@ -39,7 +44,7 @@ class WalletRepository @Inject constructor(
         }
     }
 
-    suspend fun payChannelList(sellStatus: String = "", buyStatus: String = ""): ApiResult<List<PayChannelResp>> {
+    suspend fun payChannelList(sellStatus: String = "", buyStatus: String = "", autoBuyStatus: String = ""): ApiResult<List<PayChannelResp>> {
         return safeRequest {
             val body = if (sellStatus.isNotEmpty()) {
                 buildJsonBody(
@@ -49,7 +54,12 @@ class WalletRepository @Inject constructor(
                 buildJsonBody(
                     "buyStatus" to buyStatus
                 )
-            } else {
+            } else if (autoBuyStatus.isNotEmpty()) {
+                buildJsonBody(
+                    "autoBuyStatus" to autoBuyStatus
+                )
+            }
+            else {
                 buildJsonBody()
             }
             walletService.payChannelList(body)
@@ -120,6 +130,77 @@ class WalletRepository @Inject constructor(
             walletService.relink(buildJsonBody(
                 "phone" to phone,
                 "channelCode" to channelCode
+            ))
+        }
+    }
+
+    suspend fun walletVersion(): ApiResult<String> {
+        return safeRequest {
+            walletService.walletVersion()
+        }
+    }
+
+    suspend fun moduleGuideList(channelCode: String): ApiResult<List<InstallGuide>> {
+        return safeRequest {
+            walletService.moduleGuideList(channelCode)
+        }
+    }
+
+    suspend fun autoActiveStatus(phone: String, channelCode: String): ApiResult<OtpActiveStatus> {
+        return safeRequest {
+            walletService.autoActiveStatus(
+                buildJsonBody(
+                    "phone" to phone,
+                    "channelCode" to channelCode
+                )
+            )
+        }
+    }
+
+    suspend fun addBankCard(bankInfoReq: BankInfoReq): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            walletService.addBankCard(bankInfoReq)
+        }
+    }
+
+    suspend fun editBankCard(bankInfoReq: BankInfoReq): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            walletService.editBankCard(bankInfoReq)
+        }
+    }
+
+    suspend fun checkUpiPin(req: WalletBankInfoReq): ApiResult<String> {
+        return safeRequest {
+            walletService.checkUpiPin(req)
+        }
+    }
+
+    suspend fun walletBankCardList(walletId: String): ApiResult<List<WalletBankInfoResp>> {
+        return safeRequest {
+            walletService.walletBankCardList(walletId)
+        }
+    }
+
+    suspend fun walletBankCardDetail(bankCardId: String): ApiResult<WalletBankInfoResp> {
+        return safeRequest {
+            walletService.walletBankCardDetail(bankCardId)
+        }
+    }
+
+    suspend fun addWalletBankCard(id: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            walletService.addWalletBankCard(
+                buildJsonBody(
+                    "id" to id
+                )
+            )
+        }
+    }
+
+    suspend fun editWalletBankCard(id: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            walletService.editWalletBankCard(buildJsonBody(
+                "id" to id
             ))
         }
     }

@@ -5,6 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.hlc.lib_base.net.ApiResult
 import com.hlc.mywallet.data.model.resp.BalanceType
 import com.hlc.mywallet.data.model.resp.BindCodeResp
+import com.hlc.mywallet.BuildConfig
+import com.hlc.mywallet.common.AppUpdateCheckEvent
 import com.hlc.mywallet.data.model.resp.BulletinResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.feature.mine.UserRepository
@@ -32,6 +34,9 @@ class MainViewModel @Inject constructor(
     private val _sendPinOtpState = MutableSharedFlow<ApiResult<Unit>>()
     val sendPinOtpState = _sendPinOtpState.asSharedFlow()
 
+    private val _sendWithdrawOtpState = MutableSharedFlow<ApiResult<Unit>>()
+    val sendWithdrawOtpState = _sendWithdrawOtpState.asSharedFlow()
+
     private val _setPinState = MutableSharedFlow<ApiResult<Unit>>()
     val setPinState = _setPinState.asSharedFlow()
 
@@ -49,6 +54,9 @@ class MainViewModel @Inject constructor(
 
     private val _confirmBulletinState = MutableSharedFlow<ApiResult<Unit>>()
     val confirmBulletinState = _confirmBulletinState.asSharedFlow()
+
+    private val _updateCheckEvent = MutableSharedFlow<AppUpdateCheckEvent>(extraBufferCapacity = 1)
+    val updateCheckEvent = _updateCheckEvent.asSharedFlow()
 
     fun getMyWallet() {
         viewModelScope.launch {
@@ -74,6 +82,13 @@ class MainViewModel @Inject constructor(
             _sendPinOtpState.emit(ApiResult.Loading)
             val result = mainRepository.sendPinOtp()
             _sendPinOtpState.emit(result)
+        }
+    }
+
+    fun sendWithdrawOtp() {
+        viewModelScope.launch {
+            _sendWithdrawOtpState.emit(ApiResult.Loading)
+            _sendWithdrawOtpState.emit(mainRepository.sendWithdrawOtp())
         }
     }
 
@@ -122,4 +137,31 @@ class MainViewModel @Inject constructor(
             _confirmBulletinState.emit(mainRepository.confirmBulletin(announcementId))
         }
     }
+
+    fun checkUpdate(manual: Boolean = false) {
+        viewModelScope.launch {
+            when (val result = mainRepository.checkUpdate(0)) {
+                is ApiResult.Success -> {
+                    val remote = result.data
+                    if (remote.versionCode > BuildConfig.VERSION_CODE && remote.apkUrl.isNotBlank()) {
+                        _updateCheckEvent.emit(AppUpdateCheckEvent.HasUpdate(remote))
+                    } else if (manual) {
+                        _updateCheckEvent.emit(AppUpdateCheckEvent.UpToDate)
+                    }
+                }
+                is ApiResult.Error -> {
+                    if (manual) {
+                        _updateCheckEvent.emit(
+                            AppUpdateCheckEvent.Failed(
+                                result.exception.message.orEmpty()
+                            )
+                        )
+                    }
+                }
+                else -> Unit
+            }
+        }
+    }
+
+
 }

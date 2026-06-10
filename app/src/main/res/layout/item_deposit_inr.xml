@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:textSize="11sp"
             android:textColor="@color/text_color_gray"
-            android:text="@string/incoin"/>
+            android:text="@string/a_points"/>
         <TextView
             android:id="@+id/tv_in_coin"
             android:layout_width="wrap_content"
