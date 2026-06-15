@@ -30,6 +30,7 @@ import com.hlc.mywallet.data.model.resp.Wallet
 import com.hlc.mywallet.data.model.resp.WalletBankInfoResp
 import com.hlc.mywallet.dialog.WalletBankCardDetailDialog
 import com.hlc.mywallet.dialog.WalletBankCardDialog
+import com.hlc.mywallet.dialog.WalletRemarkDialog
 import com.hlc.mywallet.dialog.WalletStatusDialog
 import com.hlc.mywallet.databinding.HeaderWalletBinding
 import com.hlc.mywallet.dialog.ChoosePlanDialog
@@ -59,6 +60,9 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
             },
             onStatus = { wallet ->
                 showWalletStatusDialog(wallet)
+            },
+            onRemark = { wallet ->
+                showWalletRemarkDialog(wallet)
             }
         )
     }
@@ -204,7 +208,20 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
                 Toaster.show(message)
             }
         )
-
+        viewModel.walletRemarkFlow.collectWithError(
+            lifecycleOwner = viewLifecycleOwner,
+            onLoading = { showLoading() },
+            onSuccess = {
+                hideLoading()
+                dismissWalletRemarkDialog()
+                Toaster.show(getString(R.string.save_successfully))
+                refreshList(showRefreshAnimation = false)
+            },
+            onError = { message ->
+                hideLoading()
+                Toaster.show(message)
+            }
+        )
     }
 
     private fun relink(wallet: Wallet) {
@@ -363,6 +380,20 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
                 viewModel.deAuthorize(phone, channelCode)
             }
         }
+    }
+
+    private fun showWalletRemarkDialog(wallet: Wallet) {
+        WalletRemarkDialog.newInstance(wallet)
+            .setOnSaveListener { req ->
+                viewModel.walletRemark(req)
+            }
+            .show(childFragmentManager, WalletRemarkDialog::class.java.simpleName)
+    }
+
+    private fun dismissWalletRemarkDialog() {
+        val dialog = childFragmentManager
+            .findFragmentByTag(WalletRemarkDialog::class.java.simpleName) as? WalletRemarkDialog
+        dialog?.dismissAllowingStateLoss()
     }
 
     private fun showWalletStatusDialog(wallet: Wallet) {

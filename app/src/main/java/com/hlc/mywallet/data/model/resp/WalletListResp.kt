@@ -60,5 +60,7 @@ data class Wallet(
     val realBalance: String?,
     val description: String?,
     val multiCard: Int,
-    val bankCardAccountNo: String?
+    val bankCardAccountNo: String?,
+    val isApk: Int,
+    val remark: String?
 ) : Parcelable

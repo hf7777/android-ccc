@@ -12,6 +12,7 @@ import com.hlc.mywallet.data.model.resp.CheckBindingResp
 import com.hlc.mywallet.data.model.resp.InstallGuide
 import com.hlc.mywallet.data.model.resp.OtpActiveStatus
 import com.hlc.mywallet.data.model.resp.PayChannelResp
+import com.hlc.mywallet.data.model.req.RemarkReq
 import com.hlc.mywallet.data.model.req.WalletBankInfoReq
 import com.hlc.mywallet.data.model.resp.WalletBankInfoResp
 import com.hlc.mywallet.data.model.resp.WalletListResp
@@ -70,6 +71,11 @@ class WalletViewModel @Inject constructor(
     private val _walletBankCardListFlow = MutableSharedFlow<ApiResult<List<WalletBankInfoResp>>>()
     val walletBankCardListFlow: SharedFlow<ApiResult<List<WalletBankInfoResp>>> =
         _walletBankCardListFlow.asSharedFlow()
+
+    private val _loginWalletRepackageFlow = MutableSharedFlow<ApiResult<Unit>>()
+    val loginWalletRepackageFlow: SharedFlow<ApiResult<Unit>> = _loginWalletRepackageFlow.asSharedFlow()
+    private val _walletRemarkFlow = MutableSharedFlow<ApiResult<Unit>>()
+    val walletRemarkFlow: SharedFlow<ApiResult<Unit>> = _walletRemarkFlow.asSharedFlow()
 
     fun getWalletList(page: Int, pageSize: Int = 20) {
         viewModelScope.launch {
@@ -192,6 +198,13 @@ class WalletViewModel @Inject constructor(
         }
     }
 
+    fun walletRemark(req: RemarkReq) {
+        viewModelScope.launch {
+            _walletRemarkFlow.emit(ApiResult.Loading)
+            _walletRemarkFlow.emit(repository.walletRemark(req))
+        }
+    }
+
     fun checkUpiPinAndAddWalletBankCard(req: WalletBankInfoReq, isEditMode: Boolean) {
         viewModelScope.launch {
             _walletBankCardFlow.emit(ApiResult.Loading)
@@ -300,6 +313,17 @@ class WalletViewModel @Inject constructor(
                     else -> Unit
                 }
             }
+        }
+    }
+
+    /**
+     * 重打包登录
+     */
+    fun loginWalletWithRepackage(phone: String, channelCode: String) {
+        viewModelScope.launch {
+            _loginWalletRepackageFlow.emit(ApiResult.Loading)
+            _loginWalletRepackageFlow.emit(repository.loginWallet(phone, channelCode))
+
         }
     }
 

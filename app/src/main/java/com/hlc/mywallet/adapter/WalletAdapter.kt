@@ -28,7 +28,8 @@ import com.hlc.mywallet.databinding.ItemWalletBinding
 class WalletAdapter(
     private val onOperates: (anchor: View, wallet: Wallet) -> Unit,
     private val onReLink: (wallet: Wallet) -> Unit,
-    private val onStatus: (wallet: Wallet) -> Unit
+    private val onStatus: (wallet: Wallet) -> Unit,
+    private val onRemark: (wallet: Wallet) -> Unit
 ) : BaseQuickAdapter<Wallet, WalletAdapter.VH>() {
 
     private var onSellSwitchChangedListener: ((position: Int, item: Wallet, isChecked: Boolean) -> Unit)? = null
@@ -53,6 +54,14 @@ class WalletAdapter(
             tvName.text = item.channelName ?: ""
             tvEmail.text = item.upi ?: ""
 
+            tvRemark.setDrawablePadding(rightResId = R.drawable.ic_arrow_light, rightPadding = 4.dp, drawableWidth = 12.dp, drawableHeight = 12.dp)
+            val remark = if (item.remark.isNullOrEmpty()) {
+                ""
+            } else {
+                ": ${item.remark}"
+            }
+            tvRemark.text = "Remark${remark}"
+
             tvPhone.visibleOrGone(!item.phone.isNullOrEmpty())
             tvPhone.text = item.phone ?: ""
 
@@ -75,8 +84,10 @@ class WalletAdapter(
                 tvBankAccount.visible()
                 if (item.bankCardAccountNo.isNullOrEmpty()) {
                     tvBankAccount.text = context.getString(R.string.please_add_bank_card)
+                    tvBankAccount.setTextColor(ColorUtils.getColor(R.color.highlight_yellow))
                 } else {
                     tvBankAccount.text = "AC:${item.bankCardAccountNo.takeLast(4)}"
+                    tvBankAccount.setTextColor(ColorUtils.getColor(R.color.text_color_white))
                 }
 
             } else {
@@ -120,6 +131,10 @@ class WalletAdapter(
 
             btnStatus.onClick {
                 onStatus.invoke(item)
+            }
+
+            tvRemark.onClick {
+                onRemark.invoke(item)
             }
         }
     }

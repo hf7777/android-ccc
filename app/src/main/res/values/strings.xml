@@ -324,4 +324,8 @@
     <string name="bank_name_colon">Bank Name:</string>
     <string name="upi_pin_colon">UPI PIN:</string>
     <string name="please_add_bank_card">Please add bank card</string>
+    <string name="download_new_installed">Download New %1$s\n(Installed)</string>
+    <string name="download_new_not_installed">Download New %1$s\n(Not Installed)</string>
+    <string name="remark">Remark</string>
+    <string name="edit_remark">Edit Remark</string>
 </resources>

@@ -97,7 +97,7 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
         val pin = setupArgs?.pin.orEmpty()
         val otp = setupArgs?.otp.orEmpty()
         val upiId = binding.tvUpi.text.toString().trim()
-        if (phone.isEmpty() || pin.isEmpty() || otp.isEmpty() || channelCode.isEmpty() || upiId.isEmpty()) {
+        if (phone.isEmpty() || pin.isEmpty() || (setupArgs?.isApk == 0 && otp.isEmpty()) || channelCode.isEmpty() || upiId.isEmpty()) {
             Toaster.show(getString(R.string.request_failed))
             return
         }

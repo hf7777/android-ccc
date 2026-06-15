@@ -6,6 +6,7 @@ import com.hlc.lib_base.net.safeRequest
 import com.hlc.lib_base.net.safeRequestWithoutData
 import com.hlc.mywallet.data.api.WalletService
 import com.hlc.mywallet.data.model.req.BankInfoReq
+import com.hlc.mywallet.data.model.req.RemarkReq
 import com.hlc.mywallet.data.model.req.WalletBankInfoReq
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.PayChannelResp
@@ -75,7 +76,7 @@ class WalletRepository @Inject constructor(
         }
     }
 
-    suspend fun loginWallet(phone: String, channelCode: String, otp: String): ApiResult<Unit> {
+    suspend fun loginWallet(phone: String, channelCode: String, otp: String = ""): ApiResult<Unit> {
         return safeRequestWithoutData {
             walletService.loginWallet(buildJsonBody(
                 "phone" to phone,
@@ -202,6 +203,12 @@ class WalletRepository @Inject constructor(
             walletService.editWalletBankCard(buildJsonBody(
                 "id" to id
             ))
+        }
+    }
+
+    suspend fun walletRemark(remarkReq: RemarkReq): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            walletService.walletRemark(remarkReq)
         }
     }
 }

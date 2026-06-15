@@ -1,21 +1,29 @@
 package com.hlc.mywallet.feature.wallet
 
 import android.content.Intent
+import android.graphics.Rect
 import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.fragment.app.viewModels
 import com.blankj.utilcode.util.StringUtils
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbFragment
 import com.hlc.lib_base.extension.collectWithError
+import com.hlc.lib_base.extension.enable
 import com.hlc.lib_base.extension.enableWhen
+import com.hlc.lib_base.extension.gone
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.extension.visibleOrGone
+import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showConfirmDialog
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.AppSecurityConfig
 import com.hlc.mywallet.common.Constants
 import com.hlc.mywallet.databinding.FragmentPayChannelSetup2Binding
 import com.hlc.mywallet.dialog.InstallGuideDialog
@@ -55,9 +63,24 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         binding.apply {
 
             isAutoBuy = setupArgs?.isAutoBuy == true
-            //目前只有这一个钱包需要 ACTIVE OTP
-            groupAutoBtn.visibleOrGone(isAutoBuy && ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode))
-            btnSend.isEnabled = !isAutoBuy
+            //特定钱包需要 ACTIVE OTP
+            groupAutoBtn.visibleOrGone(isAutoBuy && ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode), false)
+
+            updateResignPackageButtonVisibility()
+
+            if (setupArgs?.isApk == 1) {
+                btnNext.enable()
+                // 重打包无需发送otp
+                groupOtp.gone()
+            } else {
+                btnSend.isEnabled = !isAutoBuy
+                groupOtp.visible()
+
+                btnNext.enableWhen( etOtp) {
+                    val otp = etOtp.text.toString().trim()
+                    otp.isNotEmpty()
+                }
+            }
 
             tvTips.text = setupArgs?.description.orEmpty()
             etPhone.text = setupArgs?.phone.orEmpty()
@@ -70,14 +93,17 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
                 walletViewModel.moduleGuideList(channelCode)
             }
 
+            btnResignPackage.onClick {
+                val downloadUrl = AppSecurityConfig.getAppDownloadUrl(setupArgs?.channelCode.orEmpty())
+                downloadUrl?.let {
+                    Router.navigation(it).navigation(this@PayChannelSetup2Fragment)
+                }
+            }
+
             btnActiveOtp.onClick {
                 handleActiveOtpClick()
             }
 
-            btnNext.enableWhen( etOtp) {
-                val otp = etOtp.text.toString().trim()
-                otp.isNotEmpty()
-            }
 
             btnSend.onClick {
                 setupArgs?.let { args ->
@@ -90,11 +116,13 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
                 applyAndLogin()
             }
             etOtp.setupPasswordVisibilityToggle()
+            setupKeyboardAwareScroll()
         }
     }
 
     override fun onResume() {
         super.onResume()
+        updateResignPackageButtonVisibility()
         startAutoActiveStatusPolling()
     }
 
@@ -109,10 +137,15 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
      */
     private fun applyAndLogin() {
         setupArgs?.let { args ->
-            if (args.phone.isNotEmpty()) {
-                val otp = binding.etOtp.text.toString().trim()
-                walletViewModel.loginAndGetPermissionStatus(args.phone, args.channelCode, otp)
+            if (args.isApk == 1) {
+                walletViewModel.loginWalletWithRepackage(args.phone, args.channelCode)
+            } else {
+                if (args.phone.isNotEmpty()) {
+                    val otp = binding.etOtp.text.toString().trim()
+                    walletViewModel.loginAndGetPermissionStatus(args.phone, args.channelCode, otp)
+                }
             }
+
         }
     }
 
@@ -151,6 +184,21 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
                 val stepArgs = setupArgs?.copy(
                     otp = binding.etOtp.text.toString().trim()
                 ) ?: return@collectWithError
+                (activity as? PayChannelSetupActivity)?.navigateToStep3(stepArgs)
+            },
+            onError = {
+                hideLoading()
+            }
+        )
+
+        walletViewModel.loginWalletRepackageFlow.collectWithError(
+            lifecycleOwner = viewLifecycleOwner,
+            onLoading = {
+                showLoading()
+            },
+            onSuccess = {
+                hideLoading()
+                val stepArgs = setupArgs ?: return@collectWithError
                 (activity as? PayChannelSetupActivity)?.navigateToStep3(stepArgs)
             },
             onError = {
@@ -272,11 +320,56 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         }
     }
 
+    private fun updateResignPackageButtonVisibility() {
+        val args = setupArgs ?: run {
+            binding.btnResignPackage.visibleOrGone(false)
+            return
+        }
+        val isInstall = AppSecurityConfig.isAppInstalled(
+            context = requireContext(),
+            channelCode = args.channelCode
+        )
+        binding.btnResignPackage.visibleOrGone(args.isApk == 1)
+        if (isInstall) {
+            binding.btnResignPackage.text = getString(R.string.download_new_installed, args.channelName)
+        } else {
+            binding.btnResignPackage.text = getString(R.string.download_new_not_installed, args.channelName)
+        }
+    }
+
+    private fun setupKeyboardAwareScroll() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { _, insets ->
+            val imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom
+            binding.root.setPadding(0, 0, 0, imeBottom)
+            if (imeBottom > 0 && binding.etOtp.hasFocus()) {
+                binding.nestedScroll.post { scrollOtpIntoView() }
+            }
+            insets
+        }
+        ViewCompat.requestApplyInsets(binding.root)
+        binding.etOtp.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                binding.nestedScroll.postDelayed({ scrollOtpIntoView() }, KEYBOARD_SCROLL_DELAY_MILLIS)
+            }
+        }
+    }
+
+    private fun scrollOtpIntoView() {
+        val scrollView = binding.nestedScroll
+        val target = binding.etOtp
+        val targetRect = Rect()
+        target.getDrawingRect(targetRect)
+        scrollView.offsetDescendantRectToMyCoords(target, targetRect)
+        scrollView.smoothScrollTo(0, targetRect.bottom + KEYBOARD_SCROLL_EXTRA_OFFSET)
+    }
+
     companion object {
 
         private const val SEND_COUNT_DOWN_MILLIS = 60_000L
         private const val COUNT_DOWN_INTERVAL_MILLIS = 1_000L
         private const val AUTO_ACTIVE_STATUS_POLL_INTERVAL_MILLIS = 1_000L
+        private const val KEYBOARD_SCROLL_DELAY_MILLIS = 100L
+        private const val KEYBOARD_SCROLL_EXTRA_OFFSET = 24
         private const val AA_OTP_PACKAGE_NAME = "com.s.autoactiveotpaa"
         private const val AA_OTP_DOWNLOAD_URL = "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/aaotp.apk"
 

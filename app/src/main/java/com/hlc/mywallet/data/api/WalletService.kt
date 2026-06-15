@@ -2,6 +2,7 @@ package com.hlc.mywallet.data.api
 
 import com.hlc.lib_base.net.BaseResponse
 import com.hlc.mywallet.data.model.req.BankInfoReq
+import com.hlc.mywallet.data.model.req.RemarkReq
 import com.hlc.mywallet.data.model.req.WalletBankInfoReq
 import com.hlc.mywallet.data.model.resp.ApplyPermissionResp
 import com.hlc.mywallet.data.model.resp.InstallGuide
@@ -48,7 +49,7 @@ interface WalletService {
     suspend fun getPermissionStatus(@Body requestBody: RequestBody): BaseResponse<ApplyPermissionResp>
 
     /**
-     * 获取授权状态
+     * 登录钱包
      */
     @POST("/app/wallet/login")
     suspend fun loginWallet(@Body requestBody: RequestBody): BaseResponse<String>
@@ -142,5 +143,11 @@ interface WalletService {
      */
     @POST("/app/walletBankCard/checkUpi")
     suspend fun checkUpiPin(@Body bankInfoReq: WalletBankInfoReq): BaseResponse<String>
+
+    /**
+     * 钱包备注
+     */
+    @POST("/app/wallet/editRemark")
+    suspend fun walletRemark(@Body remarkReq: RemarkReq): BaseResponse<String>
 
 }
