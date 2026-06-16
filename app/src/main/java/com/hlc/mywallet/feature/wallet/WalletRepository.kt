@@ -95,8 +95,8 @@ class WalletRepository @Inject constructor(
         }
     }
 
-    suspend fun addWallet(phone: String, channelCode: String, otp: String, pin: String, upiId: String): ApiResult<Unit> {
-        return safeRequestWithoutData {
+    suspend fun addWallet(phone: String, channelCode: String, otp: String, pin: String, upiId: String): ApiResult<String> {
+        return safeRequest {
             walletService.addWallet(buildJsonBody(
                 "phone" to phone,
                 "channelCode" to channelCode,

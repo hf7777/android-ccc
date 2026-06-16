@@ -19,6 +19,7 @@ class StepProgressView @JvmOverloads constructor(
 
     private val stepTitles = mutableListOf("Phone", "Authorize", "Finish")
     private var currentStep = 1
+    private var stepCount = STEP_COUNT_DEFAULT
 
     private val activeColor = Color.BLACK
     private val inactiveCircleColor = 0xFFD9D9D9.toInt()
@@ -66,24 +67,21 @@ class StepProgressView @JvmOverloads constructor(
                     ?.split("|")
                     ?.map { title -> title.trim() }
                     ?.filter { title -> title.isNotEmpty() }
-                    ?.take(STEP_COUNT)
                     ?.let { titles ->
                         if (titles.isNotEmpty()) {
+                            stepCount = titles.size
                             stepTitles.clear()
                             stepTitles.addAll(titles)
-                            while (stepTitles.size < STEP_COUNT) {
-                                stepTitles.add((stepTitles.size + 1).toString())
-                            }
                         }
                     }
-                currentStep = getInt(R.styleable.StepProgressView_currentStep, 1).coerceIn(1, STEP_COUNT)
+                currentStep = getInt(R.styleable.StepProgressView_currentStep, 1).coerceIn(1, stepCount)
                 recycle()
             }
         }
     }
 
     fun setCurrentStep(step: Int) {
-        val newStep = step.coerceIn(1, STEP_COUNT)
+        val newStep = step.coerceIn(1, stepCount)
         if (currentStep == newStep) return
         currentStep = newStep
         invalidate()
@@ -95,11 +93,9 @@ class StepProgressView @JvmOverloads constructor(
 
     fun setStepTitles(titles: List<String>) {
         if (titles.isEmpty()) return
+        stepCount = titles.size
         stepTitles.clear()
-        stepTitles.addAll(titles.take(STEP_COUNT))
-        while (stepTitles.size < STEP_COUNT) {
-            stepTitles.add((stepTitles.size + 1).toString())
-        }
+        stepTitles.addAll(titles)
         requestLayout()
         invalidate()
     }
@@ -122,12 +118,13 @@ class StepProgressView @JvmOverloads constructor(
 
         val firstTitleHalfWidth = titlePaint.measureText(stepTitles.firstOrNull().orEmpty()) / 2f
         val lastTitleHalfWidth = titlePaint.measureText(stepTitles.lastOrNull().orEmpty()) / 2f
-        val startX = paddingLeft + max(contentHorizontalPadding, max(circleRadius, firstTitleHalfWidth))
-        val endX = width - paddingRight - max(contentHorizontalPadding, max(circleRadius, lastTitleHalfWidth))
+        val edgePadding = max(circleRadius, max(contentHorizontalPadding, max(firstTitleHalfWidth, lastTitleHalfWidth)))
+        val startX = paddingLeft + edgePadding
+        val endX = width - paddingRight - edgePadding
         val availableWidth = (endX - startX).coerceAtLeast(0f)
-        val segmentWidth = availableWidth / (STEP_COUNT - 1)
+        val segmentWidth = if (stepCount > 1) availableWidth / (stepCount - 1) else 0f
         val centerY = paddingTop + topPaddingSize + circleRadius
-        val centers = List(STEP_COUNT) { index -> startX + segmentWidth * index }
+        val centers = List(stepCount) { index -> startX + segmentWidth * index }
 
         drawLines(canvas, centers, centerY)
         centers.forEachIndexed { index, centerX ->
@@ -139,7 +136,7 @@ class StepProgressView @JvmOverloads constructor(
     }
 
     private fun drawLines(canvas: Canvas, centers: List<Float>, centerY: Float) {
-        for (index in 0 until STEP_COUNT - 1) {
+        for (index in 0 until stepCount - 1) {
             linePaint.color = if (index + 1 < currentStep) activeColor else inactiveLineColor
             canvas.drawLine(
                 centers[index] + circleRadius + lineGap,
@@ -180,6 +177,6 @@ class StepProgressView @JvmOverloads constructor(
     }
 
     companion object {
-        private const val STEP_COUNT = 3
+        private const val STEP_COUNT_DEFAULT = 3
     }
 }

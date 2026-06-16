@@ -12,6 +12,7 @@ import kotlinx.parcelize.Parcelize
  * | `data[].buyStatus` | string | 买状态：enable=开启, close=关闭 |
  * | `data[].sellStatus` | string | 卖状态：enable=开启, close=关闭 |
  * | `data[].description` | string | 步骤2的操作说明 |
+ * | `data[].multiCard` | int | 是否多卡 |
  */
 @Parcelize
 data class PayChannelResp(
@@ -24,5 +25,6 @@ data class PayChannelResp(
     val status: String?,
     val thirdWalletType: String?,
     val description: String?,
-    val isApk: Int
+    val isApk: Int,
+    val multiCard: Int = 0
 ) : Parcelable

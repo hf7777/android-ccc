@@ -228,7 +228,7 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
             lifecycleOwner = viewLifecycleOwner,
             onLoading = {},
             onSuccess = { version ->
-                binding.clBankWithdraw.visibleOrGone(version == WALLET_VERSION_2)
+//                binding.clBankWithdraw.visibleOrGone(version == WALLET_VERSION_2)
             },
             onError = {
                 binding.clBankWithdraw.gone()

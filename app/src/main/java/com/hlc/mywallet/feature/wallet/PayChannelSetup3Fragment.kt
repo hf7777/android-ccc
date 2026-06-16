@@ -5,6 +5,7 @@ import androidx.fragment.app.viewModels
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbFragment
 import com.hlc.lib_base.extension.collectWithError
+import com.hlc.lib_base.extension.enableWhen
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.common.ActivityStackManager
@@ -40,6 +41,11 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
             setupArgs?.let { args ->
                 if (args.phone.isNotEmpty()) {
                     walletViewModel.getUpiList(args.phone, args.channelCode)
+                }
+                btnFinish.text = if (args.multiCard == 1) {
+                    getString(R.string.next)
+                } else {
+                    getString(R.string.finish)
                 }
             }
             btnFinish.isEnabled = false
@@ -79,11 +85,17 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
             onLoading = {
                 showLoading()
             },
-            onSuccess = {
+            onSuccess = { walletId ->
                 hideLoading()
-                AppEventBus.post(AppEvent.WalletRefreshRequested)
-                ActivityStackManager.finishActivities(PayChannelActivity::class.java)
-                activity?.finish()
+                if (setupArgs?.multiCard == 1) {
+                    val upiId = binding.tvUpi.text.toString().trim()
+                    val stepArgs = setupArgs?.copy(walletId = walletId, upiId = upiId) ?: return@collectWithError
+                    (activity as? PayChannelSetupActivity)?.navigateToStep4(stepArgs)
+                } else {
+                    AppEventBus.post(AppEvent.WalletRefreshRequested)
+                    ActivityStackManager.finishActivities(PayChannelActivity::class.java)
+                    activity?.finish()
+                }
             },
             onError = {
                 hideLoading()

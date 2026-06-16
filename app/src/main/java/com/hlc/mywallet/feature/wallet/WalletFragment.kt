@@ -237,7 +237,7 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
             .withBundle(Bundle().apply {
                 putParcelable(
                     Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS,
-                    PayChannelSetupArgs.fromWallet(wallet, wallet.walletVersion == WalletAdapter.WALLET_VERSION_2)
+                    PayChannelSetupArgs.fromWallet(wallet, false).copy(multiCard = 0)
                 )
             })
             .navigation(this)
@@ -262,7 +262,8 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
                 .show(childFragmentManager, StatusDescDialog::class.java.simpleName)
         }
         headerView.btnAdd.onClick {
-            viewModel.walletVersion()
+//            viewModel.walletVersion()
+            goPayChannel()
         }
     }
 
@@ -289,9 +290,8 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
         }
     }
 
-    private fun goPayChannel(isAutoBuy: Boolean) {
+    private fun goPayChannel(isAutoBuy: Boolean = false) {
         Router.navigation(Routes.PAY_CHANNEL)
-            .with(Constants.RouterKeys.IS_AUTO_BUY, isAutoBuy)
             .navigation(this)
     }
 

@@ -15,7 +15,6 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 @AndroidEntryPoint
 class PayChannelActivity : BaseVbActivity<ActivityPayChannelBinding>() {
 
-    private var isAutoBuy = false
     private lateinit var titles: List<String>
     private lateinit var pagerAdapter: PayChannelPagerAdapter
 
@@ -34,24 +33,18 @@ class PayChannelActivity : BaseVbActivity<ActivityPayChannelBinding>() {
     override fun getBaseTitleBarTitle(): String = getString(R.string.wallet)
 
     override fun initView() {
-        isAutoBuy = intent.getBooleanExtra(Constants.RouterKeys.IS_AUTO_BUY, false)
-        titles = if (isAutoBuy) {
-            listOf(
-                getString(R.string.auto_buy)
-            )
-        } else {
-            listOf(
-                getString(R.string.buy),
-                getString(R.string.sell),
-            )
-        }
+        titles = listOf(
+            getString(R.string.buy),
+            getString(R.string.auto_buy),
+            getString(R.string.sell)
+        )
 
         setupViewPager()
         setupMagicIndicator()
     }
 
     private fun setupViewPager() {
-        pagerAdapter = PayChannelPagerAdapter(this, isAutoBuy)
+        pagerAdapter = PayChannelPagerAdapter(this)
         binding.viewPager.adapter = pagerAdapter
         binding.viewPager.offscreenPageLimit = 1
         binding.viewPager.optimizeSwipeSensitivity()

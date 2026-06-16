@@ -43,6 +43,11 @@ class PayChannelSetupActivity : BaseVbActivity<ActivityPayChannelSetupBinding>()
                 )
                 .commit()
         }
+        if (setupArgs?.multiCard == 1) {
+            binding.vStep.setStepTitles("Phone", "Authorize", "Add Wallet", "Bank Card")
+        } else {
+            binding.vStep.setStepTitles("Phone", "Authorize", "Add Wallet")
+        }
         binding.vStep.setCurrentStep(1)
     }
 
@@ -79,10 +84,22 @@ class PayChannelSetupActivity : BaseVbActivity<ActivityPayChannelSetupBinding>()
         binding.vStep.setCurrentStep(3)
     }
 
+    fun navigateToStep4(stepArgs: PayChannelSetupArgs) {
+        supportFragmentManager.beginTransaction()
+            .replace(
+                R.id.fl_container,
+                PayChannelSetup4Fragment.newInstance(stepArgs)
+            )
+            .addToBackStack(PayChannelSetup4Fragment::class.java.simpleName)
+            .commit()
+        binding.vStep.setCurrentStep(4)
+    }
+
     private fun updateStepProgress() {
         val currentFragment = supportFragmentManager.findFragmentById(R.id.fl_container)
         binding.vStep.setCurrentStep(
             when (currentFragment) {
+                is PayChannelSetup4Fragment -> 4
                 is PayChannelSetup3Fragment -> 3
                 is PayChannelSetup2Fragment -> 2
                 else -> 1

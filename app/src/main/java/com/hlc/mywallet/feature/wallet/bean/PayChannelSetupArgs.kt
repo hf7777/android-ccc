@@ -30,7 +30,10 @@ data class PayChannelSetupArgs(
     val otp: String = "",
     val description: String = "",
     val isAutoBuy: Boolean = false,
-    val isApk: Int = 0
+    val isApk: Int = 0,
+    val walletId: String = "",
+    val upiId: String = "",
+    val multiCard: Int = 0
 ) : Parcelable {
 
     companion object {
@@ -42,7 +45,8 @@ data class PayChannelSetupArgs(
                 phone = "",
                 description = channel.description.orEmpty(),
                 isAutoBuy = isAutoBuy,
-                isApk = channel.isApk
+                isApk = channel.isApk,
+                multiCard = channel.multiCard
             )
         }
 
@@ -53,7 +57,8 @@ data class PayChannelSetupArgs(
                 phone = wallet.phone.orEmpty(),
                 description = wallet.description.orEmpty(),
                 isAutoBuy = isAutoBuy,
-                isApk = wallet.isApk
+                isApk = wallet.isApk,
+                multiCard = wallet.multiCard
             )
         }
     }
