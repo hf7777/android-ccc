@@ -41,6 +41,11 @@ object Routes {
     const val TUTORIAL_LIST = "/tutorial_list"
 
     /**
+     * 课程视频播放
+     */
+    const val TUTORIAL_VIDEO = "/tutorial_video"
+
+    /**
      * 支付详情
      */
     const val PAYMENT_DETAIL = "/payment_detail"

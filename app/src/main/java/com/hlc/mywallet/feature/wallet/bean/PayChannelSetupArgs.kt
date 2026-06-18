@@ -33,7 +33,8 @@ data class PayChannelSetupArgs(
     val isApk: Int = 0,
     val walletId: String = "",
     val upiId: String = "",
-    val multiCard: Int = 0
+    val multiCard: Int = 0,
+    val fromRelink: Boolean = false
 ) : Parcelable {
 
     companion object {
@@ -58,7 +59,8 @@ data class PayChannelSetupArgs(
                 description = wallet.description.orEmpty(),
                 isAutoBuy = isAutoBuy,
                 isApk = wallet.isApk,
-                multiCard = wallet.multiCard
+                multiCard = wallet.multiCard,
+                fromRelink = true,
             )
         }
     }

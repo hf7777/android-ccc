@@ -37,6 +37,9 @@ class TutorialVideoFragment : BaseVbFragment<LayoutTutorialVideoPlayerBinding>()
                 binding.ivVideoCover.gone()
                 aspectListener?.onVideoAspectRatioReady(aspectRatio)
             }
+            controller.onFirstFrameRendered = {
+                binding.ivVideoCover.gone()
+            }
             controller.bind()
         }
     }

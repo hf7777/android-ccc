@@ -43,7 +43,8 @@ class PayChannelSetupActivity : BaseVbActivity<ActivityPayChannelSetupBinding>()
                 )
                 .commit()
         }
-        if (setupArgs?.multiCard == 1) {
+        // relink 进来的不显示添加银行卡的步骤
+        if (setupArgs?.multiCard == 1 && setupArgs?.fromRelink == false) {
             binding.vStep.setStepTitles("Phone", "Authorize", "Add Wallet", "Bank Card")
         } else {
             binding.vStep.setStepTitles("Phone", "Authorize", "Add Wallet")

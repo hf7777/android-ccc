@@ -19,13 +19,14 @@ import com.hlc.lib_base.extension.gone
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.extension.visibleOrGone
-import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showConfirmDialog
 import com.hlc.mywallet.R
 import com.hlc.mywallet.common.AppSecurityConfig
 import com.hlc.mywallet.common.Constants
+import com.hlc.mywallet.data.model.resp.VersionResp
 import com.hlc.mywallet.databinding.FragmentPayChannelSetup2Binding
+import com.hlc.mywallet.dialog.DownloadAppDialog
 import com.hlc.mywallet.dialog.InstallGuideDialog
 import com.hlc.mywallet.extension.setupPasswordVisibilityToggle
 import com.hlc.mywallet.feature.main.MainViewModel
@@ -64,7 +65,9 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
             isAutoBuy = setupArgs?.isAutoBuy == true
             //特定钱包需要 ACTIVE OTP
-            groupAutoBtn.visibleOrGone(isAutoBuy && ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode), false)
+            val isOtpActive = isAutoBuy && ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode)
+            btnActiveOtp.visibleOrGone(isOtpActive)
+            btnGuide.visibleOrGone(isOtpActive || setupArgs?.multiCard == 1)
 
             updateResignPackageButtonVisibility()
 
@@ -73,6 +76,8 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
                 // 重打包无需发送otp
                 groupOtp.gone()
             } else {
+                // auto buy 分为 otp 和 重打包
+                //需要 ACTIVE OTP running 状态发送按钮才可点击，非 auto buy 直接可以点击
                 btnSend.isEnabled = !isAutoBuy
                 groupOtp.visible()
 
@@ -95,8 +100,10 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
             btnResignPackage.onClick {
                 val downloadUrl = AppSecurityConfig.getAppDownloadUrl(setupArgs?.channelCode.orEmpty())
-                downloadUrl?.let {
-                    Router.navigation(it).navigation(this@PayChannelSetup2Fragment)
+                if (!downloadUrl.isNullOrBlank()) {
+                    val version = VersionResp(apkUrl = downloadUrl)
+                    DownloadAppDialog.newInstance(version)
+                        .show(childFragmentManager, DownloadAppDialog.TAG)
                 }
             }
 
@@ -330,6 +337,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             channelCode = args.channelCode
         )
         binding.btnResignPackage.visibleOrGone(args.isApk == 1)
+        binding.btnResignPackage.isEnabled = !isInstall
         if (isInstall) {
             binding.btnResignPackage.text = getString(R.string.download_new_installed, args.channelName)
         } else {

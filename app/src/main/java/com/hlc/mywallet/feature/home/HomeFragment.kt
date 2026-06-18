@@ -145,7 +145,9 @@ class HomeFragment : BaseVbFragment<FragmentHomeBinding>() {
         } else {
             binding.tvBalance.gone()
             binding.llBalanceNewbie.visible()
+            val totalReward = event.totalReward.toString().formatNumber()
             binding.tvBalanceNewbie.text = event.totalReward.toString().formatNumber()
+            binding.tvCompleteTip.text = getString(R.string.complete_newbie_task_to_get_100_bonus, totalReward)
             binding.tvCompleteTip.startBreathingScaleAnimation()
         }
     }

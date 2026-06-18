@@ -20,6 +20,7 @@ import com.hlc.mywallet.feature.mine.withdraw.WithdrawActivity
 import com.hlc.mywallet.feature.mine.withdraw.WithdrawRecordsActivity
 import com.hlc.mywallet.feature.team.SublineActivity
 import com.hlc.mywallet.feature.tutorial.TutorialActivity
+import com.hlc.mywallet.feature.tutorial.TutorialVideoActivity
 import com.hlc.mywallet.feature.wallet.EditUpiActivity
 import com.hlc.mywallet.feature.wallet.PayChannelActivity
 import com.hlc.mywallet.feature.wallet.PayChannelSetupActivity
@@ -41,6 +42,7 @@ object RouterConfig {
                 Routes.HOME to HomeActivity::class.java,
                 Routes.REGISTER to RegisterActivity::class.java,
                 Routes.TUTORIAL_LIST to TutorialActivity::class.java,
+                Routes.TUTORIAL_VIDEO to TutorialVideoActivity::class.java,
                 Routes.PAYMENT_DETAIL to PaymentDetailActivity::class.java,
                 Routes.DEPOSIT to DepositActivity::class.java,
                 Routes.WEB to WebActivity::class.java,

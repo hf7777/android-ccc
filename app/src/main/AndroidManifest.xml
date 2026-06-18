@@ -33,6 +33,9 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:supportsRtl="true"
         android:theme="@style/Theme.MyWallet">
+        <activity android:name=".feature.tutorial.TutorialVideoActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".feature.mine.withdraw.WithdrawActivity"
             android:exported="false"

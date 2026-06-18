@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.blankj.utilcode.util.KeyboardUtils
 import com.chad.library.adapter4.util.setOnDebouncedItemClick
+import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseLazyListFragment
 import com.hlc.lib_base.extension.collectWithError
 import com.hlc.lib_base.extension.dp
@@ -110,6 +111,8 @@ class INRFragment : BaseLazyListFragment<DepositInr, DepositInrAdapter>() {
                             }
                         }
                         .show(requireActivity().supportFragmentManager, "MyWalletDialog")
+                } else {
+                    Toaster.show(getString(R.string.please_add_a_wallet_first))
                 }
             },
             onError = { errorMsg ->

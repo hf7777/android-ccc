@@ -24,6 +24,7 @@ android {
     buildTypes {
         debug {
             buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115\"")
+//            buildConfigField("String", "BASE_URL", "\"https://appapi.aapay.app\"")
             buildConfigField("String", "ENV", "\"DEV\"")
         }
         release {

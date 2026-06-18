@@ -40,11 +40,6 @@
                 tools:text="@string/_1_please_click_the_send_otp"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="8dp"/>
-            <androidx.constraintlayout.widget.Group
-                android:id="@+id/group_auto_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:constraint_referenced_ids="btn_active_otp,btn_guide"/>
             <com.hjq.shape.view.ShapeButton
                 android:id="@+id/btn_guide"
                 style="@style/ButtonStyle"
@@ -56,7 +51,8 @@
                 android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_tips"
-                android:layout_marginTop="15dp"/>
+                android:layout_marginTop="15dp"
+                tools:visibility="visible"/>
             <com.hjq.shape.view.ShapeButton
                 android:id="@+id/btn_active_otp"
                 style="@style/ButtonStyle"
@@ -80,11 +76,12 @@
                 android:textSize="12sp"
                 app:shape_solidColor="@color/btn_active"
                 android:paddingHorizontal="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/btn_active_otp"
                 app:layout_constraintTop_toTopOf="@id/btn_guide"
                 app:layout_constraintBottom_toBottomOf="@id/btn_guide"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
+                android:layout_marginEnd="15dp"
                 android:paddingVertical="5dp"
                 android:visibility="gone"
                 tools:visibility="visible"/>
@@ -158,7 +155,7 @@
                 android:textColor="@color/text_color_white"
                 android:textSize="14sp"
                 android:textStyle="bold"
-                android:enabled="false"
+                android:enabled="true"
                 app:shape_solidDisabledColor="@color/btn_disabled"
                 app:layout_constraintTop_toTopOf="@id/et_otp"
                 app:layout_constraintBottom_toBottomOf="@id/et_otp"

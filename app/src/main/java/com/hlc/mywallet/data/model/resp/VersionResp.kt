@@ -10,7 +10,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class VersionResp(
     val apkUrl: String,
-    val forceUpdate: String,
-    val versionCode: Int,
-    val versionName: String
+    val forceUpdate: String = "Y",
+    val versionCode: Int = 0,
+    val versionName: String = ""
 ) : Parcelable

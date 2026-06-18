@@ -26,5 +26,6 @@ data class PayChannelResp(
     val thirdWalletType: String?,
     val description: String?,
     val isApk: Int,
-    val multiCard: Int = 0
+    val multiCard: Int = 0,
+    val guideUrl: String?
 ) : Parcelable

@@ -264,7 +264,7 @@
     <string name="newbie_task_not_completed">Newbie task not completed</string>
     <string name="reward_received">Reward received</string>
     <string name="contact">Contact</string>
-    <string name="complete_newbie_task_to_get_100_bonus">Complete newbie task to get 100 bonus!</string>
+    <string name="complete_newbie_task_to_get_100_bonus">Complete newbie task to get %1$s bonus!</string>
     <string name="order_details">Order Details</string>
     <string name="to_address">To Address</string>
     <string name="tx_hash">TX Hash</string>
@@ -327,4 +327,9 @@
     <string name="download_new_not_installed">Download New %1$s\n(Not Installed)</string>
     <string name="remark">Remark</string>
     <string name="edit_remark">Edit Remark</string>
+    <string name="download">Download</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="downloading_please_wait">Downloading... Please wait.</string>
+    <string name="downloading">Downloading</string>
+    <string name="please_add_a_wallet_first">Please add an available wallet first</string>
 </resources>

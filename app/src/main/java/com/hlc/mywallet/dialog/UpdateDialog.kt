@@ -193,7 +193,7 @@ class UpdateDialog : DialogFragment() {
                 binding.progressBar.progress = state.progress
                 binding.tvProgress.text = getString(R.string.app_update_progress, state.progress)
                 binding.btnPrimary.isEnabled = false
-                binding.btnPrimary.text = getString(R.string.update_now)
+                binding.btnPrimary.text = getString(R.string.downloading)
             }
             is AppUpdateDownloader.DownloadState.Success -> {
                 binding.progressBar.progress = 100

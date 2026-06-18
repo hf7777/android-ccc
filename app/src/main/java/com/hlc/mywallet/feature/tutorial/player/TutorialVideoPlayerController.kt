@@ -38,6 +38,9 @@ class TutorialVideoPlayerController(
     /** 视频宽高比（宽/高），供嵌入场景调整外层容器 */
     var onVideoAspectRatioReady: ((aspectRatio: Float) -> Unit)? = null
 
+    /** 首帧渲染完成，用于隐藏封面等占位图 */
+    var onFirstFrameRendered: (() -> Unit)? = null
+
     private var player: ExoPlayer? = null
     private var lastNotifiedAspectRatio = 0f
     private var isUserSeeking = false
@@ -241,6 +244,10 @@ class TutorialVideoPlayerController(
 
         override fun onVideoSizeChanged(videoSize: VideoSize) {
             binding.videoContainer.post { applySurfaceLayout(videoSize) }
+        }
+
+        override fun onRenderedFirstFrame() {
+            onFirstFrameRendered?.invoke()
         }
 
         override fun onPlayerError(error: PlaybackException) {

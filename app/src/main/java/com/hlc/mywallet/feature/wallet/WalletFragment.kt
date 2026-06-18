@@ -237,7 +237,7 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
             .withBundle(Bundle().apply {
                 putParcelable(
                     Constants.RouterKeys.PAY_CHANNEL_SETUP_ARGS,
-                    PayChannelSetupArgs.fromWallet(wallet, false).copy(multiCard = 0)
+                    PayChannelSetupArgs.fromWallet(wallet, false)
                 )
             })
             .navigation(this)
