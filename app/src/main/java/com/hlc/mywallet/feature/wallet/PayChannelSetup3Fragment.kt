@@ -87,7 +87,7 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
             },
             onSuccess = { walletId ->
                 hideLoading()
-                if (setupArgs?.multiCard == 1) {
+                if (setupArgs?.multiCard == 1 && setupArgs?.fromRelink == false) {
                     val upiId = binding.tvUpi.text.toString().trim()
                     val stepArgs = setupArgs?.copy(walletId = walletId, upiId = upiId) ?: return@collectWithError
                     (activity as? PayChannelSetupActivity)?.navigateToStep4(stepArgs)
