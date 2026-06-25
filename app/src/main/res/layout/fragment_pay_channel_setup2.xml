@@ -53,6 +53,13 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_tips"
                 android:layout_marginTop="15dp"
                 tools:visibility="visible"/>
+            <View
+                android:id="@+id/hide_view"
+                android:layout_width="1dp"
+                android:layout_height="30dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_tips"
+                android:layout_marginTop="15dp"/>
             <com.hjq.shape.view.ShapeButton
                 android:id="@+id/btn_active_otp"
                 style="@style/ButtonStyle"
@@ -77,8 +84,8 @@
                 app:shape_solidColor="@color/btn_active"
                 android:paddingHorizontal="10dp"
                 app:layout_constraintEnd_toStartOf="@id/btn_active_otp"
-                app:layout_constraintTop_toTopOf="@id/btn_guide"
-                app:layout_constraintBottom_toBottomOf="@id/btn_guide"
+                app:layout_constraintTop_toTopOf="@id/hide_view"
+                app:layout_constraintBottom_toBottomOf="@id/hide_view"
                 android:layout_marginBottom="15dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="15dp"
@@ -94,7 +101,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/btn_guide"
+                app:layout_constraintTop_toBottomOf="@id/hide_view"
                 android:layout_marginTop="16dp"/>
             <com.hjq.shape.view.ShapeTextView
                 android:id="@+id/et_phone"

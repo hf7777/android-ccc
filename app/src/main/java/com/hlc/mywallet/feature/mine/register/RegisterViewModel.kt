@@ -35,10 +35,10 @@ class RegisterViewModel @Inject constructor(
         }
     }
 
-    fun sendOtp(phone: String, captchaId: String, sliderPosition: String) {
+    fun sendRegisterOtp(phone: String, captchaId: String, sliderPosition: String) {
         viewModelScope.launch {
             _sendOtpState.emit(ApiResult.Loading)
-            _sendOtpState.emit(userRepository.sendPasswordOtp(phone, captchaId, sliderPosition))
+            _sendOtpState.emit(userRepository.sendRegisterOtp(phone, captchaId, sliderPosition))
         }
     }
 

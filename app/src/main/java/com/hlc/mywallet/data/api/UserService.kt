@@ -63,6 +63,12 @@ interface UserService {
     suspend fun sendPasswordOtp(@Body requestBody: RequestBody): BaseResponse<String>
 
     /**
+     * 发送注册otp
+     */
+    @POST("/app/sendOtp")
+    suspend fun sendRegisterOtp(@Body requestBody: RequestBody): BaseResponse<String>
+
+    /**
      * 注销
      */
     @POST("/app/logout")

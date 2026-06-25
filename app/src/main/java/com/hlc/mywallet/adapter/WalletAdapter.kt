@@ -81,13 +81,17 @@ class WalletAdapter(
                     tvRealBalance.setDrawablePadding(leftResId = R.drawable.ic_coin, leftPadding = 4.dp, drawableWidth = 18.dp, drawableHeight = 18.dp)
                 }
 
-                tvBankAccount.visible()
-                if (item.bankCardAccountNo.isNullOrEmpty()) {
-                    tvBankAccount.text = context.getString(R.string.please_add_bank_card)
-                    tvBankAccount.setTextColor(ColorUtils.getColor(R.color.highlight_yellow))
+                if (item.multiCard == 1) {
+                    tvBankAccount.visible()
+                    if (item.bankCardAccountNo.isNullOrEmpty()) {
+                        tvBankAccount.text = context.getString(R.string.please_add_bank_card)
+                        tvBankAccount.setTextColor(ColorUtils.getColor(R.color.highlight_yellow))
+                    } else {
+                        tvBankAccount.text = "AC:${item.bankCardAccountNo.takeLast(4)}"
+                        tvBankAccount.setTextColor(ColorUtils.getColor(R.color.text_color_white))
+                    }
                 } else {
-                    tvBankAccount.text = "AC:${item.bankCardAccountNo.takeLast(4)}"
-                    tvBankAccount.setTextColor(ColorUtils.getColor(R.color.text_color_white))
+                    tvBankAccount.gone()
                 }
 
             } else {

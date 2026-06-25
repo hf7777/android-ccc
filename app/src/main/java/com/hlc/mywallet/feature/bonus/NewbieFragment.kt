@@ -247,6 +247,8 @@ class NewbieFragment : BaseLazyFragment<FragmentNewbieBinding>() {
         private const val TASK_CODE_SET_PIN = "set_pin"
         private const val TASK_CODE_ADD_TOOL = "add_tool"
         private const val TASK_CODE_COMPLETE_DEPOSIT = "complete_deposit"
+
+        private const val TASK_CODE_JOIN = "join_official_group"
         private const val STATUS_DONE = "done"
         private const val STATUS_CLAIMED = "claimed"
 
@@ -270,6 +272,11 @@ class NewbieFragment : BaseLazyFragment<FragmentNewbieBinding>() {
                 imgRes = R.drawable.ic_bonus_order,
                 titleRes = R.string.complete_a_deposit_order,
                 actionRoute = Routes.DEPOSIT
+            ),
+            TASK_CODE_JOIN to TaskUiConfig(
+                imgRes = R.drawable.ic_mine_service,
+                titleRes = R.string.join_official_group,
+                actionRoute = Routes.CUSTOMER_SERVICE
             )
         )
 

@@ -134,7 +134,7 @@ class RegisterActivity : BaseVbActivity<ActivityRegisterBinding>() {
                 }
                 isSendingOtp = true
                 sliderCaptchaDialog?.dismiss()
-                viewModel.sendOtp(
+                viewModel.sendRegisterOtp(
                     phone = binding.etPhoneNumber.text.toString().trim(),
                     captchaId = captchaId,
                     sliderPosition = sliderPosition

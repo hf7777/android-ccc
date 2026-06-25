@@ -13,29 +13,34 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_marginStart="12dp"
         android:layout_marginVertical="14dp"
-        app:layout_constraintEnd_toStartOf="@id/tv_title"/>
-    <TextView
-        android:id="@+id/tv_title"
+        app:layout_constraintEnd_toStartOf="@id/ll_title"/>
+    <LinearLayout
+        android:id="@+id/ll_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:textSize="15sp"
-        android:textColor="@color/text_color_black"
+        app:layout_constraintTop_toTopOf="@id/iv_img"
+        app:layout_constraintBottom_toBottomOf="@id/iv_img"
         app:layout_constraintStart_toEndOf="@id/iv_img"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="12dp"
-        android:text="Bind Telegram Robot"/>
-    <TextView
-        android:id="@+id/tv_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/theme"
-        android:textSize="14sp"
-        android:text="@string/view_tutorial"
-        app:layout_constraintStart_toStartOf="@id/tv_title"
-        app:layout_constraintTop_toBottomOf="@id/tv_title"
-        android:layout_marginTop="3dp"/>
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="15sp"
+            android:textColor="@color/text_color_black"
+            android:text="Bind Telegram Robot"/>
+        <TextView
+            android:id="@+id/tv_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/theme"
+            android:textSize="14sp"
+            android:text="@string/view_tutorial"
+            android:layout_marginTop="3dp"/>
+    </LinearLayout>
+
     <com.hjq.shape.view.ShapeButton
         android:id="@+id/btn_done"
         android:layout_width="wrap_content"

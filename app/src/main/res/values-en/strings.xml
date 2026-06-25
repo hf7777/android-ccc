@@ -332,4 +332,5 @@
     <string name="downloading_please_wait">Downloading... Please wait.</string>
     <string name="downloading">Downloading</string>
     <string name="please_add_a_wallet_first">Please add an available wallet first</string>
+    <string name="join_official_group">Join Official Group</string>
 </resources>

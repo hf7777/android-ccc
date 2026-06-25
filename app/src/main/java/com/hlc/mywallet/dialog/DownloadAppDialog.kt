@@ -86,6 +86,7 @@ class DownloadAppDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         interceptBackPress()
+        AppUpdateDownloader.resetIfUrlDifferent(version.apkUrl)
         bindVersionInfo()
         setupButtons()
         observeDownloadState()

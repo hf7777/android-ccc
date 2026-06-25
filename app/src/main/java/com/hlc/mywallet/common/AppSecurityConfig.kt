@@ -24,7 +24,9 @@ object AppSecurityConfig {
         return when (channelCode) {
             "paytm_apk" -> "net.one97.paytm"
             "phonepe_apk" -> "com.phonepe.app"
-//            "mobikwik", "mobikwik_pocket", "mobikwik_upi" -> "com.mobikwik_new"
+//            "mobikwik_upi" -> "com.mobikwik_new"
+            "mobikwik_apk" -> "com.mobikwik_new"
+            "mobikwik_pocket_apk" -> "com.mobikwik_new"
 //            "freecharge" -> "com.freecharge.android"
 //            "airtel" -> "com.myairtelapp"
 //            "jio", "myjio" -> "com.jio.myjio"
@@ -36,6 +38,7 @@ object AppSecurityConfig {
         return when (channelCode) {
             "paytm_apk" -> "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/Paytm_10.80.0_aapay_5_sign.apk"
             "phonepe_apk" -> "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/Phonepe_26.02.27.0_aapay_1_sign.apk"
+            "mobikwik_apk", "mobikwik_pocket_apk" -> "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/Mobikwik_23.57.4_aapay_1_sign.apk"
             else -> null
         }
     }

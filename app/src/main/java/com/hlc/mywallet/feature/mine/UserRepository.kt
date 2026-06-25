@@ -108,6 +108,18 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun sendRegisterOtp(phone: String, captchaId: String, sliderPosition: String): ApiResult<Unit> {
+        return safeRequestWithoutData {
+            userService.sendRegisterOtp(
+                buildJsonBody(
+                    "phone" to phone,
+                    "captchaId" to captchaId,
+                    "sliderPosition" to sliderPosition
+                )
+            )
+        }
+    }
+
     suspend fun logout(): ApiResult<Unit> {
         return safeRequestWithoutData {
             userService.logout()

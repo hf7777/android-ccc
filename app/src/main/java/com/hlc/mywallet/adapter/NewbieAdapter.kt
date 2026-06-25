@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.chad.library.adapter4.BaseQuickAdapter
 import com.chad.library.adapter4.viewholder.QuickViewHolder
 import com.hlc.lib_base.extension.onClick
+import com.hlc.lib_base.extension.visibleOrGone
 import com.hlc.mywallet.R
 import com.hlc.mywallet.data.model.resp.NewbieTaskResp
 import com.hlc.mywallet.databinding.ItemNewbieBinding
@@ -47,6 +48,7 @@ class NewbieAdapter(
             btnDone.text = btnText
             btnDone.shapeDrawableBuilder.setSolidColor(btnColor).intoBackground()
             tvTitle.text = item.taskName.orEmpty()
+            tvView.visibleOrGone(item.tutorialId != null)
             tvView.onClick {
                 onTutorialClick(item)
             }

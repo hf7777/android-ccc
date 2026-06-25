@@ -37,6 +37,7 @@ object AppUpdateDownloader {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private var downloadJob: Job? = null
     private var lastApkFile: File? = null
+    private var lastDownloadedUrl: String? = null
 
     private val _state = MutableStateFlow<DownloadState>(DownloadState.Idle)
     val state: StateFlow<DownloadState> = _state.asStateFlow()
@@ -53,6 +54,7 @@ object AppUpdateDownloader {
             _state.value = DownloadState.Failed(context.getString(R.string.invalid_download_url))
             return
         }
+        lastDownloadedUrl = apkUrl
         val appContext = context.applicationContext
         cancel(notifyCancel = false)
         createNotificationChannel(appContext)
@@ -103,6 +105,18 @@ object AppUpdateDownloader {
         }
     }
 
+    /**
+     * 当下载链接与上次不一致时，重置状态并清除旧文件引用，
+     * 避免 Success 状态残留导致安装到错误的 APK。
+     */
+    fun resetIfUrlDifferent(url: String) {
+        if (lastDownloadedUrl != null && lastDownloadedUrl != url) {
+            cancel(notifyCancel = true)
+            lastApkFile = null
+            _state.value = DownloadState.Idle
+        }
+    }
+
     private suspend fun downloadApk(
         context: Context,
         url: String,
@@ -116,7 +130,7 @@ object AppUpdateDownloader {
         val body = response.body ?: throw IllegalStateException("Empty response body")
         val totalBytes = body.contentLength()
         val apkDir = File(context.getExternalFilesDir(null), "apk").apply { mkdirs() }
-        val apkFile = File(apkDir, APK_FILE_NAME)
+        val apkFile = File(apkDir, "${System.currentTimeMillis()}_$APK_FILE_NAME")
         if (apkFile.exists()) {
             apkFile.delete()
         }

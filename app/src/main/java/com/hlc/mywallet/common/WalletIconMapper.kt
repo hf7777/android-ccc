@@ -15,7 +15,10 @@ object WalletIconMapper {
             "mobikwik" -> R.drawable.ic_pay_mobikwik
             "mobikwik_pocket" -> R.drawable.ic_pay_mobikwik
             "mobikwik_upi" -> R.drawable.ic_pay_mobikwik
+            "mobikwik_apk" -> R.drawable.ic_pay_mobikwik
+            "mobikwik_pocket_apk" -> R.drawable.ic_pay_mobikwik
             "phonepe" -> R.drawable.ic_pay_phonepe
+            "phonepe_pocket" -> R.drawable.ic_pay_phonepe
             "phonepe_business" -> R.drawable.ic_pay_phonepebusiness
             "phonepe_apk" -> R.drawable.ic_pay_phonepe
             "paytm" -> R.drawable.ic_pay_paytm
