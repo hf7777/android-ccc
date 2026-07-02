@@ -28,9 +28,24 @@ class USDTFragment : BaseVbFragment<FragmentUsdtBinding>() {
 
     override fun initView() {
         binding.etUsdt.clearFocus()
-        viewModel.loadCachedPriceInfo()
         setupInputListener()
         setupClickListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loadPriceInfo()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            loadPriceInfo()
+        }
+    }
+
+    private fun loadPriceInfo() {
+        viewModel.loadPriceInfo()
     }
 
     override fun observeData() {

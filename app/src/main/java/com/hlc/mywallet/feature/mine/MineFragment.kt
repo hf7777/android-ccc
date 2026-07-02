@@ -22,9 +22,11 @@ import com.hlc.lib_base.extension.visible
 import com.hlc.lib_base.extension.visibleOrGone
 import com.hlc.lib_base.router.Router
 import com.hlc.lib_base.router.navigation
+import com.hlc.lib_base.web.WebActivity
 import com.hlc.lib_base.widget.SpaceItemDecoration
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showConfirmDialog
+import com.hlc.mywallet.BuildConfig
 import com.hlc.mywallet.R
 import com.hlc.mywallet.adapter.MineFunctionAdapter
 import com.hlc.mywallet.common.AppEvent
@@ -39,9 +41,12 @@ import com.hlc.mywallet.feature.main.MainActivity
 import com.hlc.mywallet.feature.mine.bean.MineFunction
 import com.hlc.mywallet.feature.wallet.WalletViewModel
 import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
+import com.hlc.mywallet.manager.UserManager
 import com.hlc.mywallet.router.Routes
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MineFragment : BaseVbFragment<FragmentMineBinding>() {
@@ -53,6 +58,9 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
 
     private var userStatistics: UserStatisticsResp? = null
     private var checkBind: CheckBindingResp? = null
+
+    @Inject
+    lateinit var userManager: UserManager
 
     override fun initView() {
         binding.tvBalance.setDrawablePadding(leftResId = R.drawable.ic_coin, leftPadding = 4.dp, drawableWidth = 18.dp, drawableHeight = 18.dp)
@@ -131,7 +139,15 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
                     }
                     1 -> {
                         // Lucky Draw
-                        Toaster.show(getString(R.string.coming_soon))
+                        lifecycleScope.launch {
+                            userManager.getToken()?.let {
+                                val url = WHEEL_URL + userManager.getToken()
+                                Router.navigation(Routes.WEB)
+                                    .with(WebActivity.EXTRA_URL, url)
+                                    .with(WebActivity.EXTRA_TITLE, getString(R.string.lucky_draw))
+                                    .navigation(this@MineFragment)
+                            }
+                        }
                     }
                     2 -> {
                         // 绑定 tg
@@ -319,6 +335,7 @@ class MineFragment : BaseVbFragment<FragmentMineBinding>() {
 
     companion object {
         private const val WALLET_VERSION_2 = "2.0"
+        private const val WHEEL_URL = "${BuildConfig.BASE_URL}/app/turntable/page/wheel?activityId=428022134840684544&token="
 
         fun newInstance() = MineFragment()
     }

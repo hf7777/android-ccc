@@ -8,6 +8,7 @@ import com.hlc.mywallet.data.model.resp.InrDetailResp
 import com.hlc.mywallet.data.model.resp.MyWalletResp
 import com.hlc.mywallet.data.model.resp.PriceInfoResp
 import com.hlc.mywallet.data.model.resp.UsdtPayResp
+import com.hlc.mywallet.feature.home.HomeRepository
 import com.hlc.mywallet.feature.main.MainRepository
 import com.hlc.mywallet.feature.mine.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,6 +25,7 @@ import javax.inject.Inject
 @HiltViewModel
 class DepositViewModel @Inject constructor(
     private val repository: DepositRepository,
+    private val homeRepository: HomeRepository,
     private val mainRepository: MainRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
@@ -79,6 +81,15 @@ class DepositViewModel @Inject constructor(
     fun loadCachedPriceInfo() {
         viewModelScope.launch {
             _priceInfoFlow.value = repository.getCachedPriceInfo()
+        }
+    }
+
+    fun loadPriceInfo() {
+        viewModelScope.launch {
+            when (val result = homeRepository.getPriceInfo()) {
+                is ApiResult.Success -> _priceInfoFlow.value = result.data
+                else -> Unit
+            }
         }
     }
 
