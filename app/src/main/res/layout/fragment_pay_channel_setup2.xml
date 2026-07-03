@@ -40,58 +40,53 @@
                 tools:text="@string/_1_please_click_the_send_otp"
                 android:lineSpacingExtra="4dp"
                 android:layout_marginTop="8dp"/>
-            <com.hjq.shape.view.ShapeButton
-                android:id="@+id/btn_guide"
-                style="@style/ButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="@string/install_guide"
-                android:textSize="12sp"
-                app:shape_solidColor="@color/highlight_yellow"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_tips"
-                android:layout_marginTop="15dp"
-                tools:visibility="visible"/>
-            <View
-                android:id="@+id/hide_view"
-                android:layout_width="1dp"
-                android:layout_height="30dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_tips"
-                android:layout_marginTop="15dp"/>
-            <com.hjq.shape.view.ShapeButton
-                android:id="@+id/btn_active_otp"
-                style="@style/ButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="@string/active_otp"
-                android:textSize="12sp"
-                app:shape_solidColor="@color/btn_active"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintEnd_toStartOf="@id/btn_guide"
-                app:layout_constraintTop_toTopOf="@id/btn_guide"
-                app:layout_constraintBottom_toBottomOf="@id/btn_guide"
-                android:layout_marginEnd="15dp"/>
-            <com.hjq.shape.view.ShapeButton
-                android:id="@+id/btn_resign_package"
-                style="@style/ButtonStyle"
+
+            <LinearLayout
+                android:id="@+id/ll_action"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:minHeight="30dp"
-                android:text="@string/download_now"
-                android:textSize="12sp"
-                app:shape_solidColor="@color/btn_active"
-                android:paddingHorizontal="10dp"
-                app:layout_constraintEnd_toStartOf="@id/btn_active_otp"
-                app:layout_constraintTop_toTopOf="@id/hide_view"
-                app:layout_constraintBottom_toBottomOf="@id/hide_view"
-                android:layout_marginBottom="15dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
                 android:layout_marginTop="15dp"
-                android:layout_marginEnd="15dp"
-                android:paddingVertical="5dp"
-                android:visibility="gone"
-                tools:visibility="visible"/>
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_tips">
+                <com.hjq.shape.view.ShapeButton
+                    android:id="@+id/btn_resign_package"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:minHeight="30dp"
+                    android:text="@string/download_now"
+                    android:textSize="12sp"
+                    app:shape_solidColor="@color/btn_active"
+                    android:paddingHorizontal="10dp"
+                    app:layout_constraintEnd_toStartOf="@id/btn_active_otp"
+                    android:layout_marginEnd="15dp"
+                    android:paddingVertical="5dp"
+                    android:visibility="gone"
+                    tools:visibility="visible"/>
+                <com.hjq.shape.view.ShapeButton
+                    android:id="@+id/btn_active_otp"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="@string/active_otp"
+                    android:textSize="12sp"
+                    app:shape_solidColor="@color/btn_active"
+                    android:paddingHorizontal="10dp"
+                    android:layout_marginEnd="15dp"/>
+                <com.hjq.shape.view.ShapeButton
+                    android:id="@+id/btn_guide"
+                    style="@style/ButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="@string/install_guide"
+                    android:textSize="12sp"
+                    app:shape_solidColor="@color/highlight_yellow"
+                    android:paddingHorizontal="10dp"
+                    tools:visibility="visible"/>
+            </LinearLayout>
+
             <TextView
                 android:id="@+id/tv_your_phone"
                 android:layout_width="wrap_content"
@@ -101,7 +96,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/text_color_black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/hide_view"
+                app:layout_constraintTop_toBottomOf="@id/ll_action"
                 android:layout_marginTop="16dp"/>
             <com.hjq.shape.view.ShapeTextView
                 android:id="@+id/et_phone"
