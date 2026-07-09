@@ -77,12 +77,13 @@ class WalletViewModel @Inject constructor(
     private val _walletRemarkFlow = MutableSharedFlow<ApiResult<Unit>>()
     val walletRemarkFlow: SharedFlow<ApiResult<Unit>> = _walletRemarkFlow.asSharedFlow()
 
-    fun getWalletList(page: Int, pageSize: Int = 20) {
+    fun getWalletList(page: Int, pageSize: Int = 20, phone: String? = null) {
         viewModelScope.launch {
             val params = buildJsonBody(
                 "pageNum" to page.toString(),
                 "pageSize" to pageSize.toString(),
-                "timezone" to "IN"
+                "timezone" to "IN",
+                "phone"  to phone
             )
             _walletListState.emit(ApiResult.Loading)
             _walletListState.emit(repository.getWalletList(params))

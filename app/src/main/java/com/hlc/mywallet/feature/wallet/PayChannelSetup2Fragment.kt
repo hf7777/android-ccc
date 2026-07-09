@@ -278,8 +278,9 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             content = getString(R.string.install_aa_otp_first),
             confirmText = getString(R.string.download_now)
         ) {
-            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(AA_OTP_DOWNLOAD_URL))
-            startActivity(browserIntent)
+            val version = VersionResp(apkUrl = AA_OTP_DOWNLOAD_URL)
+            DownloadAppDialog.newInstance(version)
+                .show(childFragmentManager, DownloadAppDialog.TAG)
         }
     }
 

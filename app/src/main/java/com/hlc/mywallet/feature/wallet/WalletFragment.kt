@@ -3,6 +3,8 @@ package com.hlc.mywallet.feature.wallet
 import android.view.LayoutInflater
 import android.os.Bundle
 import android.view.View
+import androidx.core.widget.addTextChangedListener
+import com.blankj.utilcode.util.KeyboardUtils
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -40,6 +42,12 @@ import com.hlc.mywallet.feature.wallet.bean.PayChannelSetupArgs
 import com.hlc.mywallet.router.Routes
 import com.hlc.mywallet.widget.WalletOperatePopupWindow
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.FlowPreview
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -49,6 +57,8 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
     private var pendingSwitchPosition = RecyclerView.NO_POSITION
     private var pendingRelinkWallet: Wallet? = null
     private var pendingBankCardWallet: Wallet? = null
+    private var headerBinding: HeaderWalletBinding? = null
+    private val phoneQueryFlow = MutableStateFlow("")
 
     override fun createAdapter(): WalletAdapter {
         return WalletAdapter(
@@ -68,7 +78,8 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
     }
 
     override fun requestListData(page: Int) {
-        viewModel.getWalletList(page = page, pageSize = PAGE_SIZE)
+        val phone = phoneQueryFlow.value.trim().takeIf { it.isNotEmpty() }
+        viewModel.getWalletList(page = page, pageSize = PAGE_SIZE, phone = phone)
     }
 
     override fun createLayoutManager(): LinearLayoutManager {
@@ -85,9 +96,16 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
 
     override fun getFirstPage(): Int = FIRST_PAGE
 
+    override fun onDestroyView() {
+        KeyboardUtils.unregisterSoftInputChangedListener(requireActivity().window)
+        headerBinding = null
+        super.onDestroyView()
+    }
+
     override fun onListViewCreated() {
         super.onListViewCreated()
         addHeaderLayout()
+        setupKeyboardDismissFocusClear()
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
                 AppEventBus.flow<AppEvent.WalletRefreshRequested>().collect {
@@ -249,6 +267,7 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
             binding.llHeader,
             false
         )
+        headerBinding = headerView
         binding.llHeader.removeAllViews()
         binding.llHeader.addView(headerView.root)
         headerView.tvDesc.setDrawablePadding(
@@ -264,6 +283,27 @@ class WalletFragment : BaseLazyListFragment<Wallet, WalletAdapter>() {
         headerView.btnAdd.onClick {
 //            viewModel.walletVersion()
             goPayChannel()
+        }
+        setupPhoneQueryListener(headerView)
+    }
+
+    @OptIn(FlowPreview::class)
+    private fun setupPhoneQueryListener(headerView: HeaderWalletBinding) {
+        headerView.etPhone.addTextChangedListener { text ->
+            phoneQueryFlow.value = text?.toString().orEmpty()
+        }
+        phoneQueryFlow
+            .debounce(250)
+            .distinctUntilChanged()
+            .onEach { refreshList(showRefreshAnimation = false) }
+            .launchIn(viewLifecycleOwner.lifecycleScope)
+    }
+
+    private fun setupKeyboardDismissFocusClear() {
+        KeyboardUtils.registerSoftInputChangedListener(requireActivity().window) { height ->
+            if (height == 0) {
+                headerBinding?.etPhone?.clearFocus()
+            }
         }
     }
 
