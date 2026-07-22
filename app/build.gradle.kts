@@ -19,11 +19,15 @@ android {
         versionCode = appConfig["versionCode"] as Int
         versionName = appConfig["versionName"] as String
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField("String", "ADJUST_APP_TOKEN", "\"mbyir9b045q8\"")
     }
 
     buildTypes {
         debug {
-            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115\"")
+            // vicent
+            buildConfigField("String", "BASE_URL", "\"http://192.168.8.175:3115\"")
+            // max
+//            buildConfigField("String", "BASE_URL", "\"http://192.168.8.154:3115\"")
 //            buildConfigField("String", "BASE_URL", "\"https://appapi.aapay.app\"")
             buildConfigField("String", "ENV", "\"DEV\"")
         }
@@ -113,6 +117,11 @@ dependencies {
     
     // Media3：教程 MP4 直链播放（仅 exoplayer 模块）
     implementation(libs.androidx.media3.exoplayer)
+
+    // Adjust：归因与事件追踪（Google Play 版本）
+    implementation(libs.adjust)
+    implementation(libs.installreferrer)
+    implementation(libs.play.services.ads.identifier)
 
     // Banner
     implementation(libs.banner)

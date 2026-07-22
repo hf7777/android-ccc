@@ -33,6 +33,9 @@ magicindicator = "1.7.0"
 agentweb = "v5.0.6-androidx"
 leakcanary = "2.14"
 media3 = "1.4.1"
+adjust = "5.7.0"
+installreferrer = "2.2"
+playServicesAdsIdentifier = "18.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -75,6 +78,9 @@ magicindicator = { group = "com.github.hackware1993", name = "MagicIndicator", v
 agentweb = { group = "com.github.Justson.AgentWeb", name = "agentweb-core", version.ref = "agentweb" }
 leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3" }
+adjust = { group = "com.adjust.sdk", name = "adjust-android", version.ref = "adjust" }
+installreferrer = { group = "com.android.installreferrer", name = "installreferrer", version.ref = "installreferrer" }
+play-services-ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

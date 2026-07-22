@@ -2,6 +2,9 @@ package com.hlc.mywallet
 
 import android.app.Application
 import android.content.Intent
+import com.adjust.sdk.Adjust
+import com.adjust.sdk.AdjustConfig
+import com.adjust.sdk.LogLevel
 import com.blankj.utilcode.util.Utils
 import com.hjq.toast.Toaster
 import dagger.hilt.android.HiltAndroidApp
@@ -40,6 +43,7 @@ class App : Application() {
             initLogUtils()
             initAutoSize()
             initToaster()
+            initAdjust()
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -101,5 +105,13 @@ class App : Application() {
     private fun initToaster() {
         Toaster.init(this)
         Toaster.setDebugMode(BuildConfig.DEBUG)
+    }
+
+    private fun initAdjust() {
+        val appToken = BuildConfig.ADJUST_APP_TOKEN
+        val environment = AdjustConfig.ENVIRONMENT_SANDBOX
+        val config = AdjustConfig(this, appToken, environment)
+        config.setLogLevel(LogLevel.VERBOSE)
+        Adjust.initSdk(config)
     }
 }
