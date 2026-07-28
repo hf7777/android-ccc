@@ -9,6 +9,7 @@ import com.hlc.lib_base.extension.enableWhen
 import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.mywallet.common.ActivityStackManager
+import com.hlc.mywallet.common.AdjustTracker
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
 import com.hlc.mywallet.common.Constants
@@ -87,6 +88,7 @@ class PayChannelSetup3Fragment: BaseVbFragment<FragmentPayChannelSetup3Binding>(
             },
             onSuccess = { walletId ->
                 hideLoading()
+                AdjustTracker.trackBindUpi()
                 if (setupArgs?.multiCard == 1 && setupArgs?.fromRelink == false) {
                     val upiId = binding.tvUpi.text.toString().trim()
                     val stepArgs = setupArgs?.copy(walletId = walletId, upiId = upiId) ?: return@collectWithError

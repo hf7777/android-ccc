@@ -14,6 +14,7 @@ import com.hlc.lib_base.extension.onClick
 import com.hlc.lib_base.widget.hideLoading
 import com.hlc.lib_base.widget.showLoading
 import com.hlc.mywallet.R
+import com.hlc.mywallet.common.AdjustTracker
 import com.hlc.mywallet.data.model.req.RegisterReq
 import com.hlc.mywallet.data.model.resp.SliderCaptchaResp
 import com.hlc.mywallet.databinding.ActivityRegisterBinding
@@ -113,6 +114,7 @@ class RegisterActivity : BaseVbActivity<ActivityRegisterBinding>() {
             onSuccess = {
                 hideLoading()
                 Toaster.show(getString(R.string.register_success))
+                AdjustTracker.trackRegister()
                 finish()
             },
             onError = { hideLoading() }
