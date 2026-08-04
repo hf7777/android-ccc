@@ -36,7 +36,7 @@ object AdjustTracker {
         if (token.isBlank()) {
             return
         }
-        val event = AdjustEvent(token)
-        Adjust.trackEvent(event)
+//        val event = AdjustEvent(token)
+//        Adjust.trackEvent(event)
     }
 }

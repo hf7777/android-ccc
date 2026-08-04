@@ -20,6 +20,7 @@ import com.hlc.mywallet.R
 import com.hlc.mywallet.common.AppEvent
 import com.hlc.mywallet.common.AppEventBus
 import com.hlc.mywallet.common.AppUpdateCheckEvent
+import com.hlc.mywallet.common.PermissionRequester
 import com.hlc.mywallet.common.showUpdateDialog
 import com.hlc.mywallet.data.model.resp.BulletinResp
 import com.hlc.mywallet.databinding.ActivityMainBinding
@@ -62,6 +63,7 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         initFragments()
         setupBottomNavigation()
         setupDoubleBackToExit()
+        requestNotificationPermissionIfNeeded()
         loadMyWallet()
         loadBulletins()
 
@@ -153,6 +155,14 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
             binding.ivTool.setImageResource(R.drawable.ic_nav_tools)
         }
         binding.bottomNavigation.selectTab(position)
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (!PermissionRequester.hasNotificationPermission(this)) {
+            PermissionRequester.requestNotificationPermission(this) { granted ->
+                LogUtils.d("Notification permission granted: $granted")
+            }
+        }
     }
 
     /**

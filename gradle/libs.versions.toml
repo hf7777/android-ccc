@@ -36,6 +36,7 @@ media3 = "1.4.1"
 adjust = "5.7.0"
 installreferrer = "2.2"
 playServicesAdsIdentifier = "18.0.1"
+firebaseBom = "32.7.4"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -81,6 +82,8 @@ androidx-media3-exoplayer = { group = "androidx.media3", name = "media3-exoplaye
 adjust = { group = "com.adjust.sdk", name = "adjust-android", version.ref = "adjust" }
 installreferrer = { group = "com.android.installreferrer", name = "installreferrer", version.ref = "installreferrer" }
 play-services-ads-identifier = { group = "com.google.android.gms", name = "play-services-ads-identifier", version.ref = "playServicesAdsIdentifier" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

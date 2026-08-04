@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.kotlin.kapt)
     id("kotlin-parcelize")
     id("com.google.dagger.hilt.android")
+    id("com.google.gms.google-services")
 }
 
 val appConfig = rootProject.extra["AppConfig"] as Map<*, *>
@@ -123,6 +124,10 @@ dependencies {
     implementation(libs.installreferrer)
     implementation(libs.play.services.ads.identifier)
 
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.messaging)
+
     // Banner
     implementation(libs.banner)
     
@@ -133,4 +138,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    // Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.17.0"))
 }

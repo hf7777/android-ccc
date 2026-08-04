@@ -18,10 +18,13 @@ import com.hlc.mywallet.data.api.HomeService
 import com.hlc.mywallet.data.api.TeamService
 import com.hlc.mywallet.data.api.UserService
 import com.hlc.mywallet.data.api.WalletService
+import com.hlc.mywallet.manager.FcmTokenManager
 import com.hlc.mywallet.manager.UserManager
 import com.hlc.mywallet.storage.CacheStorage
 import com.hlc.mywallet.storage.DataStoreCacheStorage
+import com.hlc.mywallet.storage.DataStoreFcmTokenStorage
 import com.hlc.mywallet.storage.DataStoreTokenStorage
+import com.hlc.mywallet.storage.FcmTokenStorage
 import com.hlc.mywallet.storage.TokenStorage
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
@@ -47,14 +50,23 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideFcmTokenStorage(@ApplicationContext context: Context): FcmTokenStorage {
+        return DataStoreFcmTokenStorage(context)
+    }
+
+    @Provides
+    @Singleton
     fun provideTokenInterceptor(userManager: UserManager): TokenInterceptor {
         return TokenInterceptor(userManager)
     }
 
     @Provides
     @Singleton
-    fun provideCommonParamsInterceptor(@ApplicationContext context: Context): CommonParamsInterceptor {
-        return CommonParamsInterceptor(context)
+    fun provideCommonParamsInterceptor(
+        @ApplicationContext context: Context,
+        fcmTokenManager: FcmTokenManager
+    ): CommonParamsInterceptor {
+        return CommonParamsInterceptor(context, fcmTokenManager)
     }
 
     @Provides

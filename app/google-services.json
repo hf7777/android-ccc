@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "467843363728",
+    "project_id": "aapay-74d4c",
+    "storage_bucket": "aapay-74d4c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467843363728:android:20bf055343c9cb6cbcb915",
+        "android_client_info": {
+          "package_name": "com.hlc.mywallet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvuUpxL-sQsrUaenm8LeYnYGjX3EBU9aw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,40 +1,54 @@
 package com.hlc.mywallet
 
+import android.app.Activity
 import android.app.Application
 import android.content.Intent
 import com.adjust.sdk.Adjust
 import com.adjust.sdk.AdjustConfig
 import com.adjust.sdk.LogLevel
+import com.blankj.utilcode.util.LogUtils
 import com.blankj.utilcode.util.Utils
+import com.google.firebase.messaging.FirebaseMessaging
 import com.hjq.toast.Toaster
-import dagger.hilt.android.HiltAndroidApp
-import android.app.Activity
+import com.hlc.lib_base.AppContext
 import com.hlc.lib_base.autosize.AutoSizeFoldConfigurator
 import com.hlc.lib_base.autosize.FoldScreenUtil
-import me.jessyan.autosize.AutoSizeConfig
-import me.jessyan.autosize.onAdaptListener
-import com.blankj.utilcode.util.LogUtils
-import com.hlc.lib_base.AppContext
 import com.hlc.lib_base.net.UnauthorizedHandler
 import com.hlc.lib_base.net.UnauthorizedHandlerHolder
 import com.hlc.lib_base.router.Router
 import com.hlc.mywallet.common.ActivityStackManager
+import com.hlc.mywallet.manager.FcmTokenManager
 import com.hlc.mywallet.manager.UserManager
-import com.hlc.mywallet.router.Routes
 import com.hlc.mywallet.router.RouterConfig
+import com.hlc.mywallet.router.Routes
+import dagger.hilt.android.HiltAndroidApp
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
+import me.jessyan.autosize.AutoSizeConfig
+import me.jessyan.autosize.onAdaptListener
 import javax.inject.Inject
 
 @HiltAndroidApp
 class App : Application() {
-    
+
     @Inject
     lateinit var userManager: UserManager
-    
+
+    @Inject
+    lateinit var fcmTokenManager: FcmTokenManager
+
+    private val appScope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+
     override fun onCreate() {
         super.onCreate()
         // 初始化全局 Context
         AppContext.init(this)
-        
+
         try {
             initActivityStackManager()
             initRouter()
@@ -43,10 +57,16 @@ class App : Application() {
             initLogUtils()
             initAutoSize()
             initToaster()
-            initAdjust()
+//            initAdjust()
+            initFcmToken()
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        appScope.cancel()
     }
     
     private fun initRouter() {
@@ -109,9 +129,24 @@ class App : Application() {
 
     private fun initAdjust() {
         val appToken = BuildConfig.ADJUST_APP_TOKEN
-        val environment = AdjustConfig.ENVIRONMENT_SANDBOX
+        val environment = AdjustConfig.ENVIRONMENT_PRODUCTION
         val config = AdjustConfig(this, appToken, environment)
         config.setLogLevel(LogLevel.VERBOSE)
         Adjust.initSdk(config)
+    }
+
+    private fun initFcmToken() {
+        appScope.launch {
+            fcmTokenManager.restoreToken()
+            try {
+                val token = withContext(Dispatchers.IO) {
+                    FirebaseMessaging.getInstance().token.await()
+                }
+                fcmTokenManager.saveToken(token)
+                LogUtils.d("FCM token initialized: $token")
+            } catch (e: Exception) {
+                LogUtils.e("FCM token initialization failed: ${e.message}")
+            }
+        }
     }
 }

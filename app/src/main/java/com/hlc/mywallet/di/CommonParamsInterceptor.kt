@@ -3,15 +3,17 @@ package com.hlc.mywallet.di
 import android.content.Context
 import com.blankj.utilcode.util.AppUtils
 import com.blankj.utilcode.util.DeviceUtils
+import com.hlc.mywallet.manager.FcmTokenManager
 import okhttp3.Interceptor
 import okhttp3.Response
 
 /**
  * 公共参数拦截器
- * 自动添加 deviceId、versionCode、versionName 到请求头
+ * 自动添加 deviceId、versionCode、versionName、fcmToken 到请求头
  */
 class CommonParamsInterceptor(
-    private val context: Context
+    private val context: Context,
+    private val fcmTokenManager: FcmTokenManager
 ) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
@@ -22,12 +24,16 @@ class CommonParamsInterceptor(
 //        恢复出厂设置会重置
 //        Android 8.0+ 每个应用的 Android ID 不同（应用隔离）
 //        卸载重装会变化（Android 8.0+）
-        val newRequest = originalRequest.newBuilder()
+        val requestBuilder = originalRequest.newBuilder()
             .addHeader("deviceId", DeviceUtils.getAndroidID())
             .addHeader("versionCode", AppUtils.getAppVersionCode().toString())
             .addHeader("versionName", AppUtils.getAppVersionName())
-            .build()
-        
+
+        fcmTokenManager.getToken()?.let { fcmToken ->
+            requestBuilder.addHeader("fcmToken", fcmToken)
+        }
+
+        val newRequest = requestBuilder.build()
         return chain.proceed(newRequest)
     }
 }

@@ -32,4 +32,26 @@ object PermissionRequester {
                 }
             })
     }
+
+    fun hasNotificationPermission(context: Context): Boolean {
+        return XXPermissions.isGranted(context, Permission.POST_NOTIFICATIONS)
+    }
+
+    fun requestNotificationPermission(
+        activity: Activity,
+        onResult: (granted: Boolean) -> Unit
+    ) {
+        XXPermissions.with(activity)
+            .permission(Permission.POST_NOTIFICATIONS)
+            .request(object : OnPermissionCallback {
+                override fun onGranted(permissions: List<String>, allGranted: Boolean) {
+                    onResult(allGranted)
+                }
+
+                override fun onDenied(permissions: List<String>, doNotAskAgain: Boolean) {
+                    onResult(false)
+                }
+            })
+    }
+
 }
