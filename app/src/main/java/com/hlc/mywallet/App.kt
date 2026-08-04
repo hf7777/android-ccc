@@ -57,7 +57,7 @@ class App : Application() {
             initLogUtils()
             initAutoSize()
             initToaster()
-//            initAdjust()
+            initAdjust()
             initFcmToken()
         } catch (e: Exception) {
             e.printStackTrace()
