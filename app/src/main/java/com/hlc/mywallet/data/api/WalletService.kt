@@ -10,9 +10,11 @@ import com.hlc.mywallet.data.model.resp.OtpActiveStatus
 import com.hlc.mywallet.data.model.resp.PayChannelResp
 import com.hlc.mywallet.data.model.resp.WalletBankInfoResp
 import com.hlc.mywallet.data.model.resp.WalletListResp
+import com.hlc.mywallet.di.TimeoutInterceptor
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.POST
 import retrofit2.http.Query
 
@@ -51,6 +53,7 @@ interface WalletService {
     /**
      * 登录钱包
      */
+    @Headers("${TimeoutInterceptor.HEADER_TIMEOUT}: 90")
     @POST("/app/wallet/login")
     suspend fun loginWallet(@Body requestBody: RequestBody): BaseResponse<String>
 

@@ -188,7 +188,7 @@
     <string name="_1_please_click_the_send_otp">1. Please click the \'Send OTP\' button to receive your OTP \n2. We\'ve sent you a One-Time Password(OTP).Please check your messages and enter theOTP below to proceed. If you have any questions,we\'re here to help! \n3. Click the \'NEXT\' button to proceed.</string>
     <string name="otp">OTP</string>
     <string name="authentication_status_error">Authentication Status Error</string>
-    <string name="logging_in">Logging in...</string>
+    <string name="processing_dont_lock_screen">Processing, please do not lock the screen or switch apps</string>
     <string name="you_are_doing_great">You are Doing Great!</string>
     <string name="_1_please_select_your_preferred_upi">1.Please select your preferred UPI.For added security we suggest avoiding UPIs named after your mobile number.\n2.Just one more step! Click the \'Finish\' button to wrap up your addition. You\'re all set!</string>
     <string name="upi">UPI</string>

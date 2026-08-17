@@ -4,9 +4,10 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.os.Build
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.view.ViewGroup
 import androidx.annotation.ColorInt
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
@@ -143,6 +144,17 @@ abstract class BaseActivity(@LayoutRes layoutResId: Int) : AppCompatActivity(lay
     protected fun showError(message: String) {
         if (isFinishing || isDestroyed) return
         Toaster.show(message)
+    }
+
+    /**
+     * 保持屏幕常亮或恢复自动锁屏
+     */
+    fun keepScreenOn(keep: Boolean) {
+        if (keep) {
+            window.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        }
     }
 
     /**
