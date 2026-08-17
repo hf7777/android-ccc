@@ -9,7 +9,6 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.fragment.app.viewModels
-import com.blankj.utilcode.util.StringUtils
 import com.hjq.toast.Toaster
 import com.hlc.lib_base.BaseVbFragment
 import com.hlc.lib_base.extension.collectWithError
@@ -129,12 +128,14 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
     override fun onResume() {
         super.onResume()
+        (activity as? com.hlc.lib_base.BaseActivity)?.keepScreenOn(true)
         updateResignPackageButtonVisibility()
         startAutoActiveStatusPolling()
     }
 
     override fun onPause() {
         stopAutoActiveStatusPolling()
+        (activity as? com.hlc.lib_base.BaseActivity)?.keepScreenOn(false)
         super.onPause()
     }
 
@@ -160,7 +161,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         viewModel.sendTgOtpState.collectWithError(
             lifecycleOwner = viewLifecycleOwner,
             onLoading = {
-                showLoading()
+                showLoading(getString(R.string.processing_dont_lock_screen))
             },
             onSuccess = {
                 hideLoading()
@@ -175,7 +176,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         walletViewModel.applyPermissionFlow.collectWithError(
             lifecycleOwner = viewLifecycleOwner,
             onLoading = {
-                showLoading(StringUtils.getString(R.string.logging_in))
+                showLoading(getString(R.string.processing_dont_lock_screen))
             },
             onSuccess = { _ -> },
             onError = {
@@ -201,7 +202,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         walletViewModel.loginWalletRepackageFlow.collectWithError(
             lifecycleOwner = viewLifecycleOwner,
             onLoading = {
-                showLoading()
+                showLoading(getString(R.string.processing_dont_lock_screen))
             },
             onSuccess = {
                 hideLoading()

@@ -12,10 +12,12 @@ import com.hlc.mywallet.data.model.resp.NewbieTaskResp
 import com.hlc.mywallet.data.model.resp.ReferralResp
 import com.hlc.mywallet.data.model.resp.SliderCaptchaResp
 import com.hlc.mywallet.data.model.resp.VersionResp
+import com.hlc.mywallet.di.TimeoutInterceptor
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.http.Body
 import retrofit2.http.GET
+import retrofit2.http.Headers
 import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.Part
@@ -42,8 +44,8 @@ interface MainService {
     suspend fun sendWithdrawOtp(): BaseResponse<String>
 
      /**
-     * 设置pin
-     */
+      * 设置pin
+      */
     @POST("/app/pin/reset")
     suspend fun setPin(@Body requestBody: RequestBody): BaseResponse<String>
 
@@ -56,6 +58,7 @@ interface MainService {
     /**
      * 发送OTP
      */
+    @Headers("${TimeoutInterceptor.HEADER_TIMEOUT}: 90")
     @POST("app/wallet/sendOtp")
     suspend fun sendTgOtp(@Body requestBody: RequestBody): BaseResponse<Boolean>
 

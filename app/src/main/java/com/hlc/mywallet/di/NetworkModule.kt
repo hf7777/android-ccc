@@ -77,16 +77,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideTimeoutInterceptor(): TimeoutInterceptor {
+        return TimeoutInterceptor()
+    }
+
+    @Provides
+    @Singleton
     fun provideOkHttpClient(
         tokenInterceptor: TokenInterceptor,
         commonParamsInterceptor: CommonParamsInterceptor,
-        loggingInterceptor: NetworkLoggingInterceptor
+        loggingInterceptor: NetworkLoggingInterceptor,
+        timeoutInterceptor: TimeoutInterceptor
     ): OkHttpClient {
         return OkHttpClient.Builder()
             .connectTimeout(30, TimeUnit.SECONDS)
             .readTimeout(30, TimeUnit.SECONDS)
             .writeTimeout(30, TimeUnit.SECONDS)
             .retryOnConnectionFailure(true)
+            .addInterceptor(timeoutInterceptor)
             .addInterceptor(commonParamsInterceptor)
             .addInterceptor(tokenInterceptor)
             .addInterceptor(loggingInterceptor)
