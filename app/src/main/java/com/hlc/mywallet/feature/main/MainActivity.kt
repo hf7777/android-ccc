@@ -2,6 +2,7 @@ package com.hlc.mywallet.feature.main
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import android.os.Bundle
 import com.hjq.toast.Toaster
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
@@ -43,11 +44,16 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     private val viewModel: MainViewModel by viewModels()
     private val bonusViewModel: BonusViewModel by viewModels()
 
-    private val fragments = mutableListOf<Fragment>()
     private val pendingBulletins = ArrayDeque<BulletinResp>()
     private var currentPosition = 0
     private var skipNextBulletinChain = false
     private var lastBackPressTime = 0L
+    private var restoredInstanceState: Bundle? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        restoredInstanceState = savedInstanceState
+        super.onCreate(savedInstanceState)
+    }
 
     override fun initImmersionBar() {
         immersionBar {
@@ -60,7 +66,7 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
     }
 
     override fun initView() {
-        initFragments()
+        initFragments(restoredInstanceState)
         setupBottomNavigation()
         setupDoubleBackToExit()
         requestNotificationPermissionIfNeeded()
@@ -90,17 +96,47 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun initFragments() {
-        fragments.add(HomeFragment.newInstance())
-        fragments.add(DepositFragment.newInstance())
-        fragments.add(WalletFragment.newInstance())
-        fragments.add(TeamFragment.newInstance())
-        fragments.add(MineFragment.newInstance())
+    private fun initFragments(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            currentPosition = savedInstanceState.getInt(KEY_CURRENT_POSITION, 0)
+        }
 
-        supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, fragments[0])
-            .commit()
+        val transaction = supportFragmentManager.beginTransaction()
+            .setReorderingAllowed(true)
+
+        for (i in 0 until TAB_COUNT) {
+            val fragment = getOrCreateTabFragment(i)
+            when {
+                fragment.isAdded && i == currentPosition -> transaction.show(fragment)
+                fragment.isAdded -> transaction.hide(fragment)
+                i == currentPosition -> transaction.add(
+                    R.id.fragment_container,
+                    fragment,
+                    makeTabTag(i)
+                )
+            }
+        }
+
+        if (!supportFragmentManager.isStateSaved) {
+            transaction.commitNow()
+        }
     }
+
+    private fun getOrCreateTabFragment(position: Int): Fragment {
+        return supportFragmentManager.findFragmentByTag(makeTabTag(position))
+            ?: createTabFragment(position)
+    }
+
+    private fun createTabFragment(position: Int): Fragment = when (position) {
+        0 -> HomeFragment.newInstance()
+        1 -> DepositFragment.newInstance()
+        2 -> WalletFragment.newInstance()
+        3 -> TeamFragment.newInstance()
+        4 -> MineFragment.newInstance()
+        else -> throw IllegalArgumentException("Invalid tab position: $position")
+    }
+
+    private fun makeTabTag(position: Int) = "$TAB_TAG_PREFIX$position"
 
     private fun setupBottomNavigation() {
         binding.bottomNavigation.setOnTabSelectedListener { position ->
@@ -128,32 +164,36 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
 
     private fun switchFragment(position: Int) {
         if (position == currentPosition) return
+        if (supportFragmentManager.isStateSaved) return
 
-        if (position == 2) {
-            binding.ivTool.setImageResource(R.drawable.ic_nav_tools_selected)
-        } else {
-            binding.ivTool.setImageResource(R.drawable.ic_nav_tools)
-        }
+        updateToolIcon(position)
 
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.hide(fragments[currentPosition])
+            .setReorderingAllowed(true)
+            .hide(getOrCreateTabFragment(currentPosition))
 
-        if (fragments[position].isAdded) {
-            transaction.show(fragments[position])
+        val target = getOrCreateTabFragment(position)
+        if (target.isAdded) {
+            transaction.show(target)
         } else {
-            transaction.add(R.id.fragment_container, fragments[position])
+            transaction.add(R.id.fragment_container, target, makeTabTag(position))
         }
 
-        transaction.commit()
+        transaction.commitNow()
         currentPosition = position
     }
 
-    fun selectTab(position: Int) {
+    private fun updateToolIcon(position: Int) {
         if (position == 2) {
             binding.ivTool.setImageResource(R.drawable.ic_nav_tools_selected)
         } else {
             binding.ivTool.setImageResource(R.drawable.ic_nav_tools)
         }
+    }
+
+    fun selectTab(position: Int) {
+        if (isFinishing || isDestroyed || supportFragmentManager.isStateSaved) return
+        updateToolIcon(position)
         binding.bottomNavigation.selectTab(position)
     }
 
@@ -252,6 +292,11 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt(KEY_CURRENT_POSITION, currentPosition)
+    }
+
     private fun showNextBulletinIfNeeded() {
         if (isFinishing || isDestroyed || supportFragmentManager.isStateSaved) {
             return
@@ -297,5 +342,8 @@ class MainActivity : BaseVbActivity<ActivityMainBinding>() {
         private const val BULLETIN_STATUS_ENABLE = "enable"
         private const val AUTO_CONFIRM_GO = "N"
         private const val BACK_PRESS_INTERVAL_MS = 2000L
+        private const val KEY_CURRENT_POSITION = "current_position"
+        private const val TAB_TAG_PREFIX = "main_tab_"
+        private const val TAB_COUNT = 5
     }
 }
