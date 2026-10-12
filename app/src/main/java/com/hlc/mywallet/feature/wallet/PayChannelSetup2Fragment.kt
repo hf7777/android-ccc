@@ -64,7 +64,9 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
 
             isAutoBuy = setupArgs?.isAutoBuy == true
             //特定钱包需要 ACTIVE OTP
-            val isOtpActive = isAutoBuy && ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode)
+            val isOtpWallets = ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode)
+            val isOtp2Wallets = ACTIVE_OTP2_WALLETS.contains(setupArgs?.channelCode)
+            val isOtpActive = isAutoBuy && (isOtpWallets || isOtp2Wallets)
             btnActiveOtp.visibleOrGone(isOtpActive)
             btnGuide.visibleOrGone(isOtpActive || setupArgs?.multiCard == 1)
 
@@ -107,7 +109,9 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             }
 
             btnActiveOtp.onClick {
-                handleActiveOtpClick()
+                val optPkgName = if (isOtpWallets) AA_OTP_PACKAGE_NAME else AA_OTP2_PACKAGE_NAME
+                val optDownloadUrl = if (isOtpWallets) AA_OTP_DOWNLOAD_URL else AA_OTP2_DOWNLOAD_URL
+                handleActiveOtpClick(optPkgName, optDownloadUrl)
             }
 
 
@@ -269,8 +273,8 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         }.start()
     }
 
-    private fun handleActiveOtpClick() {
-        val launchIntent = requireContext().packageManager.getLaunchIntentForPackage(AA_OTP_PACKAGE_NAME)
+    private fun handleActiveOtpClick(optPkgName: String, optDownloadUrl: String) {
+        val launchIntent = requireContext().packageManager.getLaunchIntentForPackage(optPkgName)
         if (launchIntent != null) {
             startActivity(launchIntent)
             return
@@ -279,7 +283,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             content = getString(R.string.install_aa_otp_first),
             confirmText = getString(R.string.download_now)
         ) {
-            val version = VersionResp(apkUrl = AA_OTP_DOWNLOAD_URL)
+            val version = VersionResp(apkUrl = optDownloadUrl)
             DownloadAppDialog.newInstance(version)
                 .show(childFragmentManager, DownloadAppDialog.TAG)
         }
@@ -306,6 +310,9 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
     }
 
     private fun updateActiveOtpButtonText(active: Boolean) {
+        val isOtpWallets = ACTIVE_OTP_WALLETS.contains(setupArgs?.channelCode)
+        val optPkgName = if (isOtpWallets) AA_OTP_PACKAGE_NAME else AA_OTP2_PACKAGE_NAME
+
         isOtpActive = active
         updateSendButtonEnableState()
         if (active) {
@@ -313,7 +320,7 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
             return
         }
         val context = context ?: return
-        val launchIntent = context.packageManager.getLaunchIntentForPackage(AA_OTP_PACKAGE_NAME)
+        val launchIntent = context.packageManager.getLaunchIntentForPackage(optPkgName)
         binding.btnActiveOtp.text = if (launchIntent == null) {
             getString(R.string.active_otp_not_installed)
         } else {
@@ -381,11 +388,13 @@ class PayChannelSetup2Fragment: BaseVbFragment<FragmentPayChannelSetup2Binding>(
         private const val KEYBOARD_SCROLL_DELAY_MILLIS = 100L
         private const val KEYBOARD_SCROLL_EXTRA_OFFSET = 24
         private const val AA_OTP_PACKAGE_NAME = "com.s.autoactiveotpaa"
+        private const val AA_OTP2_PACKAGE_NAME = "com.aaotp.relay"
         private const val AA_OTP_DOWNLOAD_URL = "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/aaotp.apk"
+        private const val AA_OTP2_DOWNLOAD_URL = "https://api-public-nn.s3.ap-south-1.amazonaws.com/apk/aaotp2.apk"
 
-        private const val MBK_POCKET = "mobikwik_pocket"
 
         private val ACTIVE_OTP_WALLETS = arrayOf("mobikwik_pocket", "mobikwik_upi")
+        private val ACTIVE_OTP2_WALLETS = arrayOf("mobikwik_pocket_2")
 
         fun newInstance(setupArgs: PayChannelSetupArgs?) = PayChannelSetup2Fragment().apply {
             arguments = Bundle().apply {

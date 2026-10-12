@@ -26,6 +26,7 @@ object WalletIconMapper {
             "paytm_apk" -> R.drawable.ic_pay_paytm
             "freecharge" -> R.drawable.ic_pay_freecharge
             "tron" -> R.drawable.ic_pay_tron
+            "mobikwik_pocket_2" -> R.drawable.ic_pay_mobikwik
             else -> BaseRes.drawable.bg_image_placeholder
         }
     }
