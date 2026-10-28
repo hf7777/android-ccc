@@ -50,7 +50,7 @@ class WalletAdapter(
     override fun onBindViewHolder(holder: VH, position: Int, item: Wallet?) {
         item ?: return
         holder.binding.apply {
-            ivIcon.loadRounded(WalletIconMapper.getIconRes(item.channelCode), radius = 1, scaleType = ImageView.ScaleType.CENTER_INSIDE)
+            ivIcon.loadRounded(WalletIconMapper.getIconRes(item.channelCode), radius = 8, scaleType = ImageView.ScaleType.CENTER_INSIDE)
             tvName.text = item.channelName ?: ""
             tvEmail.text = item.upi ?: ""
 
